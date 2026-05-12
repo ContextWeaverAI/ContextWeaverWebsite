@@ -157,8 +157,8 @@ export default function DataDeletionPage() {
 
             <p className="!mt-12 pt-8 border-t border-border text-xs font-mono tabular-nums text-muted-foreground tracking-wider">
               See also:{" "}
-              <Link href="/privacy">Privacy Policy</Link> &middot;{" "}
-              <Link href="/terms">Terms of Service</Link>
+              <Link href="/bluestar_whatsappbot_privacy">Privacy Policy</Link> &middot;{" "}
+              <Link href="/bluestar_whatsappbot_terms">Terms of Service</Link>
             </p>
           </article>
         </section>

@@ -217,8 +217,8 @@ export default function PrivacyPage() {
 
             <p className="!mt-12 pt-8 border-t border-border text-xs font-mono tabular-nums text-muted-foreground tracking-wider">
               See also:{" "}
-              <Link href="/terms">Terms of Service</Link> &middot;{" "}
-              <Link href="/data-deletion">Data deletion instructions</Link>
+              <Link href="/bluestar_whatsappbot_terms">Terms of Service</Link> &middot;{" "}
+              <Link href="/bluestar_whatsappbot_data-deletion">Data deletion instructions</Link>
             </p>
           </article>
         </section>

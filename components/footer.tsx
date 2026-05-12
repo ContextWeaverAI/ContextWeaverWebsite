@@ -17,8 +17,8 @@ const footerLinks = {
   Company: [
     { label: "About", href: "/about" },
     { label: "Contact", href: "https://calendly.com/yuvraj-s-bhadauria/30min", external: true },
-    { label: "Privacy", href: "/privacy" },
-    { label: "Terms", href: "/terms" },
+    { label: "Privacy", href: "/bluestar_whatsappbot_privacy" },
+    { label: "Terms", href: "/bluestar_whatsappbot_terms" },
   ],
 }
 
@@ -76,10 +76,10 @@ export function Footer() {
             &copy; {new Date().getFullYear()} ContextWeaver. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="/bluestar_whatsappbot_privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Privacy
             </Link>
-            <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="/bluestar_whatsappbot_terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Terms
             </Link>
             <Link href="/security" className="text-sm text-muted-foreground hover:text-foreground transition-colors">

@@ -139,7 +139,7 @@ export default function TermsPage() {
 
             <h2>Privacy</h2>
             <p>
-              Your use of the Service is also governed by our <Link href="/privacy">Privacy Policy</Link>,
+              Your use of the Service is also governed by our <Link href="/bluestar_whatsappbot_privacy">Privacy Policy</Link>,
               which explains how we collect, use, and protect personal data. Please review it carefully.
             </p>
 
@@ -230,8 +230,8 @@ export default function TermsPage() {
 
             <p className="!mt-12 pt-8 border-t border-border text-xs font-mono tabular-nums text-muted-foreground tracking-wider">
               See also:{" "}
-              <Link href="/privacy">Privacy Policy</Link> &middot;{" "}
-              <Link href="/data-deletion">Data deletion instructions</Link>
+              <Link href="/bluestar_whatsappbot_privacy">Privacy Policy</Link> &middot;{" "}
+              <Link href="/bluestar_whatsappbot_data-deletion">Data deletion instructions</Link>
             </p>
           </article>
         </section>

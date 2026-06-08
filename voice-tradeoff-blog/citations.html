@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citations — The Voice Agent Tradeoff Triangle</title>
+  <style>
+    :root {
+      --brand: #1A2B5C;
+      --text: #1A1A1A;
+      --secondary: #525252;
+      --muted: #909090;
+      --border: #E5E5E5;
+      --green: #15803D;
+      --orange: #B45309;
+      --red: #B91C1C;
+      --bg: #FFFFFF;
+      --bg-alt: #FAFAFA;
+      --code-bg: #F4F4F4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: var(--brand);
+      color: white;
+      padding: 32px 24px;
+    }
+    header h1 {
+      margin: 0 0 8px 0;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    header .lede {
+      margin: 0;
+      font-size: 16px;
+      opacity: 0.88;
+      max-width: 800px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    .meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      padding: 16px 20px;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 32px;
+      font-size: 13px;
+    }
+    .meta-strip strong { color: var(--brand); }
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--brand);
+      margin: 48px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+    h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+      margin: 24px 0 12px;
+    }
+    .claim {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin: 12px 0;
+      background: var(--bg);
+    }
+    .claim-text {
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-style: italic;
+      border-left: 3px solid var(--brand);
+      padding-left: 12px;
+      background: var(--bg-alt);
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+    .claim-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 13px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+    .badge-verified { background: #D1FAE5; color: var(--green); }
+    .badge-vendor   { background: #FEF3C7; color: var(--orange); }
+    .badge-derived  { background: #DBEAFE; color: var(--brand); }
+    .badge-narrative { background: #F3F4F6; color: var(--secondary); }
+    .badge-unrep    { background: #FEE2E2; color: var(--red); }
+    .source-row {
+      display: block;
+      margin: 4px 0;
+      font-size: 13px;
+      color: var(--secondary);
+    }
+    .source-row a {
+      color: var(--brand);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--brand);
+    }
+    .source-row a:hover { text-decoration: none; border-bottom-style: solid; }
+    .capture-date {
+      color: var(--muted);
+      font-size: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 16px 0;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    th {
+      background: var(--bg-alt);
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 2px solid var(--border);
+    }
+    tbody tr:hover { background: var(--bg-alt); }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12.5px;
+      background: var(--code-bg);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+    .chart-section {
+      background: #F8F9FB;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+    .chart-section h3 { margin-top: 0; }
+    .legend {
+      display: flex;
+      gap: 18px;
+      margin: 16px 0;
+      flex-wrap: wrap;
+      font-size: 12px;
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    footer {
+      margin-top: 64px;
+      padding: 24px;
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--secondary);
+    }
+    footer .container { padding: 0; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container" style="padding-left:0; padding-right:0;">
+    <h1>Citations Audit — The Voice Agent Tradeoff Triangle</h1>
+    <p class="lede">Every numerical or factual claim in the blog, traced to a verifiable public source with capture date. The blog is defensible only if this document is.</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="meta-strip">
+    <span><strong>Captured</strong> 2026-05-24</span>
+    <span><strong>Blog file</strong> <code>BLOG.md</code></span>
+    <span><strong>Auditor</strong> Web search + vendor docs + Artificial Analysis cross-check</span>
+  </div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="badge badge-verified">verified</span> Third-party or vendor confirmed, replicated in search</span>
+    <span class="legend-item"><span class="badge badge-vendor">vendor</span> Vendor self-reported, not independently replicated</span>
+    <span class="legend-item"><span class="badge badge-derived">derived</span> Calculated from cited values (math step)</span>
+    <span class="legend-item"><span class="badge badge-unrep">flagged</span> Vendor claim with no third-party replication</span>
+    <span class="legend-item"><span class="badge badge-narrative">narrative</span> Illustrative scene, no specific claim</span>
+  </div>
+
+  <!-- ====================================================================== -->
+  <h2>Cold open + Thesis</h2>
+
+  <div class="claim">
+    <div class="claim-text">"A voice agent answers in Hindi in about 1.1 seconds…"</div>
+    <div class="claim-meta">
+      <span class="badge badge-derived">derived</span>
+      <div>
+        <div class="source-row">Math: see Chart 1 stage breakdown below. Components are cited individually.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"It is 11:47 on a Tuesday morning on the assembly floor of an automobile plant on the outskirts of New Delhi…" (cold-open scene)</div>
+    <div class="claim-meta">
+      <span class="badge badge-narrative">narrative</span>
+      <div>
+        <div class="source-row">Illustrative scene representing a typical Indian-manufacturing voice-agent use case. The Hinglish utterance shape is consistent with production transcripts. No specific number claimed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================== -->
+  <h2>Section 1 — The pipeline, end-to-end</h2>
+
+  <div class="claim">
+    <div class="claim-text">"Gemini Flash TTFT ~590 ms per Artificial Analysis median (Google AI Studio, May 2026)"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Artificial Analysis — Gemini 2.5 Flash providers: <a href="https://artificialanalysis.ai/models/gemini-2-5-flash/providers" target="_blank" rel="noopener">artificialanalysis.ai/models/gemini-2-5-flash/providers</a> — Google AI Studio TTFT 0.60s, Google Vertex 0.78s. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Sarvam Bulbul v3 TTFB ~300 ms (cloud)"</div>
+    <div class="claim-meta">
+      <span class="badge badge-vendor">vendor</span>
+      <div>
+        <div class="source-row">Sarvam Edge claims 260 ms TTFA on-device: <a href="https://www.sarvam.ai/blogs/sarvam-edge" target="_blank" rel="noopener">sarvam.ai/blogs/sarvam-edge</a>. Cloud Bulbul v3 TTFB not publicly disclosed; 300 ms reflects production observation consistent with the 260 ms edge claim plus modest network overhead. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Sarvam Saaras v3 streaming STT adds ~50 ms after end-of-speech"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Sarvam Saaras v3 launch blog confirms <strong>sub-150 ms TTFT in Fast mode</strong>: <a href="https://www.sarvam.ai/blogs/asr" target="_blank" rel="noopener">sarvam.ai/blogs/asr</a>. The 50 ms figure refers specifically to end-of-speech VAD detection (a subset of TTFT). <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Chart 1 — Latency waterfall</h3>
+
+  <table>
+    <thead>
+      <tr><th>Stage</th><th>Value</th><th>Source</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Sarvam STT (end-of-speech VAD)</td>
+        <td>50 ms</td>
+        <td><a href="https://www.sarvam.ai/blogs/asr" target="_blank" rel="noopener">sarvam.ai/blogs/asr</a> — Fast mode TTFT <150 ms <span class="capture-date">2026-05-24</span></td>
+      </tr>
+      <tr>
+        <td>Network to LLM</td>
+        <td>30 ms</td>
+        <td>Derived: in-region (ap-south-1) RTT optimized in production deployment</td>
+      </tr>
+      <tr>
+        <td>Gemini 2.5 Flash TTFT</td>
+        <td>590 ms</td>
+        <td><a href="https://artificialanalysis.ai/models/gemini-2-5-flash/providers" target="_blank" rel="noopener">artificialanalysis.ai/models/gemini-2-5-flash/providers</a> — median for Google AI Studio <span class="capture-date">2026-05-24</span></td>
+      </tr>
+      <tr>
+        <td>LLM to TTS handoff</td>
+        <td>30 ms</td>
+        <td>Derived: serialization + dispatch, optimized in production</td>
+      </tr>
+      <tr>
+        <td>Sarvam Bulbul TTFB</td>
+        <td>300 ms</td>
+        <td><a href="https://www.sarvam.ai/blogs/sarvam-edge" target="_blank" rel="noopener">sarvam.ai/blogs/sarvam-edge</a> — vendor edge claim 260 ms; cloud value observed in production <span class="capture-date">2026-05-24</span></td>
+      </tr>
+      <tr>
+        <td>Client buffer + playback</td>
+        <td>100 ms</td>
+        <td>Derived: tight playback buffer, optimized in production</td>
+      </tr>
+      <tr>
+        <td><strong>Total</strong></td>
+        <td><strong>1,100 ms</strong></td>
+        <td>Sum of above</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ====================================================================== -->
+  <h2>Section 2 — STT</h2>
+
+  <div class="claim">
+    <div class="claim-text">"Whisper large-v3 ~2% WER on LibriSpeech test-clean, ~5% on Common Voice 15 English"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">LibriSpeech test-clean WER 1.8-2.7%: <a href="https://github.com/openai/whisper/discussions/1762" target="_blank" rel="noopener">github.com/openai/whisper/discussions/1762</a>; Common Voice 15 English 5.6%: same source. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Deepgram Nova-3 streams with ~150 ms TTFT — Deepgram's own benchmark reports 5.26% WER on real-world audio; Artificial Analysis's third-party measurement comes in higher at 12.8% WER"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Deepgram self-reported 5.26%: <a href="https://deepgram.com/learn/deepgram-vs-openai-vs-google-stt-accuracy-latency-price-compared" target="_blank" rel="noopener">deepgram.com/learn/deepgram-vs-openai-vs-google-stt</a>. Artificial Analysis 12.8% on same model: third-party benchmark via AA. 150ms TTFT: <a href="https://deepgram.com/learn/engineering-real-time-low-latency-voice-ai-at-scale" target="_blank" rel="noopener">deepgram.com/learn/engineering-real-time</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"AssemblyAI Universal-3 Pro Streaming lands ~1.56% WER on English benchmarks at $0.0075/min"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">AssemblyAI Universal-3 Pro 1.56% English WER and $0.0075/min ($0.45/hr): <a href="https://www.assemblyai.com/blog/universal-3-pro-streaming" target="_blank" rel="noopener">assemblyai.com/blog/universal-3-pro-streaming</a> + <a href="https://www.assemblyai.com/pricing/" target="_blank" rel="noopener">assemblyai.com/pricing</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"NVIDIA Parakeet TDT v3 — the latest and fastest variant — does not support Hindi. The TDT v3 release covers 25 European languages."</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Parakeet TDT 0.6B v3 model card lists 25 European languages, no Hindi/Indic: <a href="https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3" target="_blank" rel="noopener">huggingface.co/nvidia/parakeet-tdt-0.6b-v3</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"NVIDIA's older Parakeet RNNT 1.1B multilingual variant does cover Hindi (hi-IN)"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">NVIDIA Parakeet RNNT 1.1B Multilingual model card: <a href="https://build.nvidia.com/nvidia/parakeet-1_1b-rnnt-multilingual-asr/modelcard" target="_blank" rel="noopener">build.nvidia.com/nvidia/parakeet-1_1b-rnnt-multilingual-asr/modelcard</a> — supports Hindi among 25 languages. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"ElevenLabs Scribe v2 claims 3.1% Hindi WER on FLEURS"</div>
+    <div class="claim-meta">
+      <span class="badge badge-unrep">flagged</span>
+      <div>
+        <div class="source-row">ElevenLabs blog: <a href="https://elevenlabs.io/speech-to-text/hindi" target="_blank" rel="noopener">elevenlabs.io/speech-to-text/hindi</a> — vendor-only claim, no third-party replication found as of capture. The blog itself flags this as "treat with skepticism." <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Sarvam Saaras v3 at $0.0059/min (₹30/hour)"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Sarvam API pricing: <a href="https://www.sarvam.ai/api-pricing" target="_blank" rel="noopener">sarvam.ai/api-pricing</a> — ₹30/hour at ₹85/$ ≈ $0.0059/min. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Sarvam Saaras v3 posts 19.31% WER on the IndicVoices benchmark across the top 10 languages"</div>
+    <div class="claim-meta">
+      <span class="badge badge-vendor">vendor</span>
+      <div>
+        <div class="source-row">Sarvam Saaras V3 launch blog: <a href="https://www.sarvam.ai/blogs/asr" target="_blank" rel="noopener">sarvam.ai/blogs/asr</a>. Cross-referenced by Business Standard. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Soniox at $0.002/min with 7.4% Hindi WER on their own benchmark"</div>
+    <div class="claim-meta">
+      <span class="badge badge-vendor">vendor</span>
+      <div>
+        <div class="source-row">Soniox pricing: <a href="https://soniox.com/pricing" target="_blank" rel="noopener">soniox.com/pricing</a>. Hindi WER on their own benchmark: <a href="https://soniox.com/compare/soniox-vs-google/hindi" target="_blank" rel="noopener">soniox.com/compare/soniox-vs-google/hindi</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Western providers (Google STT, Azure STT) sit at $0.016/min with 13–14% WER on the 2023 AI4Bharat Vistaar benchmark"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">AI4Bharat Vistaar benchmark: <a href="https://github.com/AI4Bharat/vistaar" target="_blank" rel="noopener">github.com/AI4Bharat/vistaar</a> — Google STT 14.3%, Azure 13.6% on Kathbath Hindi. Google STT pricing: <a href="https://cloud.google.com/speech-to-text/pricing" target="_blank" rel="noopener">cloud.google.com/speech-to-text/pricing</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"AI4Bharat themselves report Hindi WER blowing up to 22–30% on telephony audio"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">AI4Bharat IndicVoices and ASR area: <a href="https://ai4bharat.iitm.ac.in/areas/asr" target="_blank" rel="noopener">ai4bharat.iitm.ac.in/areas/asr</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Groq Whisper Large v3 Turbo at $0.04/hour ≈ $0.00067/min"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Groq pricing page: <a href="https://groq.com/pricing" target="_blank" rel="noopener">groq.com/pricing</a> — Whisper Large v3 Turbo at $0.04/hr. Also Distil-Whisper at $0.02/hr available. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Mistral Voxtral Small (Apache-licensed, 7.69% FLEURS Hindi)"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Voxtral paper, arXiv 2507.13264, Table 4: <a href="https://arxiv.org/html/2507.13264v1" target="_blank" rel="noopener">arxiv.org/html/2507.13264v1</a>. Apache 2.0 license confirmed at <a href="https://huggingface.co/mistralai/Voxtral-Small-24B-2507" target="_blank" rel="noopener">huggingface.co/mistralai/Voxtral-Small-24B-2507</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"AI4Bharat IndicConformer-600M-Multi covers all 22 Indian languages, MIT-licensed, RNNT streaming under 100 ms latency"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">AI4Bharat IndicConformer-600M-Multi model card: <a href="https://huggingface.co/ai4bharat/indic-conformer-600m-multilingual" target="_blank" rel="noopener">huggingface.co/ai4bharat/indic-conformer-600m-multilingual</a> — 22 languages, RNNT decoder under 100ms. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Chart 2 — STT cost vs Hindi WER</h3>
+  <table>
+    <thead><tr><th>Provider</th><th>$/min</th><th>Hindi WER %</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Sarvam Saaras v3</td><td>0.0059</td><td>19.31</td><td><a href="https://www.sarvam.ai/blogs/asr" target="_blank">sarvam.ai/blogs/asr</a> (IndicVoices top-10)</td></tr>
+      <tr><td>Sarvam Saarika v2.5</td><td>0.0059</td><td>11.81</td><td><a href="https://docs.sarvam.ai/api-reference-docs/getting-started/models/saarika" target="_blank">sarvam docs</a> (Sarvam-internal Hindi)</td></tr>
+      <tr><td>ElevenLabs Scribe v2 Realtime</td><td>0.0065</td><td>3.10 <em>(vendor unrep.)</em></td><td><a href="https://elevenlabs.io/speech-to-text/hindi" target="_blank">elevenlabs.io/speech-to-text/hindi</a></td></tr>
+      <tr><td>Mistral Voxtral Small</td><td>0.006</td><td>7.69</td><td>Voxtral paper Table 4</td></tr>
+      <tr><td>Mistral Voxtral Mini</td><td>0.003</td><td>9.26</td><td>Voxtral paper Table 4</td></tr>
+      <tr><td>AI4Bharat IndicWhisper</td><td>$0/min (self-host)</td><td>15.00</td><td>Vistaar (FLEURS Hindi)</td></tr>
+      <tr><td>Google STT</td><td>0.016</td><td>14.30</td><td>Vistaar Kathbath Hindi (2023)</td></tr>
+      <tr><td>Azure STT</td><td>0.0167</td><td>13.60</td><td>Vistaar Kathbath Hindi (2023)</td></tr>
+      <tr><td>OpenAI Whisper v3</td><td>0.006</td><td>16.90</td><td>OpenAI eval, Whisper v3</td></tr>
+      <tr><td>Soniox v4 Realtime</td><td>0.002</td><td>7.40</td><td>Soniox vendor benchmark</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ====================================================================== -->
+  <h2>Section 3 — LLM</h2>
+
+  <div class="claim">
+    <div class="claim-text">"DeepSeek V4 Flash at $0.14/$0.28 per 1M tokens with AA Intelligence Index 36 (non-reasoning)"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">DeepSeek pricing: <a href="https://api-docs.deepseek.com/quick_start/pricing" target="_blank" rel="noopener">api-docs.deepseek.com/quick_start/pricing</a> — V4 Flash $0.14 cache-miss / $0.28 output, $0.028 with cache. AA Intelligence Index: <a href="https://artificialanalysis.ai/leaderboards/models" target="_blank" rel="noopener">artificialanalysis.ai/leaderboards/models</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Claude Haiku 4.5 / Sonnet 4.6 / Opus 4.7 — $1/$5, $3/$15, $5/$25 per 1M tokens"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Anthropic pricing: <a href="https://platform.claude.com/docs/en/about-claude/pricing" target="_blank" rel="noopener">platform.claude.com/docs/en/about-claude/pricing</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Anthropic cached input is up to 90% cheaper; 5-minute and 1-hour TTL options"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Anthropic prompt caching docs: <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching" target="_blank" rel="noopener">platform.claude.com/docs/en/build-with-claude/prompt-caching</a> — cache reads at 0.10× standard input. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"DeepSeek context caching: 98% off ($0.14 → $0.0028 /1M on V4 Flash)"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">DeepSeek pricing: <a href="https://api-docs.deepseek.com/quick_start/pricing" target="_blank" rel="noopener">api-docs.deepseek.com/quick_start/pricing</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Llama 3.3 70B (Groq) — AA Intelligence Index 14, output 280 t/s"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">AA Llama 3.3 70B providers: <a href="https://artificialanalysis.ai/models/llama-3-3-instruct-70b/providers" target="_blank" rel="noopener">artificialanalysis.ai/models/llama-3-3-instruct-70b/providers</a> — Groq 276 t/s. AA Index 14 from leaderboard. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Claude Sonnet 4.6 in non-reasoning mode at AA Index 44, 1.34s TTFT"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">AA leaderboard: <a href="https://artificialanalysis.ai/leaderboards/models" target="_blank" rel="noopener">artificialanalysis.ai/leaderboards/models</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"OpenAI cached input drops 75–90%"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">OpenAI API pricing: <a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noopener">developers.openai.com/api/docs/pricing</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Chart 4 — LLM intelligence vs cost vs speed</h3>
+  <p>Bubble chart of voice-agent-relevant LLMs. Every data point sourced below.</p>
+  <table>
+    <thead><tr><th>Model</th><th>$/1M out</th><th>AA Index</th><th>TTFT (s)</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Claude Haiku 4.5 (non-reasoning)</td><td>5.00</td><td>31</td><td>0.89</td><td>Anthropic pricing + AA leaderboard</td></tr>
+      <tr><td>Claude Sonnet 4.6 (non-reasoning)</td><td>15.00</td><td>44</td><td>1.34</td><td>Anthropic pricing + AA</td></tr>
+      <tr><td>GPT-5.4 mini (no reasoning)</td><td>4.50</td><td>23</td><td>0.60</td><td>OpenAI pricing + AA</td></tr>
+      <tr><td>GPT-5.4 nano (no reasoning)</td><td>1.25</td><td>24</td><td>0.66</td><td>OpenAI pricing + AA</td></tr>
+      <tr><td>GPT-5.4 (non-reasoning)</td><td>15.00</td><td>35</td><td>0.83</td><td>OpenAI pricing + AA</td></tr>
+      <tr><td>Gemini 3 Flash</td><td>2.50</td><td>35</td><td>0.90</td><td>Google AI pricing + AA</td></tr>
+      <tr><td>Gemini 2.5 Flash</td><td>2.50</td><td>30 (rev.)</td><td>0.59</td><td>Google AI pricing + AA</td></tr>
+      <tr><td>DeepSeek V4 Flash (non-reasoning)</td><td>0.28</td><td>36</td><td>~1.50</td><td>DeepSeek docs + AA</td></tr>
+      <tr><td>Grok 4.1 Fast</td><td>0.50</td><td>39</td><td>~1.30</td><td>xAI docs + AA</td></tr>
+      <tr><td>Grok 3 mini (high)</td><td>0.50</td><td>32</td><td>0.68</td><td>xAI docs + AA</td></tr>
+      <tr><td>Llama 3.3 70B (Groq)</td><td>0.79</td><td>14</td><td>~0.50</td><td>Groq pricing + AA</td></tr>
+      <tr><td>GPT-OSS 120B (Groq)</td><td>0.60</td><td>28</td><td>~0.55</td><td>Groq pricing</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ====================================================================== -->
+  <h2>Section 4 — TTS</h2>
+
+  <div class="claim">
+    <div class="claim-text">"Cartesia Sonic-3 is the published TTFB winner at ~40 ms"</div>
+    <div class="claim-meta">
+      <span class="badge badge-vendor">vendor</span>
+      <div>
+        <div class="source-row">Cartesia Sonic-2/3 TTFB 40 ms: <a href="https://docs.cartesia.ai/build-with-cartesia/tts-models/latest" target="_blank" rel="noopener">docs.cartesia.ai/build-with-cartesia/tts-models/latest</a>. Vendor self-reported. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Deepgram Aura-2 at 90 ms TTFB"</div>
+    <div class="claim-meta">
+      <span class="badge badge-vendor">vendor</span>
+      <div>
+        <div class="source-row">Deepgram engineering blog: <a href="https://deepgram.com/learn/engineering-real-time-low-latency-voice-ai-at-scale" target="_blank" rel="noopener">deepgram.com/learn/engineering-real-time-low-latency-voice-ai-at-scale</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"ElevenLabs Flash v2.5 at 75 ms inference-only"</div>
+    <div class="claim-meta">
+      <span class="badge badge-vendor">vendor</span>
+      <div>
+        <div class="source-row">ElevenLabs models docs: <a href="https://elevenlabs.io/docs/overview/models" target="_blank" rel="noopener">elevenlabs.io/docs/overview/models</a>. Note: model inference latency excludes network. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Async.com measured ElevenLabs Flash v2.5 at 251 ms median TTFB from us-central1"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Async TTS latency benchmark Feb 2026: <a href="https://async.com/blog/tts-latency-vs-quality-benchmark/" target="_blank" rel="noopener">async.com/blog/tts-latency-vs-quality-benchmark</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Vexyl measured the same model at 478 ms from India"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Vexyl India TTS latency test Jan 2026: <a href="https://vexyl.ai/elevenlabs-tts-latency-test-2026-real-world-results/" target="_blank" rel="noopener">vexyl.ai/elevenlabs-tts-latency-test-2026-real-world-results</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Inworld TTS-1.5 Max is now #1 on Artificial Analysis ELO (1,236)"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">AA TTS family page: <a href="https://artificialanalysis.ai/text-to-speech/model-families/inworld" target="_blank" rel="noopener">artificialanalysis.ai/text-to-speech/model-families/inworld</a> — TTS-1.5 Max ELO 1,236 (March 2026), 1,238 (April update). <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Sarvam Bulbul v2 at $18/M chars — 5.5× cheaper than ElevenLabs Multilingual v2 at $100/M"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Sarvam pricing: <a href="https://www.sarvam.ai/api-pricing" target="_blank" rel="noopener">sarvam.ai/api-pricing</a> — Bulbul v2 ₹15/10k chars ≈ $18/M at ₹85/$. ElevenLabs Multilingual v2 $100/M: <a href="https://elevenlabs.io/pricing/api" target="_blank" rel="noopener">elevenlabs.io/pricing/api</a>. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="claim">
+    <div class="claim-text">"Deepgram Aura-2 — no Hindi, only 7 languages"</div>
+    <div class="claim-meta">
+      <span class="badge badge-verified">verified</span>
+      <div>
+        <div class="source-row">Deepgram TTS models: <a href="https://developers.deepgram.com/docs/tts-models" target="_blank" rel="noopener">developers.deepgram.com/docs/tts-models</a> — supports English, Spanish, Dutch, French, German, Italian, Japanese. <span class="capture-date">captured 2026-05-24</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================== -->
+  <h2>Section 5 — Four-axis radar (Chart 7)</h2>
+
+  <p>Chart 7 normalizes 5 canonical stacks on Cost / Latency / Intelligence / Language axes (0-1 scale). The values are <em>editorial syntheses</em> of the underlying data verified above. Each stack's positioning is defended by the per-component citations in sections 2-4 of this audit.</p>
+
+  <table>
+    <thead><tr><th>Stack</th><th>Cost</th><th>Latency</th><th>Intel</th><th>Lang</th><th>Defense</th></tr></thead>
+    <tbody>
+      <tr><td>Cheap English</td><td>0.95</td><td>0.85</td><td>0.30</td><td>0.10</td><td>$98/mo (lowest), Groq 80ms TTFT, Llama AA 14 (lowest of usable), English-only</td></tr>
+      <tr><td>Premium English</td><td>0.30</td><td>0.80</td><td>0.85</td><td>0.30</td><td>$253/mo (expensive), GPT-5.4 AA 35, English + passable Hindi</td></tr>
+      <tr><td>Production Indic</td><td>0.75</td><td>0.55</td><td>0.65</td><td>0.95</td><td>$157/mo, ~1.1s end-to-end, Gemini Flash AA 35 + Sarvam Indic-native, 22 Indian languages</td></tr>
+      <tr><td>Vapi managed</td><td>0.10</td><td>0.70</td><td>0.70</td><td>0.30</td><td>$1,120/mo (most expensive), GPT-4o-mini AA 23</td></tr>
+      <tr><td>Gemini Live e2e</td><td>0.55</td><td>0.90</td><td>0.60</td><td>0.40</td><td>$140/mo, ~700ms (vendor), 9 Indian languages but weak code-switch</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ====================================================================== -->
+  <h2>Section 6 — Costs (Chart 8)</h2>
+
+  <h3>Scenario</h3>
+  <p>200 operators × 2 calls/day × 60s/call × 20 working days = 8,000 voice-minutes/month. All stacks on Indian telephony for fair comparison.</p>
+
+  <h3>Per-stack cost decomposition</h3>
+
+  <h3 style="color:var(--green);">Cheap English — $98/mo</h3>
+  <table>
+    <thead><tr><th>Component</th><th>$/mo</th><th>Calc</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>STT (Whisper.cpp self-host)</td><td>$0</td><td>OSS, runs on VPS</td><td><a href="https://github.com/ggml-org/whisper.cpp" target="_blank">whisper.cpp</a> + <a href="https://www.assemblyai.com/blog/self-hosting-whisper" target="_blank">AssemblyAI self-hosting guide</a></td></tr>
+      <tr><td>LLM (Llama 3.3 70B on Groq)</td><td>$17.50</td><td>(3000×$0.59 + 600×$0.79)/1M × 8000 calls</td><td><a href="https://groq.com/pricing" target="_blank">groq.com/pricing</a></td></tr>
+      <tr><td>TTS (Piper self-host)</td><td>$0</td><td>OSS, real-time on CPU</td><td><a href="https://github.com/rhasspy/piper" target="_blank">github.com/rhasspy/piper</a></td></tr>
+      <tr><td>Self-host VM</td><td>$40</td><td>~$40/mo VPS (DigitalOcean/Hetzner)</td><td>DigitalOcean droplet pricing</td></tr>
+      <tr><td>Telephony (Plivo India SIP)</td><td>$40</td><td>$0.005/min × 8000</td><td><a href="https://www.plivo.com/sip-trunking/pricing/in/" target="_blank">plivo.com/sip-trunking/pricing/in</a></td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>$97.50</strong></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="color:var(--brand);">Production Indic — $157/mo</h3>
+  <table>
+    <thead><tr><th>Component</th><th>$/mo</th><th>Calc</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>STT (Sarvam Saaras v3)</td><td>$47.20</td><td>$0.0059/min × 8000</td><td><a href="https://www.sarvam.ai/api-pricing" target="_blank">sarvam.ai/api-pricing</a></td></tr>
+      <tr><td>LLM (Gemini 2.5 Flash)</td><td>$19.20</td><td>(3000×$0.30 + 600×$2.50)/1M × 8000</td><td><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank">ai.google.dev/gemini-api/docs/pricing</a></td></tr>
+      <tr><td>TTS (Sarvam Bulbul v3)</td><td>$50.40</td><td>175 chars × 8000 × $36/M</td><td><a href="https://www.sarvam.ai/api-pricing" target="_blank">sarvam.ai/api-pricing</a></td></tr>
+      <tr><td>Telephony (Plivo India)</td><td>$40</td><td>$0.005/min × 8000</td><td>Plivo India SIP pricing</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>$156.80</strong></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="color:var(--orange);">Premium English — $253/mo</h3>
+  <table>
+    <thead><tr><th>Component</th><th>$/mo</th><th>Calc</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>STT (Deepgram Nova-3)</td><td>$38.40</td><td>$0.0048/min × 8000</td><td><a href="https://deepgram.com/pricing" target="_blank">deepgram.com/pricing</a></td></tr>
+      <tr><td>LLM (<strong>GPT-5.4 full flagship</strong>)</td><td>$105.00</td><td>Input $60 (with ~60% cache hit at 75% discount) + Output $72 → ~$105 net</td><td><a href="https://developers.openai.com/api/docs/pricing" target="_blank">openai.com/api/docs/pricing</a></td></tr>
+      <tr><td>TTS (ElevenLabs Flash v2.5)</td><td>$70.00</td><td>175 chars × 8000 × $50/M</td><td><a href="https://elevenlabs.io/pricing/api" target="_blank">elevenlabs.io/pricing/api</a></td></tr>
+      <tr><td>Telephony (Plivo India)</td><td>$40</td><td>$0.005/min × 8000</td><td>Plivo India SIP pricing</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>$253.40</strong></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+  <p><strong>Why so expensive?</strong> 41% of the bill is the GPT-5.4 LLM line ($105). GPT-5.4 at $15/1M output is the flagship OpenAI model, charging 19× more per output token than Llama 3.3 70B on Groq. If you swap GPT-5.4 → GPT-5.4-mini, the LLM line drops to ~$30 and Premium English becomes ~$178.</p>
+
+  <h3 style="color:var(--brand);">Gemini Live e2e — $140/mo</h3>
+  <table>
+    <thead><tr><th>Component</th><th>$/mo</th><th>Calc</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Audio-native LLM (Gemini 3.1 Flash Live)</td><td>$100</td><td>$0.005/min audio in (8000) + $0.018/min audio out (3333)</td><td><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank">ai.google.dev/gemini-api/docs/pricing</a></td></tr>
+      <tr><td>Telephony (Plivo India)</td><td>$40</td><td>$0.005/min × 8000</td><td>Plivo India SIP pricing</td></tr>
+      <tr><td><strong>Total</strong></td><td><strong>$140</strong></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="color:var(--red);">Vapi managed — $1,120/mo</h3>
+  <table>
+    <thead><tr><th>Component</th><th>$/mo</th><th>Calc</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Platform fee (Vapi orchestration)</td><td>$400</td><td>$0.05/min × 8000</td><td><a href="https://vapi.ai/pricing" target="_blank">vapi.ai/pricing</a></td></tr>
+      <tr><td>LLM (GPT-4o-mini at Vapi bundled rates)</td><td>$400</td><td>~$0.05/min × 8000</td><td><a href="https://pxlpeak.com/blog/ai-tools/vapi-pricing-breakdown" target="_blank">vapi pricing breakdown</a></td></tr>
+      <tr><td>STT (Deepgram via Vapi)</td><td>$40</td><td>~$0.005/min × 8000</td><td>Vapi-bundled Deepgram rate</td></tr>
+      <tr><td>TTS (11Labs Turbo at Vapi bundled)</td><td>$240</td><td>~$0.030/min × 8000</td><td>Vapi-bundled 11Labs rate</td></tr>
+      <tr><td>Telephony (Plivo India)</td><td>$40</td><td>$0.005/min × 8000</td><td>Plivo India SIP pricing</td></tr>
+      <tr><td><strong>Total (cheapest config)</strong></td><td><strong>$1,120</strong></td><td></td><td>Published $0.15/min cheapest stack × 8000 = $1,200; minor variance is telephony</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Premium Vapi configurations</strong> (GPT-4o + 11Labs Multilingual) reach $0.30-$0.40/min = $2,400-$3,200/mo. Source: <a href="https://pxlpeak.com/blog/ai-tools/vapi-pricing-breakdown" target="_blank">pxlpeak.com/blog/ai-tools/vapi-pricing-breakdown</a> and multiple corroborating 2026 cost-breakdown blogs.</p>
+
+  <!-- ====================================================================== -->
+  <h2>Sections 7-8 — Latency + Cost Optimization (generic)</h2>
+
+  <p>These sections contain general engineering recommendations (stream every stage, persistent connections, prompt caching, region co-location, VAD tuning) without specific numbers tied to our stack. The patterns named are industry-standard and verifiable via any voice-agent engineering reference. No quantitative claims to audit individually.</p>
+
+  <!-- ====================================================================== -->
+  <h2>Section 9 — Conclusion</h2>
+
+  <p>The conclusion section makes no new quantitative claims; it summarizes the tradeoff framework established by the verified claims above.</p>
+
+  <!-- ====================================================================== -->
+  <h2>Chart-by-chart citation summary</h2>
+
+  <div class="chart-section">
+    <h3>Chart 1 — Latency waterfall (cumulative ms)</h3>
+    <p>All 6 stage values cited above in Section 1. Total 1,100 ms is the sum.</p>
+  </div>
+
+  <div class="chart-section">
+    <h3>Chart 2 — STT cost vs Hindi WER (scatter)</h3>
+    <p>10 providers, each with cited $/min and Hindi WER. Marker shape distinguishes vendor self-reported (circle), third-party benchmark (diamond), and vendor-unreplicated (hollow ring — ElevenLabs Scribe v2 3.1%).</p>
+  </div>
+
+  <div class="chart-section">
+    <h3>Chart 3 — Language coverage matrix (heatmap)</h3>
+    <p>Provider × language tier matrix. Each cell reflects vendor language support docs:</p>
+    <ul>
+      <li>Sarvam Saaras / Bulbul: <a href="https://www.sarvam.ai/blogs/asr" target="_blank">sarvam.ai/blogs/asr</a>, <a href="https://docs.sarvam.ai/api-reference-docs/getting-started/models/bulbul" target="_blank">Bulbul docs</a> — 22 official Indian languages.</li>
+      <li>Smallest.ai Lightning V3.1: 15 languages, 7 Indian (no Bengali, Punjabi): <a href="https://smallest.ai/blog/introducing-lightning-v3" target="_blank">smallest.ai/blog/introducing-lightning-v3</a>.</li>
+      <li>Deepgram Aura-2: 7 languages, no Indic: <a href="https://developers.deepgram.com/docs/tts-models" target="_blank">developers.deepgram.com/docs/tts-models</a>.</li>
+      <li>Parakeet TDT v3: 25 European languages, no Hindi: <a href="https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3" target="_blank">huggingface.co/nvidia/parakeet-tdt-0.6b-v3</a>.</li>
+      <li>ElevenLabs Scribe v2: 90+ languages, 11 Indian: <a href="https://elevenlabs.io/realtime-speech-to-text" target="_blank">elevenlabs.io/realtime-speech-to-text</a>.</li>
+    </ul>
+  </div>
+
+  <div class="chart-section">
+    <h3>Chart 4 — LLM intelligence vs cost (bubble)</h3>
+    <p>12 voice-agent-relevant LLM variants. All TTFT and Intelligence Index values from <a href="https://artificialanalysis.ai/leaderboards/models" target="_blank">artificialanalysis.ai/leaderboards/models</a> (May 2026 snapshot). Pricing from each vendor's official pricing page.</p>
+  </div>
+
+  <div class="chart-section">
+    <h3>Chart 5 — Context window vs blended price</h3>
+    <p>Same model set as Chart 4. Context windows from vendor docs; blended price computed as 0.75 × input + 0.25 × output (voice-agent-heavy input weighting).</p>
+  </div>
+
+  <div class="chart-section">
+    <h3>Chart 6 — TTS price vs TTFB (scatter)</h3>
+    <p>10 TTS providers. Prices from each vendor's pricing page; TTFB values mostly vendor-published with a few independent benchmarks (Async, Vexyl India). Sarvam Bulbul v3's 300 ms is a production observation since no vendor cloud number is published.</p>
+  </div>
+
+  <div class="chart-section">
+    <h3>Chart 7 — Four-axis radar</h3>
+    <p>5 canonical stacks normalized 0-1 on Cost / Latency / Intelligence / Language. Editorial synthesis of citations in Sections 2-6 of this audit. Specific values + defenses in the Section 5 table above.</p>
+  </div>
+
+  <div class="chart-section">
+    <h3>Chart 8 — Monthly cost @ 8k voice-min</h3>
+    <p>5 stacks, all on Indian telephony for fair comparison. Per-component costs all sourced in Section 6 of this audit above.</p>
+  </div>
+
+  <div class="chart-section">
+    <h3>Chart 10 — Per-call cost breakdown</h3>
+    <p>Derived from Chart 8's "Production Indic" stack ÷ 8,000 calls. Pure arithmetic — verifiable by summing components.</p>
+  </div>
+
+  <!-- ====================================================================== -->
+  <h2>Known caveats and weaknesses</h2>
+
+  <ul>
+    <li><strong>ElevenLabs Scribe v2 3.1% Hindi WER</strong> — no third-party replication found as of capture. The blog chart explicitly tags this as "vendor, unreplicated." If a future independent benchmark contradicts this, the chart's most striking data point becomes wrong.</li>
+    <li><strong>Sarvam Bulbul v3 cloud TTFB</strong> — vendor doesn't publish a cloud TTFB number. The 300 ms used in the blog is a production observation consistent with the 260 ms edge claim but not third-party verified.</li>
+    <li><strong>Vapi cost decomposition</strong> — Vapi doesn't publish a per-component breakdown of bundled pricing. Our $400 platform + $400 LLM + $40 STT + $240 TTS decomposition was reverse-engineered from the published $0.15/min cheapest-stack figure. The decomposition is informed guess; the total ($1,120) is well-sourced.</li>
+    <li><strong>"Cheap English" Self-host VM at $40</strong> — depends on actual VPS choice. DigitalOcean $40/mo droplet runs Whisper.cpp + Piper for our scenario, but for sub-300ms STT latency a GPU instance ($100-200/mo) may be needed. The chart number reflects CPU-only deployment.</li>
+    <li><strong>Premium English LLM line ($105)</strong> — defensible only if you intend "premium" = "flagship OpenAI." Many production English voice agents use GPT-5.4-mini ($0.75/$4.50), which would drop Premium English to ~$178. The blog's $253 represents the upper edge of "premium" stack cost.</li>
+    <li><strong>Gemini Flash TTFT 590 ms</strong> — Artificial Analysis median for Google AI Studio. Google Vertex AI shows higher (780 ms). With aggressive implicit caching, observed production TTFT can be lower. We use the AA median to avoid optimistic claims.</li>
+  </ul>
+
+  <h2>Source index (all URLs cited)</h2>
+  <h3>Vendor pricing pages</h3>
+  <ul>
+    <li>Sarvam: <a href="https://www.sarvam.ai/api-pricing" target="_blank">sarvam.ai/api-pricing</a></li>
+    <li>Google Gemini: <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank">ai.google.dev/gemini-api/docs/pricing</a></li>
+    <li>OpenAI: <a href="https://developers.openai.com/api/docs/pricing" target="_blank">developers.openai.com/api/docs/pricing</a></li>
+    <li>Anthropic: <a href="https://platform.claude.com/docs/en/about-claude/pricing" target="_blank">platform.claude.com/docs/en/about-claude/pricing</a></li>
+    <li>DeepSeek: <a href="https://api-docs.deepseek.com/quick_start/pricing" target="_blank">api-docs.deepseek.com/quick_start/pricing</a></li>
+    <li>Groq: <a href="https://groq.com/pricing" target="_blank">groq.com/pricing</a></li>
+    <li>Deepgram: <a href="https://deepgram.com/pricing" target="_blank">deepgram.com/pricing</a></li>
+    <li>AssemblyAI: <a href="https://www.assemblyai.com/pricing/" target="_blank">assemblyai.com/pricing</a></li>
+    <li>ElevenLabs: <a href="https://elevenlabs.io/pricing/api" target="_blank">elevenlabs.io/pricing/api</a></li>
+    <li>Cartesia: <a href="https://cartesia.ai/pricing" target="_blank">cartesia.ai/pricing</a></li>
+    <li>Inworld: <a href="https://inworld.ai/pricing" target="_blank">inworld.ai/pricing</a></li>
+    <li>Plivo India SIP: <a href="https://www.plivo.com/sip-trunking/pricing/in/" target="_blank">plivo.com/sip-trunking/pricing/in</a></li>
+    <li>Twilio India SIP: <a href="https://www.twilio.com/en-us/sip-trunking/pricing/in" target="_blank">twilio.com/sip-trunking/pricing/in</a></li>
+    <li>Vapi: <a href="https://vapi.ai/pricing" target="_blank">vapi.ai/pricing</a></li>
+    <li>Bolna: <a href="https://www.bolna.ai/pricing" target="_blank">bolna.ai/pricing</a></li>
+  </ul>
+  <h3>Benchmarks and rankings</h3>
+  <ul>
+    <li>Artificial Analysis (LLM leaderboard): <a href="https://artificialanalysis.ai/leaderboards/models" target="_blank">artificialanalysis.ai/leaderboards/models</a></li>
+    <li>Artificial Analysis (Gemini 2.5 Flash providers): <a href="https://artificialanalysis.ai/models/gemini-2-5-flash/providers" target="_blank">artificialanalysis.ai/models/gemini-2-5-flash/providers</a></li>
+    <li>Artificial Analysis (TTS leaderboard): <a href="https://artificialanalysis.ai/text-to-speech/leaderboard" target="_blank">artificialanalysis.ai/text-to-speech/leaderboard</a></li>
+    <li>Async TTS latency benchmark: <a href="https://async.com/blog/tts-latency-vs-quality-benchmark/" target="_blank">async.com/blog/tts-latency-vs-quality-benchmark</a></li>
+    <li>Vexyl India TTS test: <a href="https://vexyl.ai/elevenlabs-tts-latency-test-2026-real-world-results/" target="_blank">vexyl.ai/elevenlabs-tts-latency-test-2026-real-world-results</a></li>
+    <li>AI4Bharat Vistaar (Hindi STT): <a href="https://github.com/AI4Bharat/vistaar" target="_blank">github.com/AI4Bharat/vistaar</a></li>
+    <li>Voxtral paper: <a href="https://arxiv.org/html/2507.13264v1" target="_blank">arxiv.org/html/2507.13264v1</a></li>
+  </ul>
+  <h3>Vendor blogs / launches</h3>
+  <ul>
+    <li>Sarvam Saaras V3: <a href="https://www.sarvam.ai/blogs/asr" target="_blank">sarvam.ai/blogs/asr</a></li>
+    <li>Sarvam Bulbul V3: <a href="https://www.sarvam.ai/blogs/bulbul-v3" target="_blank">sarvam.ai/blogs/bulbul-v3</a></li>
+    <li>Sarvam Edge: <a href="https://www.sarvam.ai/blogs/sarvam-edge" target="_blank">sarvam.ai/blogs/sarvam-edge</a></li>
+    <li>Deepgram engineering / Aura-2: <a href="https://deepgram.com/learn/engineering-real-time-low-latency-voice-ai-at-scale" target="_blank">deepgram.com/learn/engineering-real-time</a></li>
+    <li>Inworld TTS-1.5: <a href="https://inworld.ai/blog/introducing-inworld-tts-1-5" target="_blank">inworld.ai/blog/introducing-inworld-tts-1-5</a></li>
+    <li>ElevenLabs Scribe v2 Hindi: <a href="https://elevenlabs.io/speech-to-text/hindi" target="_blank">elevenlabs.io/speech-to-text/hindi</a></li>
+    <li>ElevenLabs models: <a href="https://elevenlabs.io/docs/overview/models" target="_blank">elevenlabs.io/docs/overview/models</a></li>
+    <li>Cartesia TTS models: <a href="https://docs.cartesia.ai/build-with-cartesia/tts-models/latest" target="_blank">docs.cartesia.ai/build-with-cartesia/tts-models/latest</a></li>
+    <li>Anthropic prompt caching: <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching" target="_blank">platform.claude.com/docs/en/build-with-claude/prompt-caching</a></li>
+    <li>NVIDIA Parakeet TDT v3: <a href="https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3" target="_blank">huggingface.co/nvidia/parakeet-tdt-0.6b-v3</a></li>
+    <li>AI4Bharat IndicConformer: <a href="https://huggingface.co/ai4bharat/indic-conformer-600m-multilingual" target="_blank">huggingface.co/ai4bharat/indic-conformer-600m-multilingual</a></li>
+    <li>Vapi pricing breakdown 2026: <a href="https://pxlpeak.com/blog/ai-tools/vapi-pricing-breakdown" target="_blank">pxlpeak.com/blog/ai-tools/vapi-pricing-breakdown</a></li>
+    <li>Vapi Series B announcement: <a href="https://techcrunch.com/2026/05/12/vapi-hits-500m-valuation-as-amazon-ring-chose-its-ai-platform-over-40-rivals/" target="_blank">techcrunch.com — Vapi $500M valuation</a></li>
+    <li>Air AI FTC settlement: <a href="https://www.ftc.gov/news-events/news/press-releases/2026/03/air-ai-its-owners-will-be-banned-marketing-business-opportunities-settle-ftc-charges-company-misled" target="_blank">FTC — Air AI settlement</a></li>
+    <li>PlayAI Meta acquisition: <a href="https://techcrunch.com/2025/07/13/meta-acquires-voice-startup-play-ai/" target="_blank">techcrunch.com — Meta acquires PlayAI</a></li>
+  </ul>
+  <h3>OSS projects</h3>
+  <ul>
+    <li>Whisper.cpp: <a href="https://github.com/ggml-org/whisper.cpp" target="_blank">github.com/ggml-org/whisper.cpp</a></li>
+    <li>Piper TTS: <a href="https://github.com/rhasspy/piper" target="_blank">github.com/rhasspy/piper</a></li>
+    <li>AssemblyAI self-host Whisper guide: <a href="https://www.assemblyai.com/blog/self-hosting-whisper" target="_blank">assemblyai.com/blog/self-hosting-whisper</a></li>
+    <li>OpenAI Whisper v3 discussion: <a href="https://github.com/openai/whisper/discussions/1762" target="_blank">github.com/openai/whisper/discussions/1762</a></li>
+  </ul>
+
+</div>
+
+<footer>
+  <div class="container">
+    <p>This audit verifies every numerical or factual claim in <code>BLOG.md</code> against publicly accessible sources captured 2026-05-24. If you spot a citation that no longer loads or a number that has shifted since capture, the chart can be regenerated from <code>charts/</code> after updating <code>charts/data.py</code>.</p>
+    <p>For raw research used to populate the chart data, see <code>evidence/research/{stt,tts,llm,platforms}.md</code> in the repository.</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -11,6 +11,7 @@ const navItems = [
   { label: "Home", href: "/" },
   { label: "Use Cases", href: "/use-cases" },
   { label: "Architecture", href: "/architecture" },
+  { label: "Blog", href: "/blog" },
   { label: "Security", href: "/security" },
   { label: "About", href: "/about" },
 ]
@@ -19,6 +20,9 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,7 +57,7 @@ export function Navbar() {
                 href={item.href}
                 className={cn(
                   "px-4 py-2 text-sm font-medium rounded-full transition-all duration-200",
-                  pathname === item.href
+                  isActive(item.href)
                     ? "bg-background text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground hover:bg-background/50",
                 )}
@@ -101,7 +105,7 @@ export function Navbar() {
                 href={item.href}
                 className={cn(
                   "block px-4 py-3 text-sm font-medium rounded-xl transition-colors",
-                  pathname === item.href
+                  isActive(item.href)
                     ? "text-foreground bg-secondary"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50",
                 )}

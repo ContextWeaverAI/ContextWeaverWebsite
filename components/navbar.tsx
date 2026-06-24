@@ -5,6 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X, ArrowUpRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { WovenOrb } from "@/components/woven-orb"
 import { cn } from "@/lib/utils"
 
 const navItems = [
@@ -43,11 +44,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-2.5">
             <span className="font-semibold text-foreground text-xl tracking-tight">ContextWeaver</span>
-            <div className="w-8 h-8 rounded-full border border-border flex items-center justify-center">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-foreground">
-                <path d="M4 12h2v4H4zM8 8h2v8H8zM12 4h2v16h-2zM16 8h2v8h-2zM20 12h2v4h-2z" fill="currentColor" />
-              </svg>
-            </div>
+            <WovenOrb className="w-9 h-9 text-foreground" />
           </Link>
 
           <div className="hidden lg:flex items-center gap-1 bg-secondary/80 backdrop-blur-sm rounded-full px-2 py-1.5 border border-border/50">

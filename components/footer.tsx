@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { WovenOrb } from "@/components/woven-orb"
 
 const footerLinks = {
   "Use Cases": [
@@ -31,11 +32,7 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 mb-5">
               <span className="font-semibold text-foreground text-lg">ContextWeaver</span>
-              <div className="w-7 h-7 rounded-full border border-border flex items-center justify-center">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="text-foreground">
-                  <path d="M4 12h2v4H4zM8 8h2v8H8zM12 4h2v16h-2zM16 8h2v8h-2zM20 12h2v4h-2z" fill="currentColor" />
-                </svg>
-              </div>
+              <WovenOrb className="w-8 h-8 text-foreground" />
             </Link>
           </div>
 

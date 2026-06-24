@@ -10,7 +10,24 @@
       "Bash(pkill -f \"next dev\")",
       "Bash(PORT=3001 npx next dev -p 3001)",
       "Bash(npx skills:*)",
-      "Bash(git commit -m ':*)"
+      "Bash(git commit -m ':*)",
+      "Bash(git checkout *)",
+      "WebFetch(domain:methodical-states-799419.framer.app)",
+      "Bash(git commit *)",
+      "Bash(git merge *)",
+      "Bash(git push *)",
+      "Bash(node -e 'try{require.resolve\\(\"puppeteer\"\\);console.log\\(\"puppeteer\"\\)}catch{};try{require.resolve\\(\"playwright\"\\);console.log\\(\"playwright\"\\)}catch{}')",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --no-sandbox --no-pdf-header-footer --print-to-pdf-no-header --print-to-pdf=\"/Users/yuvraj/Desktop/contextweaverwebsite/contextweaver-sales-deck.pdf\" --virtual-time-budget=10000 \"file:///tmp/cw-deck.html\")",
+      "Bash(mdls -name kMDItemNumberOfPages /Users/yuvraj/Desktop/contextweaverwebsite/contextweaver-sales-deck.pdf)",
+      "Bash(/usr/bin/mdimport -d1 /Users/yuvraj/Desktop/contextweaverwebsite/contextweaver-sales-deck.pdf)",
+      "Bash(mdls -name kMDItemNumberOfPages -name kMDItemPageHeight -name kMDItemPageWidth /Users/yuvraj/Desktop/contextweaverwebsite/contextweaver-sales-deck.pdf)",
+      "Bash(/System/Library/Frameworks/Python.framework/Versions/Current/bin/python3 -c \"import struct; d=open\\('/Users/yuvraj/Desktop/contextweaverwebsite/contextweaver-sales-deck.pdf','rb'\\).read\\(\\); import re; print\\('/Count pages:', re.findall\\(rb'/Count\\\\s+\\(\\\\d+\\)', d\\)[:3]\\); print\\('/Type /Page occurrences:', len\\(re.findall\\(rb'/Type\\\\s*/Page[^s]', d\\)\\)\\)\")",
+      "Bash(python3 *)",
+      "Bash(sips --setProperty format png /Users/yuvraj/Desktop/contextweaverwebsite/contextweaver-sales-deck.pdf --out /tmp/deck-preview.png)",
+      "Bash(qlmanage -t -s 1600 -o /tmp/cwpreview /Users/yuvraj/Desktop/contextweaverwebsite/contextweaver-sales-deck.pdf)",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --no-sandbox --window-size=1280,7200 --screenshot=/tmp/cw-full2.png \"file:///tmp/cw-deck.html\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --no-sandbox --no-pdf-header-footer --print-to-pdf-no-header --print-to-pdf=\"/Users/yuvraj/Desktop/contextweaver-sales-deck.pdf\" --virtual-time-budget=10000 \"file:///tmp/cw-deck.html\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless --disable-gpu --no-sandbox --window-size=1280,7200 --screenshot=/tmp/cw-verify.png \"file:///tmp/cw-deck.html\")"
     ]
   }
 }

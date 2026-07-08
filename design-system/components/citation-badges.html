@@ -1,0 +1,65 @@
+<!-- @dsCard group="Components" title="Citation Badges" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Citation Badges · ContextWeaver</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;650;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --card: oklch(0.995 0.002 80);
+    --secondary: oklch(0.94 0.005 80);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.88 0.006 80);
+    --radius-sm: 12px;
+    --radius-md: 14px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Outfit", system-ui, sans-serif; color: var(--foreground);
+    background: var(--background); padding: 48px; }
+  h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .sub { color: var(--muted-foreground); font-size: 0.9rem; margin: 0 0 28px; }
+  h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--orange);
+    font-weight: 600; margin: 28px 0 14px; }
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; }
+  .badge { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 6px; font-size: 0.6875rem;
+    font-weight: 650; text-transform: uppercase; letter-spacing: 0.04em; line-height: 1.5;
+    border: 1px solid transparent; }
+  .badge-verified { background: oklch(0.95 0.05 150); color: oklch(0.42 0.12 150); border-color: oklch(0.85 0.07 150); }
+  .badge-vendor { background: oklch(0.96 0.06 85); color: oklch(0.5 0.12 75); border-color: oklch(0.88 0.09 85); }
+  .badge-derived { background: oklch(0.95 0.04 250); color: oklch(0.45 0.12 255); border-color: oklch(0.86 0.06 250); }
+  .badge-narrative { background: var(--secondary); color: var(--muted-foreground); border-color: var(--border); }
+  .badge-unrep { background: oklch(0.95 0.05 25); color: oklch(0.5 0.16 28); border-color: oklch(0.87 0.08 25); }
+  .claim { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.9rem 1rem;
+    margin-top: 14px; background: var(--card); max-width: 620px; }
+  .claim-text { font-size: 0.875rem; color: var(--foreground); margin-bottom: 0.6rem; font-style: italic;
+    border-left: 3px solid var(--orange); padding: 0.4rem 0 0.4rem 0.75rem; background: var(--secondary);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .claim-meta { display: flex; gap: 0.75rem; align-items: center; font-size: 0.8125rem;
+    color: var(--muted-foreground); }
+</style>
+</head>
+<body>
+  <h1>Citation Badges</h1>
+  <p class="sub">Semantic evidence tags for the sources audit — the one place color carries meaning, tuned to the warm palette.</p>
+
+  <h2>Evidence legend</h2>
+  <div class="legend">
+    <span class="badge badge-verified">Verified</span>
+    <span class="badge badge-vendor">Vendor</span>
+    <span class="badge badge-derived">Derived</span>
+    <span class="badge badge-narrative">Narrative</span>
+    <span class="badge badge-unrep">Unreported</span>
+  </div>
+
+  <h2>Claim card</h2>
+  <div class="claim">
+    <div class="claim-text">Voice agents lose ~30% of accuracy when latency is forced below 300ms.</div>
+    <div class="claim-meta"><span class="badge badge-derived">Derived</span> Computed from vendor benchmarks · captured 2025-11</div>
+  </div>
+</body>
+</html>

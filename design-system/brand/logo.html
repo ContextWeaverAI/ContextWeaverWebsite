@@ -1,0 +1,136 @@
+<!-- @dsCard group="Brand" title="Logo — Woven Orb" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Logo · ContextWeaver</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --card: oklch(0.995 0.002 80);
+    --secondary: oklch(0.94 0.005 80);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.88 0.006 80);
+    --ink-dark: oklch(0.13 0.006 60);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Outfit", system-ui, sans-serif; color: var(--foreground);
+    background: var(--background); padding: 48px; }
+  h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .sub { color: var(--muted-foreground); font-size: 0.9rem; margin: 0 0 32px; max-width: 60ch; }
+  h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--orange);
+    font-weight: 600; margin: 32px 0 16px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 20px; }
+  .tile { border: 1px solid var(--border); border-radius: 16px; padding: 28px; display: flex;
+    flex-direction: column; align-items: center; justify-content: center; gap: 16px; min-height: 200px; }
+  .tile.light { background: var(--card); }
+  .tile.dark { background: var(--ink-dark); border-color: oklch(0.25 0.006 60); }
+  .tile.dark .cap { color: oklch(0.62 0.008 80); }
+  .cap { font-size: 0.7rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted-foreground);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  /* the mark — strands inherit `color` so it flips per surface */
+  .orb { width: 120px; height: 120px; }
+  .orb .strand { stroke: currentColor; stroke-width: 9; opacity: 0.8; }
+  .orb .accent { stroke: var(--orange); stroke-width: 14; opacity: 0.95; }
+  .light .orb { color: oklch(0.2 0.005 60); }
+  .dark .orb { color: oklch(0.96 0.004 80); }
+
+  /* lockup */
+  .lockup { display: flex; align-items: center; gap: 12px; }
+  .lockup .word { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
+  .lockup .orb { width: 40px; height: 40px; }
+
+  /* app icon */
+  .appicon { width: 108px; height: 108px; border-radius: 22px; display: block;
+    box-shadow: 0 8px 24px -12px rgba(0,0,0,0.4); }
+
+  .clearspace { display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    font-size: 0.85rem; color: var(--muted-foreground); }
+  .swatches { display: flex; gap: 10px; margin-top: 6px; }
+  .sw { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--border); }
+  .sw .lbl { }
+  .swwrap { text-align: center; font-size: 0.62rem; color: var(--muted-foreground);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+</style>
+</head>
+<body>
+  <h1>Logo — Woven Orb</h1>
+  <p class="sub">Twelve interwoven strands form the ring; two amber strands and an orange core signal the
+    "intelligence layer" woven through the stack. Strands use <code>currentColor</code>, so the mark inverts
+    cleanly between light and dark surfaces. Reusable assets: <b>brand/woven-orb.svg</b> (adaptive mark) and
+    <b>brand/icon.svg</b> (app icon / favicon).</p>
+
+  <h2>The mark</h2>
+  <div class="grid">
+    <div class="tile light">
+      <svg class="orb" viewBox="96 96 448 448" fill="none">
+        <use href="#orb-body"/>
+      </svg>
+      <span class="cap">On light</span>
+    </div>
+    <div class="tile dark">
+      <svg class="orb" viewBox="96 96 448 448" fill="none"><use href="#orb-body"/></svg>
+      <span class="cap">On dark</span>
+    </div>
+    <div class="tile light">
+      <img class="appicon" alt="ContextWeaver app icon"
+        src="data:image/svg+xml;utf8,%3Csvg%20width='640'%20height='640'%20viewBox='0%200%20640%20640'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3E%3Crect%20width='640'%20height='640'%20rx='132'%20fill='%23f9f8f6'/%3E%3Cg%20fill='none'%20stroke='%232d2420'%20stroke-width='13'%20opacity='0.82'%3E%3Ccircle%20cx='386'%20cy='320'%20r='150'/%3E%3Ccircle%20cx='377.16'%20cy='353'%20r='150'/%3E%3Ccircle%20cx='353'%20cy='377.16'%20r='150'/%3E%3Ccircle%20cx='287'%20cy='377.16'%20r='150'/%3E%3Ccircle%20cx='262.84'%20cy='353'%20r='150'/%3E%3Ccircle%20cx='254'%20cy='320'%20r='150'/%3E%3Ccircle%20cx='262.84'%20cy='287'%20r='150'/%3E%3Ccircle%20cx='287'%20cy='262.84'%20r='150'/%3E%3Ccircle%20cx='353'%20cy='262.84'%20r='150'/%3E%3Ccircle%20cx='377.16'%20cy='287'%20r='150'/%3E%3C/g%3E%3Cg%20fill='none'%20stroke='%23d9591f'%20stroke-width='19'%20opacity='0.95'%3E%3Ccircle%20cx='320'%20cy='386'%20r='150'/%3E%3Ccircle%20cx='320'%20cy='254'%20r='150'/%3E%3C/g%3E%3Ccircle%20cx='320'%20cy='320'%20r='48'%20fill='%23d9591f'/%3E%3Ccircle%20cx='306'%20cy='306'%20r='13'%20fill='%23f0a060'%20opacity='0.9'/%3E%3C/svg%3E" />
+      <span class="cap">App icon · 22px radius</span>
+    </div>
+  </div>
+
+  <h2>Horizontal lockup</h2>
+  <div class="grid">
+    <div class="tile light">
+      <div class="lockup">
+        <span class="word">ContextWeaver</span>
+        <svg class="orb" viewBox="96 96 448 448" fill="none"><use href="#orb-body"/></svg>
+      </div>
+      <span class="cap">Wordmark + mark (nav)</span>
+    </div>
+    <div class="tile dark">
+      <div class="lockup">
+        <span class="word" style="color:oklch(0.96 0.004 80)">ContextWeaver</span>
+        <svg class="orb" viewBox="96 96 448 448" fill="none"><use href="#orb-body"/></svg>
+      </div>
+      <span class="cap">On dark</span>
+    </div>
+  </div>
+
+  <h2>Brand colors</h2>
+  <div class="clearspace">
+    <div class="swwrap"><div class="sw" style="background:#d9591f"></div>#d9591f<br>core / accent</div>
+    <div class="swwrap"><div class="sw" style="background:#2d2420"></div>#2d2420<br>strand ink</div>
+    <div class="swwrap"><div class="sw" style="background:#f0a060"></div>#f0a060<br>highlight</div>
+    <div class="swwrap"><div class="sw" style="background:#f9f8f6"></div>#f9f8f6<br>icon field</div>
+    <div style="max-width:34ch">Preserve clear space of at least one strand-circle radius around the mark; never recolor the ink strands away from <code>currentColor</code>.</div>
+  </div>
+
+  <!-- shared mark geometry -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <g id="orb-body">
+        <circle class="strand" cx="386" cy="320" r="150"/>
+        <circle class="strand" cx="377.16" cy="353" r="150"/>
+        <circle class="strand" cx="353" cy="377.16" r="150"/>
+        <circle class="accent" cx="320" cy="386" r="150"/>
+        <circle class="strand" cx="287" cy="377.16" r="150"/>
+        <circle class="strand" cx="262.84" cy="353" r="150"/>
+        <circle class="strand" cx="254" cy="320" r="150"/>
+        <circle class="strand" cx="262.84" cy="287" r="150"/>
+        <circle class="strand" cx="287" cy="262.84" r="150"/>
+        <circle class="accent" cx="320" cy="254" r="150"/>
+        <circle class="strand" cx="353" cy="262.84" r="150"/>
+        <circle class="strand" cx="377.16" cy="287" r="150"/>
+        <circle cx="320" cy="320" r="40" fill="oklch(0.62 0.21 35)"/>
+        <circle cx="308" cy="308" r="11" fill="oklch(0.8 0.12 50)" opacity="0.85"/>
+      </g>
+    </defs>
+  </svg>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!-- @dsCard group="Components" title="Long-form Prose" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prose · ContextWeaver</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;650;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --card: oklch(0.995 0.002 80);
+    --secondary: oklch(0.94 0.005 80);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.88 0.006 80);
+    --radius-md: 14px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Outfit", system-ui, sans-serif; background: var(--background);
+    padding: 48px; }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  .blog-prose { color: var(--foreground); font-size: 1.0625rem; line-height: 1.75; letter-spacing: -0.005em; }
+  .blog-prose > * + * { margin-top: 1.3rem; }
+  .blog-prose p { color: var(--muted-foreground); }
+  .blog-prose strong { color: var(--foreground); font-weight: 650; }
+  .blog-prose h2 { margin-top: 0; font-size: 1.875rem; line-height: 1.15; font-weight: 700;
+    letter-spacing: -0.02em; color: var(--foreground); }
+  .blog-prose h3 { margin-top: 2rem; margin-bottom: 0.7rem; font-size: 1.3125rem; font-weight: 650;
+    letter-spacing: -0.015em; }
+  .blog-prose a { color: var(--foreground); font-weight: 500; text-decoration: underline;
+    text-decoration-color: color-mix(in oklch, var(--orange) 55%, transparent);
+    text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+  .blog-prose ul { list-style: none; padding-left: 0; margin-top: 1.25rem; color: var(--muted-foreground); }
+  .blog-prose ul > li { position: relative; padding-left: 1.6rem; }
+  .blog-prose ul > li + li { margin-top: 0.6rem; }
+  .blog-prose ul > li::before { content: ""; position: absolute; left: 0.1rem; top: 0.7em;
+    width: 0.4rem; height: 0.4rem; border-radius: 9999px; background: var(--orange); }
+  .blog-prose blockquote { margin: 1.75rem 0; padding: 1.25rem 1.5rem; border-left: 3px solid var(--orange);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    background: color-mix(in oklch, var(--orange) 6%, var(--card)); font-style: italic; font-size: 1.125rem;
+    color: var(--foreground); }
+  .blog-prose blockquote p { color: var(--foreground); margin: 0; }
+  .blog-prose code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.875em;
+    padding: 0.15em 0.4em; border-radius: 6px; background: var(--secondary); color: var(--foreground);
+    border: 1px solid var(--border); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <article class="blog-prose">
+      <h2>The Voice Agent Tradeoff Triangle</h2>
+      <p>Every production voice agent balances three forces that pull against one another. Move toward <strong>latency</strong> and you sacrifice depth; optimize for <strong>accuracy</strong> and you pay in response time.</p>
+      <h3>Where operators get stuck</h3>
+      <p>Most teams tune one corner in isolation. The result is a system that feels fast in the demo and brittle on the floor. The fix starts with a shared <code>context</code> layer.</p>
+      <blockquote><p>“Context isn't a feature you bolt on — it's the substrate every agent decision stands on.”</p></blockquote>
+      <ul>
+        <li>Ground responses in a queryable semantic model.</li>
+        <li>Cache the expensive reasoning, stream the cheap tokens.</li>
+        <li>Let engineers <a href="#">extend the layer</a> without a rewrite.</li>
+      </ul>
+    </article>
+  </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!-- @dsCard group="Components" title="Badges & Pills" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Badges · ContextWeaver</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --card: oklch(0.995 0.002 80);
+    --primary: oklch(0.22 0.008 60);
+    --primary-foreground: oklch(0.98 0.003 80);
+    --secondary: oklch(0.94 0.005 80);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.88 0.006 80);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Outfit", system-ui, sans-serif; color: var(--foreground);
+    background: var(--background); padding: 48px; }
+  h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .sub { color: var(--muted-foreground); font-size: 0.9rem; margin: 0 0 32px; }
+  h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--orange);
+    font-weight: 600; margin: 30px 0 14px; }
+  .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 8px; border: 1px solid transparent;
+    padding: 3px 10px; font-size: 0.75rem; font-weight: 500; }
+  .b-default { background: var(--primary); color: var(--primary-foreground); }
+  .b-secondary { background: var(--secondary); color: var(--foreground); }
+  .b-outline { color: var(--foreground); border-color: var(--border); }
+  .b-orange { background: color-mix(in oklch, var(--orange) 12%, var(--card)); color: var(--orange);
+    border-color: color-mix(in oklch, var(--orange) 35%, transparent); }
+  /* status pill (hero-style) */
+  .status { display: inline-flex; align-items: center; gap: 8px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 9999px; padding: 7px 16px; font-size: 0.82rem;
+    color: var(--muted-foreground); }
+  .dot { width: 8px; height: 8px; border-radius: 9999px; background: oklch(0.6 0.17 150);
+    box-shadow: 0 0 6px oklch(0.6 0.17 150); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+</style>
+</head>
+<body>
+  <h1>Badges &amp; Pills</h1>
+  <p class="sub">Compact labels at 8px radius; the status pill carries a pulsing signal dot for live/beta states.</p>
+
+  <h2>Badge variants</h2>
+  <div class="row">
+    <span class="badge b-default">Default</span>
+    <span class="badge b-secondary">Secondary</span>
+    <span class="badge b-outline">Outline</span>
+    <span class="badge b-orange">Accent</span>
+  </div>
+
+  <h2>Status pill</h2>
+  <div class="row">
+    <span class="status"><span class="dot"></span> Now in Public Beta</span>
+    <span class="status"><span class="dot" style="background:oklch(0.62 0.21 35);box-shadow:0 0 6px oklch(0.62 0.21 35)"></span> Agents live</span>
+  </div>
+</body>
+</html>

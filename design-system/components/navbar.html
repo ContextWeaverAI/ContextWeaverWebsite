@@ -1,0 +1,73 @@
+<!-- @dsCard group="Components" title="Navbar" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Navbar · ContextWeaver</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --card: oklch(0.995 0.002 80);
+    --primary: oklch(0.22 0.008 60);
+    --primary-foreground: oklch(0.98 0.003 80);
+    --secondary: oklch(0.94 0.005 80);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.88 0.006 80);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Outfit", system-ui, sans-serif; color: var(--foreground);
+    background-color: var(--background);
+    background-image:
+      linear-gradient(to right, oklch(0.2 0.008 60 / 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, oklch(0.2 0.008 60 / 0.04) 1px, transparent 1px);
+    background-size: 48px 48px; padding: 40px; }
+  .sub { color: var(--muted-foreground); font-size: 0.9rem; margin: 0 0 24px; }
+  header { background: oklch(0.975 0.004 80 / 0.8); backdrop-filter: blur(16px);
+    border-bottom: 1px solid oklch(0.88 0.006 80 / 0.5); border-radius: 16px; }
+  nav { display: flex; align-items: center; justify-content: space-between; height: 72px; padding: 0 20px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 1.25rem;
+    letter-spacing: -0.01em; }
+  .orb { width: 30px; height: 30px; border-radius: 9999px;
+    background: conic-gradient(from 0deg, var(--primary), var(--orange), var(--primary));
+    -webkit-mask: radial-gradient(circle at center, transparent 6px, #000 7px);
+            mask: radial-gradient(circle at center, transparent 6px, #000 7px); }
+  .pills { display: flex; align-items: center; gap: 4px; background: oklch(0.94 0.005 80 / 0.8);
+    backdrop-filter: blur(6px); border-radius: 9999px; padding: 6px; border: 1px solid oklch(0.88 0.006 80 / 0.5); }
+  .pills a { padding: 8px 16px; font-size: 0.85rem; font-weight: 500; border-radius: 9999px;
+    color: var(--muted-foreground); text-decoration: none; transition: all 0.2s ease; }
+  .pills a.active { background: var(--background); color: var(--foreground);
+    box-shadow: 0 1px 2px oklch(0.2 0.005 60 / 0.08); }
+  .pills a:hover:not(.active) { color: var(--foreground); }
+  .actions { display: flex; align-items: center; gap: 16px; }
+  .link { font-size: 0.85rem; font-weight: 500; color: var(--muted-foreground); text-decoration: none; }
+  .cta { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px 0 20px;
+    border-radius: 9999px; font-size: 0.85rem; font-weight: 500; color: var(--primary-foreground);
+    background: linear-gradient(135deg, var(--primary), oklch(0.3 0.01 60)); text-decoration: none; }
+  .cta svg { width: 15px; height: 15px; }
+</style>
+</head>
+<body>
+  <p class="sub">Sticky glass header with a centered pill-nav; scrolled state blurs the warm canvas behind it.</p>
+  <header>
+    <nav>
+      <div class="brand">ContextWeaver <span class="orb"></span></div>
+      <div class="pills">
+        <a class="active">Home</a>
+        <a>Use Cases</a>
+        <a>Architecture</a>
+        <a>Blog</a>
+        <a>Security</a>
+        <a>About</a>
+      </div>
+      <div class="actions">
+        <a class="link">Talk to founder</a>
+        <a class="cta">Book a demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+      </div>
+    </nav>
+  </header>
+</body>
+</html>

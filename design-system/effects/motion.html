@@ -1,0 +1,85 @@
+<!-- @dsCard group="Effects" title="Motion & Interaction" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Motion &amp; Interaction · ContextWeaver</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --card: oklch(0.995 0.002 80);
+    --primary: oklch(0.22 0.008 60);
+    --primary-foreground: oklch(0.98 0.003 80);
+    --secondary: oklch(0.94 0.005 80);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.88 0.006 80);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Outfit", system-ui, sans-serif; color: var(--foreground);
+    background: var(--background); padding: 48px; }
+  h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .sub { color: var(--muted-foreground); font-size: 0.9rem; margin: 0 0 32px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 18px; }
+  .demo { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px;
+    min-height: 130px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; text-align: center; overflow: hidden; }
+  .name { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--muted-foreground); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  /* shimmer button */
+  .shimmer { position: relative; overflow: hidden; padding: 10px 22px; border-radius: 9999px;
+    background: linear-gradient(135deg, var(--primary), oklch(0.3 0.01 60)); color: var(--primary-foreground);
+    font-weight: 500; font-size: 0.85rem; }
+  .shimmer::before { content:""; position:absolute; inset:0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
+    background-size: 200% 100%; animation: shimmer 3s ease-in-out infinite; }
+  @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+
+  /* pulse dot */
+  .pulse { width: 16px; height: 16px; border-radius: 9999px; background: var(--orange);
+    box-shadow: 0 0 6px var(--orange); animation: pulseGlow 2s ease-in-out infinite; }
+  @keyframes pulseGlow { 0%,100%{opacity:1;box-shadow:0 0 4px var(--orange)} 50%{opacity:0.6;box-shadow:0 0 12px var(--orange)} }
+
+  /* float */
+  .float { width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--orange)); animation: float 4s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+  /* border beam */
+  .beam { position: relative; width: 130px; height: 60px; border-radius: 12px; background: var(--secondary);
+    display: grid; place-items: center; font-size: 0.75rem; color: var(--muted-foreground); }
+  .beam::after { content:""; position:absolute; width:14px; height:14px; border-radius:9999px;
+    background: radial-gradient(circle, var(--orange), transparent 70%);
+    offset-path: rect(0 100% 100% 0 round 12px); animation: beam 4s linear infinite; }
+  @keyframes beam { to { offset-distance: 100%; } }
+
+  /* draw line */
+  svg.draw { width: 120px; height: 50px; }
+  svg.draw path { fill: none; stroke: var(--orange); stroke-width: 2.5; stroke-dasharray: 400;
+    stroke-dashoffset: 400; animation: draw 2.4s ease-out infinite; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  /* marquee */
+  .marquee-wrap { width: 100%; overflow: hidden; }
+  .marquee { display: flex; gap: 18px; width: max-content; animation: marquee 8s linear infinite; }
+  .marquee span { font-size: 0.75rem; color: var(--muted-foreground); white-space: nowrap; }
+  @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+</style>
+</head>
+<body>
+  <h1>Motion &amp; Interaction</h1>
+  <p class="sub">Restrained, purposeful motion — signal pulses, gentle floats, drawn lines, and a shimmer reserved for CTAs.</p>
+  <div class="grid">
+    <div class="demo"><div class="shimmer">Start building</div><span class="name">shimmer-btn</span></div>
+    <div class="demo"><div class="pulse"></div><span class="name">pulse-glow</span></div>
+    <div class="demo"><div class="float"></div><span class="name">float</span></div>
+    <div class="demo"><div class="beam">card</div><span class="name">border-beam</span></div>
+    <div class="demo"><svg class="draw" viewBox="0 0 120 50"><path d="M2 40 L30 25 L58 32 L86 10 L118 18"/></svg><span class="name">draw-line</span></div>
+    <div class="demo"><div class="marquee-wrap"><div class="marquee"><span>SCADA</span><span>·</span><span>MES</span><span>·</span><span>ERP</span><span>·</span><span>SCADA</span><span>·</span><span>MES</span><span>·</span><span>ERP</span></div></div><span class="name">marquee</span></div>
+  </div>
+</body>
+</html>

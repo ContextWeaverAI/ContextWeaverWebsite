@@ -1,0 +1,78 @@
+<!-- @dsCard group="Components" title="Cards" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cards · ContextWeaver</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --card: oklch(0.995 0.002 80);
+    --primary: oklch(0.22 0.008 60);
+    --secondary: oklch(0.94 0.005 80);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.88 0.006 80);
+    --radius: 1rem;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Outfit", system-ui, sans-serif; color: var(--foreground);
+    background-color: var(--background);
+    background-image: radial-gradient(circle at 1px 1px, oklch(0.2 0.008 60 / 0.2) 1.2px, transparent 1.4px);
+    background-size: 24px 24px; padding: 48px; }
+  h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .sub { color: var(--muted-foreground); font-size: 0.9rem; margin: 0 0 32px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 22px; box-shadow: 0 1px 2px oklch(0.2 0.005 60 / 0.05); }
+  .icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+    background: color-mix(in oklch, var(--orange) 12%, var(--card));
+    border: 1px solid color-mix(in oklch, var(--orange) 30%, transparent); margin-bottom: 14px; }
+  .icon svg { width: 20px; height: 20px; stroke: var(--orange); }
+  .card h3 { font-size: 1.05rem; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .card p { font-size: 0.88rem; color: var(--muted-foreground); line-height: 1.6; margin: 0; }
+  .tag { display: inline-block; margin-top: 14px; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--orange);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  /* hover lift */
+  .card-hover { transition: all 0.3s cubic-bezier(0.4,0,0.2,1); }
+  .card-hover:hover { transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px oklch(0.2 0.005 60 / 0.1), 0 8px 10px -6px oklch(0.2 0.005 60 / 0.08), 0 0 0 1px var(--border); }
+
+  /* glow */
+  .card-glow { position: relative; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); }
+  .card-glow::before { content:""; position:absolute; inset:-1px; border-radius:inherit;
+    background: linear-gradient(135deg, var(--primary), var(--orange)); opacity:0; transition:opacity 0.3s ease; z-index:-1; }
+  .card-glow:hover { transform: translateY(-4px); }
+  .card-glow:hover::before { opacity: 0.2; }
+</style>
+</head>
+<body>
+  <h1>Cards</h1>
+  <p class="sub">Near-white cards float over the dotted canvas. Hover to lift; the glow variant edges a gradient halo.</p>
+  <div class="grid">
+    <div class="card card-hover">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div>
+      <h3>Semantic layer</h3>
+      <p>A queryable model of your plant — assets, tags, and events unified across SCADA, MES, and ERP.</p>
+      <span class="tag">Hover · lift</span>
+    </div>
+    <div class="card card-glow">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg></div>
+      <h3>Agent applications</h3>
+      <p>Autonomous workflows that read context, reason, and act on top of the semantic layer.</p>
+      <span class="tag">Hover · glow</span>
+    </div>
+    <div class="card card-hover">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 20V10M6 20V4M18 20v-6"/></svg></div>
+      <h3>Enablement</h3>
+      <p>We train your engineers to extend and own every layer — no black boxes.</p>
+      <span class="tag">Hover · lift</span>
+    </div>
+  </div>
+</body>
+</html>

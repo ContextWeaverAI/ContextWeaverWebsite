@@ -2,7 +2,8 @@ export interface BlogSeries {
   id: string
   name: string
   part: number
-  total: number
+  /** Optional planned length. When omitted, the UI derives it from published parts. */
+  total?: number
 }
 
 export interface BlogPost {
@@ -27,7 +28,26 @@ const VOICE_SERIES = {
   total: 3,
 }
 
+const SMART_FACTORY_SERIES = {
+  id: "deconstructing-the-smart-factory",
+  name: "Deconstructing the Smart Factory",
+}
+
 export const posts: BlogPost[] = [
+  {
+    slug: "unified-namespace",
+    title: "The Unified Namespace, Honestly",
+    subtitle: "What it is, what it actually solves, and the software patterns underneath it",
+    dek: "Strip the manufacturing vocabulary away and a UNS is a pub/sub event bus for the plant floor. A technologist's read on what it solves, where it stops, and why a message broker is transport — not a system of record.",
+    category: "Architecture",
+    date: "2026-07-14",
+    dateLabel: "Jul 14, 2026",
+    readingTime: "6 min read",
+    wordCount: "Concept · ~1,300 words",
+    charts: "",
+    author: "Ishan Bhanuka, CTO",
+    series: { ...SMART_FACTORY_SERIES, part: 1 },
+  },
   {
     slug: "voice-agent-tradeoffs-part-1",
     title: "The Pipeline & the Language Wall",
@@ -77,6 +97,24 @@ export const posts: BlogPost[] = [
 
 export function getPost(slug: string): BlogPost | undefined {
   return posts.find((p) => p.slug === slug)
+}
+
+/** Standalone posts (not part of any series), newest first. */
+export function getStandalonePosts(): BlogPost[] {
+  return posts
+    .filter((p) => !p.series)
+    .sort((a, b) => (a.date < b.date ? 1 : -1))
+}
+
+/**
+ * Posts for the index "notes" grid: newest-first, excluding the featured voice
+ * series (which gets its own hero block). Standalone posts and the opening parts
+ * of other series both surface here until a series is large enough to feature.
+ */
+export function getFieldNotePosts(): BlogPost[] {
+  return posts
+    .filter((p) => p.series?.id !== VOICE_SERIES.id)
+    .sort((a, b) => (a.date < b.date ? 1 : -1))
 }
 
 /** All posts in a series, ordered by part number. */

@@ -550,17 +550,23 @@ html {
    ────────────────────────────────────────────────────────────── */
 .blog-prose {
   color: var(--foreground);
-  font-size: 1.0625rem;
-  line-height: 1.75;
+  font-size: 1.125rem;
+  line-height: 1.78;
   letter-spacing: -0.005em;
 }
 
+@media (min-width: 1024px) {
+  .blog-prose {
+    font-size: 1.1875rem;
+  }
+}
+
 .blog-prose > * + * {
-  margin-top: 1.3rem;
+  margin-top: 1.35rem;
 }
 
 .blog-prose p {
-  color: var(--muted-foreground);
+  color: color-mix(in oklch, var(--foreground) 82%, var(--muted-foreground));
 }
 
 .blog-prose strong {
@@ -631,7 +637,7 @@ html {
 .blog-prose ol {
   margin-top: 1.25rem;
   padding-left: 1.5rem;
-  color: var(--muted-foreground);
+  color: color-mix(in oklch, var(--foreground) 82%, var(--muted-foreground));
 }
 
 .blog-prose ul {
@@ -712,6 +718,18 @@ html {
   background: var(--card);
   box-shadow: 0 14px 40px -28px rgba(0, 0, 0, 0.35);
 }
+
+/* Reading surface — lift prose off the page dot-grid for legibility */
+.blog-surface {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 70px -48px rgba(0, 0, 0, 0.45);
+}
+
+/* Inline SVG diagram styling lives in a <style> block inside the injected
+   article HTML (app/blog/unified-namespace/article-html.ts) so the theme
+   tokens survive the CSS optimizer — lightningcss mangles color-mix() here. */
 
 /* Tables */
 .blog-prose table {

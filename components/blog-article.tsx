@@ -15,6 +15,21 @@ export function BlogArticle({ post, html }: { post: BlogPost; html: string }) {
   const parts = series ? getSeriesParts(series.id) : []
   const { prev, next } = getSeriesNeighbors(post.slug)
 
+  // CTA is themed per post: the voice series keeps its voice pitch; everything
+  // else (the Smart Factory series, standalone posts) gets the context-layer pitch.
+  const cta =
+    series?.id === "voice-agent-tradeoffs"
+      ? {
+          title: "Want a tour of a production voice agent?",
+          description:
+            "ContextWeaver builds production voice agents for Indian manufacturing: work orders, preventive maintenance, voice intake, WhatsApp escalation. If you want a deep-engineering walkthrough, talk to us.",
+        }
+      : {
+          title: "Your plant moves the data. What understands it?",
+          description:
+            "ContextWeaver builds the Manufacturing Context Layer: a governed, standards-based model of your plant — its assets, its history, its documents, and the tribal knowledge in between — that AI agents can actually reason over. If your UNS moves the data but nothing on the other end understands it, talk to us.",
+        }
+
   return (
     <>
       <Navbar />
@@ -54,7 +69,8 @@ export function BlogArticle({ post, html }: { post: BlogPost; html: string }) {
               {series && (
                 <span className="inline-flex items-center gap-1.5 font-mono text-[11px] tabular-nums text-muted-foreground tracking-wider">
                   <Layers className="w-3.5 h-3.5" />
-                  Part {series.part} of {series.total}
+                  Part {series.part}
+                  {parts.length > 1 ? ` of ${parts.length}` : ""}
                 </span>
               )}
               <span className="font-mono text-[11px] tabular-nums text-muted-foreground tracking-wider">
@@ -100,10 +116,12 @@ export function BlogArticle({ post, html }: { post: BlogPost; html: string }) {
                 <Clock className="w-3.5 h-3.5" />
                 {post.readingTime}
               </span>
-              <span className="pt-5 inline-flex items-center gap-1.5">
-                <BarChart3 className="w-3.5 h-3.5" />
-                {post.charts}
-              </span>
+              {post.charts && (
+                <span className="pt-5 inline-flex items-center gap-1.5">
+                  <BarChart3 className="w-3.5 h-3.5" />
+                  {post.charts}
+                </span>
+              )}
             </motion.div>
           </div>
         </section>
@@ -113,7 +131,7 @@ export function BlogArticle({ post, html }: { post: BlogPost; html: string }) {
           <section className="px-4 py-8 border-b border-border/50 bg-secondary/20">
             <div className="max-w-3xl mx-auto">
               <p className="text-[11px] font-medium tracking-[0.2em] text-muted-foreground uppercase mb-4">
-                {series.name} · A {series.total}-part series
+                {series.name} · A {parts.length}-part series
               </p>
               <ol className="grid gap-px bg-border rounded-xl overflow-hidden border border-border sm:grid-cols-3">
                 {parts.map((p) => {
@@ -164,9 +182,12 @@ export function BlogArticle({ post, html }: { post: BlogPost; html: string }) {
 
         {/* ── Article body ── */}
         <section className="py-10 lg:py-14 px-4">
-          <article className="blog-prose max-w-3xl mx-auto" dangerouslySetInnerHTML={{ __html: html }} />
+          <div className="blog-surface max-w-3xl mx-auto px-5 py-8 sm:px-9 sm:py-11 lg:px-12 lg:py-14">
+            <article className="blog-prose" dangerouslySetInnerHTML={{ __html: html }} />
+          </div>
 
-          {/* Sources / citations */}
+          {/* Sources / citations — voice series only (it has a dedicated sources page) */}
+          {series?.id === "voice-agent-tradeoffs" && (
           <div className="max-w-3xl mx-auto mt-16 pt-10 border-t border-border">
             <Link
               href="/blog/voice-agent-tradeoffs/sources"
@@ -200,6 +221,7 @@ export function BlogArticle({ post, html }: { post: BlogPost; html: string }) {
               </div>
             </Link>
           </div>
+          )}
 
           {/* Prev / next within series */}
           {(prev || next) && (
@@ -238,10 +260,7 @@ export function BlogArticle({ post, html }: { post: BlogPost; html: string }) {
           )}
         </section>
 
-        <CTABand
-          title="Want a tour of a production voice agent?"
-          description="ContextWeaver builds production voice agents for Indian manufacturing: work orders, preventive maintenance, voice intake, WhatsApp escalation. If you want a deep-engineering walkthrough, talk to us."
-        />
+        <CTABand title={cta.title} description={cta.description} />
       </motion.main>
       <Footer />
     </>

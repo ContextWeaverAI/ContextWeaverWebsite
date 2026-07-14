@@ -6,7 +6,8 @@ import { ArrowUpRight, BookOpen, Clock, FileText, Layers } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { WhitepaperPreview } from "@/components/whitepaper-preview"
-import { getSeriesParts } from "./posts"
+import { CTABand } from "@/components/cta-band"
+import { getSeriesParts, getFieldNotePosts } from "./posts"
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -18,6 +19,7 @@ export default function BlogPage() {
   const parts = getSeriesParts("voice-agent-tradeoffs")
   const series = parts[0]?.series
   const cover = parts[parts.length - 1]?.cover // four-axis radar
+  const notes = getFieldNotePosts()
 
   return (
     <>
@@ -128,12 +130,72 @@ export default function BlogPage() {
           </div>
         </section>
 
-        {/* ── Featured series ── */}
+        {/* ── Standalone field notes ── */}
         <section className="py-12 lg:py-16 px-4 border-b border-border/50">
           <div className="max-w-6xl mx-auto">
             <div className="inline-flex items-center gap-3 text-[11px] font-medium tracking-[0.2em] text-muted-foreground uppercase mb-8">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--orange)]" />
               <span className="font-mono tabular-nums">02</span>
+              <span className="w-6 h-px bg-border" />
+              <span>Field notes</span>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              {notes.map((p, i) => (
+                <motion.div
+                  key={p.slug}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.6, delay: i * 0.05, ease: EASE }}
+                >
+                  <Link
+                    href={`/blog/${p.slug}`}
+                    className="group flex h-full flex-col rounded-2xl border border-border bg-background p-7 lg:p-8 hover:border-foreground/30 hover:bg-secondary/40 transition-colors duration-300"
+                  >
+                    <div className="flex items-center gap-3 mb-5">
+                      <span className="inline-flex items-center rounded-full bg-[var(--orange)]/10 text-[var(--orange)] px-3 py-1 text-[11px] font-semibold tracking-wide uppercase">
+                        {p.category}
+                      </span>
+                      <span className="font-mono text-[11px] tabular-nums text-muted-foreground tracking-wider">
+                        {p.dateLabel}
+                      </span>
+                    </div>
+                    {p.series && (
+                      <span className="mb-3 inline-flex items-center gap-1.5 font-mono text-[11px] tabular-nums text-[var(--orange)] tracking-wider">
+                        <Layers className="w-3 h-3" />
+                        {p.series.name} · Part {p.series.part}
+                      </span>
+                    )}
+                    <h3 className="text-xl lg:text-2xl font-bold tracking-tight text-foreground leading-snug mb-2.5">
+                      {p.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
+                      {p.dek}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <span className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] tabular-nums text-muted-foreground tracking-wider">
+                        <span className="inline-flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5" />
+                          {p.readingTime}
+                        </span>
+                        <span>{p.wordCount}</span>
+                      </span>
+                      <ArrowUpRight className="w-5 h-5 shrink-0 text-muted-foreground transition-all group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Featured series ── */}
+        <section className="py-12 lg:py-16 px-4 border-b border-border/50">
+          <div className="max-w-6xl mx-auto">
+            <div className="inline-flex items-center gap-3 text-[11px] font-medium tracking-[0.2em] text-muted-foreground uppercase mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--orange)]" />
+              <span className="font-mono tabular-nums">03</span>
               <span className="w-6 h-px bg-border" />
               <span>Latest series</span>
             </div>
@@ -235,29 +297,10 @@ export default function BlogPage() {
           </div>
         </section>
 
-        {/* ── More coming ── */}
-        <section className="py-12 lg:py-16 px-4 border-b border-border/50">
-          <div className="max-w-6xl mx-auto">
-            <div className="inline-flex items-center gap-3 text-[11px] font-medium tracking-[0.2em] text-muted-foreground uppercase mb-8">
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--orange)]" />
-              <span className="font-mono tabular-nums">03</span>
-              <span className="w-6 h-px bg-border" />
-              <span>More</span>
-            </div>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: EASE }}
-              className="rounded-2xl border border-dashed border-border bg-secondary/20 px-8 py-10 text-center"
-            >
-              <p className="text-base text-muted-foreground max-w-md mx-auto leading-relaxed">
-                More field notes are in the works: deep dives on semantic layers, SLM fine-tuning, and
-                cross-stack RCA. Check back soon.
-              </p>
-            </motion.div>
-          </div>
-        </section>
+        <CTABand
+          title="Building voice agents for the floor?"
+          description="If you want a deep-engineering tour of a production voice agent running in Indian manufacturing, from work orders to preventive maintenance to WhatsApp escalation, talk to us."
+        />
       </motion.main>
       <Footer />
     </>

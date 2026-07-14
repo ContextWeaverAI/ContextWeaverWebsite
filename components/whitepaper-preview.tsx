@@ -14,7 +14,7 @@ export function WhitepaperPreview({ size = "card", className }: WhitepaperPrevie
     <div
       className={cn(
         "relative overflow-hidden rounded-2xl border shadow-sm",
-        large ? "aspect-[4/5] max-w-sm" : "aspect-[3/4]",
+        large ? "aspect-[4/5] w-full max-w-sm" : "aspect-[3/4] w-full",
         className,
       )}
       style={{ background: "#FBFAF6", borderColor: "#DCDAD1", color: "#23252B" }}

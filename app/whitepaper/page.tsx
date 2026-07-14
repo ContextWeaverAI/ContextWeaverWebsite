@@ -20,7 +20,7 @@ export default function WhitepaperPage() {
         className="min-h-screen pt-20"
       >
         <section className="py-16 lg:py-24 px-4">
-          <div className="max-w-5xl mx-auto grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-12 lg:gap-16 items-start">
+          <div className="max-w-5xl mx-auto grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-12 lg:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -50,7 +50,7 @@ export default function WhitepaperPage() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
-              className="flex justify-center lg:justify-end"
+              className="w-full max-w-sm mx-auto lg:mx-0 lg:ml-auto"
             >
               <WhitepaperPreview size="large" />
             </motion.div>

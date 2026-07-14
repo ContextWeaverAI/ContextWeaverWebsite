@@ -230,6 +230,36 @@ meetings: the namespace is a <strong>strict hierarchy</strong>, and a real plant
 isn&rsquo;t one. <code>enterprise/site/area/line/cell/asset</code> is a tree &mdash;
 every asset has exactly one parent. That holds right up until the first resource
 that&rsquo;s <em>shared</em>, because a tree cannot say &ldquo;belongs to many.&rdquo;</p>
+<figure class="diagram">
+<svg viewBox="0 0 640 342" role="img" aria-labelledby="dg5-title">
+<title id="dg5-title">A shared resource has no single parent in the hierarchy</title>
+<g class="dg-connector">
+<path d="M320 76 V113" /><path d="M130 113 H510" /><path d="M130 113 V150" /><path d="M320 113 V150" /><path d="M510 113 V150" />
+</g>
+<rect class="dg-box" x="255" y="34" width="130" height="42" rx="9" />
+<text class="dg-label" x="320" y="60" text-anchor="middle">Plant</text>
+<rect class="dg-box" x="70" y="150" width="120" height="42" rx="9" />
+<text class="dg-label" x="130" y="176" text-anchor="middle">Line 1</text>
+<rect class="dg-box" x="260" y="150" width="120" height="42" rx="9" />
+<text class="dg-label" x="320" y="176" text-anchor="middle">Line 2</text>
+<rect class="dg-box" x="450" y="150" width="120" height="42" rx="9" />
+<text class="dg-label" x="510" y="176" text-anchor="middle">Line 3</text>
+<g class="dg-spoke">
+<line x1="255" y1="250" x2="132" y2="194" stroke-dasharray="5 4" /><line x1="320" y1="250" x2="320" y2="194" stroke-dasharray="5 4" /><line x1="385" y1="250" x2="508" y2="194" stroke-dasharray="5 4" />
+</g>
+<rect class="dg-box-accent" x="195" y="248" width="250" height="52" rx="10" />
+<text class="dg-label" x="320" y="272" text-anchor="middle" style="fill:var(--orange)">Shared utility</text>
+<text class="dg-sub" x="320" y="290" text-anchor="middle">one glycol loop &middot; feeds every line</text>
+<line class="dg-connector" x1="150" y1="324" x2="185" y2="324" />
+<text class="dg-sub" x="192" y="328" text-anchor="start">hierarchy (one parent)</text>
+<line class="dg-spoke" x1="360" y1="324" x2="395" y2="324" stroke-dasharray="5 4" />
+<text class="dg-sub" x="402" y="328" text-anchor="start">shared (belongs to many)</text>
+</svg>
+<figcaption>The tree gives every asset one parent. A shared utility &mdash; a glycol loop, a
+compressor house, a CIP skid &mdash; feeds many lines at once, so its real dependencies
+(orange) cut clean across the hierarchy. Model the plant as a tree and those edges have
+nowhere to live.</figcaption>
+</figure>
 <p>Take the glycol loop from earlier. One refrigeration skid chills the jacket on Line
 2&rsquo;s filler <em>and</em> Line 4&rsquo;s. Where does it live &mdash; under
 <code>line2</code>, under <code>line4</code>, or under a <code>utilities</code> branch

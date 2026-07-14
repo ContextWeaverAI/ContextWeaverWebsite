@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Manufacturing Context Layer | ContextWeaver</title>
+<meta name="description" content="An architecture for governed, agent-ready operational context in manufacturing: connectors, an ISA-95 knowledge graph with a Knowledge Overlay, and governed agents. A ContextWeaver white paper.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#23252B; --ink-soft:#4A4C52; --paper:#FBFAF6;
+  --teal:#0E6B54; --amber:#A16A0F; --coral:#BF5637;
+  --line:#DCDAD1; --line-strong:#B9B7AC; --gray-50:#EFEEE8; --teal-50:#E4F1EB;
+  --display:'Space Grotesk',sans-serif; --body:'Source Serif 4',Georgia,serif; --mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.72}
+main{max-width:780px;margin:0 auto;padding:0 28px 40px}
+header.hero{border-bottom:1px solid var(--ink);position:relative;overflow:hidden;margin-bottom:48px}
+.warp{position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(14,107,84,.10) 0 1px,transparent 1px 28px);pointer-events:none}
+.hero-inner{position:relative;max-width:920px;margin:0 auto;padding:72px 28px 56px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+h1.title{font-family:var(--display);font-weight:600;font-size:clamp(38px,6vw,58px);line-height:1.05;letter-spacing:-.015em;margin:24px 0 16px;max-width:16ch}
+p.subtitle{font-style:italic;font-size:20px;color:var(--ink-soft);max-width:56ch}
+.authorline{margin-top:30px;font-family:var(--mono);font-size:12.5px;color:var(--ink-soft)}
+.abstract{border:1px solid var(--ink);background:#fff;margin:0 0 48px}
+.abstract .tab{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;background:var(--ink);color:var(--paper);display:inline-block;padding:5px 12px}
+.abstract-body{padding:20px 26px 24px;font-size:16px}
+h2{font-family:var(--display);font-weight:600;font-size:30px;line-height:1.15;letter-spacing:-.01em;margin:56px 0 20px}
+h3{font-family:var(--display);font-weight:600;font-size:20px;margin:32px 0 12px}
+p{margin:0 0 16px}
+em{font-style:italic} strong{font-weight:600}
+code{font-family:var(--mono);font-size:.85em;background:var(--gray-50);padding:1px 6px;border-radius:3px}
+sup{font-family:var(--mono);font-size:.68em;color:var(--teal)}
+a{color:var(--teal)}
+blockquote{margin:26px 0;border:1px solid var(--teal);background:var(--teal-50);padding:18px 24px;font-family:var(--display);font-weight:600;font-size:20px;text-align:center}
+figure.plate{border:1px solid var(--line-strong);background:#fff;margin:36px 0}
+.plate-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding:9px 16px;font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase}
+.plate-head .fig-no{color:var(--teal);font-weight:500}
+.plate-head .fig-title{color:var(--ink-soft);text-align:right}
+.plate-body{padding:20px 16px}
+.plate-body svg{display:block;width:100%;height:auto}
+figure.plate figcaption{border-top:1px solid var(--line);padding:12px 18px;font-size:14px;color:var(--ink-soft);line-height:1.55;text-align:left}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:30px 0;background:#fff}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;text-align:left;background:var(--gray-50);border:1px solid var(--line-strong);padding:9px 11px}
+td{border:1px solid var(--line);padding:9px 11px;vertical-align:top}
+table caption{caption-side:bottom;text-align:left;font-size:14px;color:var(--ink-soft);padding:10px 4px;line-height:1.55}
+ol{margin:0 0 16px 22px}
+ol li{margin-bottom:10px;font-size:15px}
+footer{border-top:1px solid var(--ink);margin-top:64px;padding:32px 28px 56px;font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);text-align:center}
+@media print{ body{font-size:12.5px} header.hero .hero-inner{padding:36px 28px} figure.plate{break-inside:avoid} }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="warp"></div>
+  <div class="hero-inner">
+    <div class="eyebrow">ContextWeaver &nbsp;&middot;&nbsp; White paper &nbsp;&middot;&nbsp; July 2026</div>
+    <h1 class="title">The Manufacturing Context Layer</h1>
+    <p class="subtitle">An architecture for governed, agent-ready operational context in manufacturing.</p>
+    <div class="authorline">ContextWeaver Research</div>
+  </div>
+</header>
+<main>
+<div class="abstract"><span class="tab">Abstract</span><div class="abstract-body"><p>Manufacturers have spent a decade centralizing plant data in historians, data lakes, and warehouses, yet the majority of industrial AI initiatives still fail to move from pilot to production. This paper argues that the bottleneck is no longer connectivity, storage, or model capability. The bottleneck is <em>context</em>. The tag <code>L2_FIL_PT_004</code> is data; the knowledge that it is a pressure transmitter on the Line&nbsp;2 filler, that the filler feeds the capper, that its operating procedure lives in a specific document, and that an operator flagged a recurring seal issue on it three weeks ago is context. Data without context cannot support agents, and agents without governed access to context cannot be trusted in production. We propose the <strong>Manufacturing Context Layer (MCL)</strong>: a category of system in which assets, processes, materials, documents, and human conversations are continuously mapped into a single standards-based semantic model, with ISA-95 at its core and a Knowledge Overlay for unstructured and agent-generated knowledge. The model is maintained by AI agents under explicit human governance and exposed as a transactional, real-time substrate that operational agents can both read from and write back to. We define the architecture across five planes, formalize a two-axis governance model (write tiers &times; autonomy tiers) that makes autonomous agents auditable, and describe a compounding flywheel in which every human governance decision becomes training and evaluation data. ContextWeaver is presented as a reference implementation of this architecture.</p></div></div>
+<h2 id="the-problem-data-rich-context-poor">The problem: data-rich, context-poor</h2>
+<p>The first wave of digital manufacturing solved acquisition. OPC-UA<sup>[2]</sup>, MQTT with Sparkplug B<sup>[3]</sup>, and a mature market of edge connectivity platforms<sup>[16]</sup> mean that getting a signal off a PLC is no longer hard. The second wave solved storage and analytics: historians hold years of high-frequency time series, and cloud warehouses aggregate operational data alongside enterprise data for reporting.</p>
+<p>Yet a well-documented pattern persists across the industry: AI initiatives that perform impressively in a scoped pilot fail to survive contact with production. Analyst surveys and vendor disclosures alike converge on failure rates for AI pilots that most executives would consider disqualifying for any other capital investment; Gartner, for example, has predicted that a large share of generative AI projects will be abandoned after proof of concept<sup>[10]</sup>. The companies that do report high pilot-to-production conversion, and a small number now report rates above ninety percent, share a common trait: they invested first in contextualizing data, not in models.</p>
+<p>The reason is structural. Consider what a root-cause investigation actually requires. A quality excursion appears on Line 2. Answering “why” requires traversing at least five distinct kinds of knowledge: the real-time and historical signal data around the event; the physical topology of the line; the operational record (what batch was running, what changeover happened, which work orders were recently closed); the documentary knowledge in SOPs and OEM manuals; and the tribal knowledge, such as the shift handover note from last Tuesday mentioning that the seal “sounded off again.”</p>
+<p>In almost every plant today, these five kinds of knowledge live in five unconnected systems. A human expert integrates them by walking around, asking people, and remembering things. That integration act <em>is</em> the expertise. It is also precisely the thing that does not scale, that leaves when the expert retires, and that no model, however capable, can perform if the connections between these knowledge stores simply do not exist in machine-readable form (Figure <a href="#fig:gap" data-reference-type="ref" data-reference="fig:gap">1</a>).</p>
+<figure class="plate" id="fig:gap">
+<div class="plate-head"><span class="fig-no">Fig. 01</span><span class="fig-title">The context gap</span></div><div class="plate-body"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 860 356" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect width="860" height="356" fill="#FFFFFF"/>
+<text x="40" y="30" font-size="11" letter-spacing="1.5" fill="#75736B">TODAY: THE EXPERT IS THE INTEGRATION LAYER</text>
+<text x="470" y="30" font-size="11" letter-spacing="1.5" fill="#75736B">WITH A CONTEXT LAYER: ONE GOVERNED GRAPH</text>
+<line x1="435" y1="16" x2="435" y2="340" stroke="#DCDAD1" stroke-width="1"/>
+<rect x="40" y="52" width="158" height="40" rx="4" fill="#EFEEE8" stroke="#B9B7AC" stroke-width="0.75"/>
+<text x="52" y="70" font-size="12" font-weight="bold" fill="#23252B">Signals</text><text x="52" y="85" font-size="10.5" fill="#75736B">historian</text>
+<rect x="40" y="106" width="158" height="40" rx="4" fill="#EFEEE8" stroke="#B9B7AC" stroke-width="0.75"/>
+<text x="52" y="124" font-size="12" font-weight="bold" fill="#23252B">Topology</text><text x="52" y="139" font-size="10.5" fill="#75736B">CAD, engineers' heads</text>
+<rect x="40" y="160" width="158" height="40" rx="4" fill="#EFEEE8" stroke="#B9B7AC" stroke-width="0.75"/>
+<text x="52" y="178" font-size="12" font-weight="bold" fill="#23252B">Operations</text><text x="52" y="193" font-size="10.5" fill="#75736B">MES, CMMS, ERP</text>
+<rect x="40" y="214" width="158" height="40" rx="4" fill="#EFEEE8" stroke="#B9B7AC" stroke-width="0.75"/>
+<text x="52" y="232" font-size="12" font-weight="bold" fill="#23252B">Documents</text><text x="52" y="247" font-size="10.5" fill="#75736B">shared-drive PDFs</text>
+<rect x="40" y="268" width="158" height="40" rx="4" fill="#EFEEE8" stroke="#B9B7AC" stroke-width="0.75"/>
+<text x="52" y="286" font-size="12" font-weight="bold" fill="#23252B">Conversations</text><text x="52" y="301" font-size="10.5" fill="#75736B">chat, shift handovers</text>
+<circle cx="330" cy="180" r="30" fill="#F8EEDA" stroke="#A16A0F" stroke-width="0.9"/>
+<text x="330" y="184" font-size="12" text-anchor="middle" fill="#A16A0F">Expert</text>
+<line x1="198" y1="72"  x2="302" y2="166" stroke="#A16A0F" stroke-width="0.8" stroke-dasharray="3 4"/>
+<line x1="198" y1="126" x2="300" y2="172" stroke="#A16A0F" stroke-width="0.8" stroke-dasharray="3 4"/>
+<line x1="198" y1="180" x2="298" y2="180" stroke="#A16A0F" stroke-width="0.8" stroke-dasharray="3 4"/>
+<line x1="198" y1="234" x2="300" y2="188" stroke="#A16A0F" stroke-width="0.8" stroke-dasharray="3 4"/>
+<line x1="198" y1="288" x2="302" y2="194" stroke="#A16A0F" stroke-width="0.8" stroke-dasharray="3 4"/>
+<text x="330" y="232" font-size="11" text-anchor="middle" fill="#75736B">walks, asks, remembers</text>
+<rect x="585" y="158" width="126" height="44" rx="4" fill="#0E6B54"/>
+<text x="648" y="177" font-size="12" font-weight="bold" text-anchor="middle" fill="#FFFFFF">L2 Filler</text>
+<text x="648" y="192" font-size="10" text-anchor="middle" fill="#C9E4D8">ISA-95 equipment</text>
+<line x1="648" y1="158" x2="648" y2="96"  stroke="#0E6B54" stroke-width="0.9"/>
+<line x1="585" y1="164" x2="540" y2="128" stroke="#0E6B54" stroke-width="0.9"/>
+<line x1="711" y1="164" x2="756" y2="128" stroke="#0E6B54" stroke-width="0.9"/>
+<line x1="601" y1="202" x2="562" y2="248" stroke="#0E6B54" stroke-width="0.9"/>
+<line x1="695" y1="202" x2="734" y2="248" stroke="#0E6B54" stroke-width="0.9"/>
+<rect x="586" y="52" width="124" height="40" rx="4" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.75"/>
+<text x="648" y="76" font-size="12" text-anchor="middle" fill="#0E6B54">Signals</text>
+<rect x="462" y="88" width="124" height="40" rx="4" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.75"/>
+<text x="524" y="112" font-size="12" text-anchor="middle" fill="#0E6B54">Topology</text>
+<rect x="712" y="88" width="124" height="40" rx="4" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.75"/>
+<text x="774" y="112" font-size="12" text-anchor="middle" fill="#0E6B54">Operations</text>
+<rect x="470" y="248" width="130" height="40" rx="4" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.75"/>
+<text x="535" y="272" font-size="12" text-anchor="middle" fill="#0E6B54">Documents</text>
+<rect x="694" y="248" width="146" height="40" rx="4" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.75"/>
+<text x="767" y="272" font-size="12" text-anchor="middle" fill="#0E6B54">Conversations</text>
+<text x="648" y="330" font-size="11" text-anchor="middle" fill="#75736B">every edge typed; every fact carries provenance</text>
+</svg>
+</div>
+<figcaption>The context gap. The five kinds of knowledge a root-cause investigation must traverse. Left: today they live in unconnected systems, integrated only inside an expert’s head. Right: the Manufacturing Context Layer weaves them into one graph reachable from the asset itself.</figcaption>
+</figure>
+<p>Large language models have made this problem acute rather than merely chronic. For the first time, the reasoning layer is commoditized: a frontier model can perform expert-grade diagnostic reasoning <em>if</em> it is handed the right context. The scarce asset has inverted. It is no longer intelligence; it is the substrate that intelligence reasons over.</p>
+<h3 id="why-the-existing-categories-do-not-solve-it">Why the existing categories do not solve it</h3>
+<p>It is tempting to answer “we have a data lake” or “we have a unified namespace.” Neither is a context layer, and the distinctions matter enough to state precisely.</p>
+<p><strong>The data warehouse or lakehouse</strong> is an analytical system: batch-oriented, optimized for aggregation, and read-only from the perspective of operations. It answers “what happened last quarter.” An agent doing operational work needs current state and history together, sub-second event delivery, and, critically, a governed <em>write</em> path, because useful agents do not merely observe; they classify downtime, propose work orders, and update records. A warehouse offers none of these, and retrofitting them contradicts its design.</p>
+<p><strong>The historian</strong> preserves signals with excellent fidelity but no semantics. It knows the tag <code>L2_FIL_PT_004</code> in intimate detail, and it knows nothing at all about fillers.</p>
+<p><strong>The unified namespace (UNS)</strong> is a major advance in data <em>movement</em>: a live, hierarchically organized broadcast of current state over MQTT. But a UNS is a nervous system without a memory or a model. It carries no history, no relationships beyond the topic hierarchy, no documents, no provenance, and no transactional semantics. The MCL treats an existing UNS as a first-class source and, where one is absent, provides the messaging fabric. The categories are complementary, not equivalent.</p>
+<p><strong>Manufacturing data hubs</strong> built on standards-based graphs are the closest existing category<sup>[14]</sup>, demonstrating that an ISA-95 knowledge graph with a unified API can serve as an operational system of record. What that category has not yet addressed is the other half of this paper: unstructured and conversational knowledge as first-class context, agents as both builders and consumers of the model, and a governance architecture for autonomous write-back. Table <a href="#tab:category" data-reference-type="ref" data-reference="tab:category">1</a> summarizes the distinction that defines the category.</p>
+<div id="tab:category">
+<table>
+<caption>The category defined against its neighbors. A system is a Manufacturing Context Layer only if it satisfies the right-hand column in full. Each neighboring category remains valuable in its own role, and typically becomes a source for, or a consumer of, the MCL.</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Dimension</strong></th>
+<th style="text-align: left;"><strong>Warehouse / lake</strong></th>
+<th style="text-align: left;"><strong>Historian</strong></th>
+<th style="text-align: left;"><strong>UNS</strong></th>
+<th style="text-align: left;"><strong>Manufacturing Context Layer</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Primary consumer</td>
+<td style="text-align: left;">Analysts, BI</td>
+<td style="text-align: left;">Engineers, SCADA</td>
+<td style="text-align: left;">Applications</td>
+<td style="text-align: left;">Agents and operational applications</td>
+</tr>
+<tr>
+<td style="text-align: left;">Semantics</td>
+<td style="text-align: left;">Per-project schema</td>
+<td style="text-align: left;">None (tags)</td>
+<td style="text-align: left;">Topic hierarchy</td>
+<td style="text-align: left;">Standards-based graph (ISA-95 core)</td>
+</tr>
+<tr>
+<td style="text-align: left;">History</td>
+<td style="text-align: left;">Yes (batch)</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">Yes; state plus full history</td>
+</tr>
+<tr>
+<td style="text-align: left;">Latency</td>
+<td style="text-align: left;">Minutes to hours</td>
+<td style="text-align: left;">Seconds</td>
+<td style="text-align: left;">Milliseconds</td>
+<td style="text-align: left;">Milliseconds, event-driven</td>
+</tr>
+<tr>
+<td style="text-align: left;">Unstructured knowledge</td>
+<td style="text-align: left;">Stored as blobs</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">Extracted into the graph, linked to assets</td>
+</tr>
+<tr>
+<td style="text-align: left;">Write path for agents</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">Publish only</td>
+<td style="text-align: left;">Transactional, tiered, governed</td>
+</tr>
+<tr>
+<td style="text-align: left;">Trust model</td>
+<td style="text-align: left;">Table-level quality</td>
+<td style="text-align: left;">Signal quality</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">Per-fact provenance and approval status</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="defining-the-manufacturing-context-layer">Defining the Manufacturing Context Layer</h2>
+<p>We define the MCL by four properties. A system is a Manufacturing Context Layer if and only if it provides all four.</p>
+<p><strong>Property 1: unified semantics on an open standard.</strong> All persisted operational context conforms to a shared ontology with a published core. We adopt ISA-95 (IEC 62264)<sup>[1]</sup>: its object model of equipment, material, personnel, physical assets, process segments, and operations records is the product of decades of industry refinement, and its structure of typed objects, attributes, and relationships is inherently a graph<sup>[7,14]</sup>. Standardization is what makes agents <em>portable</em>: an agent built against the ontology works at the next plant, and the next customer, without re-engineering. Note that the property demands an open, published core, not ISA-95 in particular; we select ISA-95 as the most mature candidate for manufacturing operations, and the Knowledge Overlay pattern of Section <a href="#sec:overlay" data-reference-type="ref" data-reference="sec:overlay">2.1</a> transfers unchanged to complementary or successor models (OPC UA information models, the Asset Administration Shell, or domain extensions) mapped onto the same graph.</p>
+<p><strong>Property 2: totality of context.</strong> The layer ingests not only structured operational and enterprise data but the unstructured majority: SOPs, P&amp;IDs, OEM manuals, drawings, quality specifications, and, distinctively, <em>conversations</em>: shift handovers, chat threads, meeting notes, the running commentary in which most of a plant’s tribal knowledge actually lives. Unstructured content is not stored as opaque blobs; it is decomposed into entities, facts, and relationships that are woven into the graph and linked to the assets and processes they concern.</p>
+<p><strong>Property 3: transactional, event-driven operation.</strong> The layer is an operational system, not an analytical copy. It maintains current state and history together, derives and publishes events in real time, supports subscriptions, and offers an ACID-transactional write path so that agents and applications can commit operational records, with conflict detection, atomicity, and rollback.</p>
+<p><strong>Property 4: provenance as schema.</strong> Every node and edge carries, at the schema level, its origin: which source system or document it came from, which identity asserted it (a human, a named agent, a rule), on what evidence, with what confidence, and whether and by whom it was approved. Provenance is not a logging afterthought. It is the trust model that makes agent-maintained knowledge usable, the audit trail that regulated industries require, and, as Section <a href="#sec:flywheel" data-reference-type="ref" data-reference="sec:flywheel">6</a> develops, the raw material of the platform’s learning flywheel.</p>
+<h3 id="sec:overlay">The Knowledge Overlay: extending ISA-95 without breaking it</h3>
+<p>ISA-95 was written for structured operations. It has no vocabulary for a PDF, a chat thread, or a hypothesis. Rather than invent a proprietary ontology, which would forfeit the portability that motivated Property 1, the MCL defines a minimal, disciplined extension we call the <strong>Knowledge Overlay</strong>: a set of node and edge types layered <em>around</em> the ISA-95 core, never replacing it (Figure <a href="#fig:overlay" data-reference-type="ref" data-reference="fig:overlay">2</a>).</p>
+<figure class="plate" id="fig:overlay">
+<div class="plate-head"><span class="fig-no">Fig. 02</span><span class="fig-title">ISA-95 core with the Knowledge Overlay</span></div><div class="plate-body"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 860 396" font-family="Helvetica, Arial, sans-serif">
+<rect width="860" height="396" fill="#FFFFFF"/>
+<rect x="330" y="44" width="200" height="284" rx="6" fill="#0E6B54" fill-opacity="0.06" stroke="#0E6B54" stroke-width="1"/>
+<text x="430" y="70" font-size="11" letter-spacing="1.5" text-anchor="middle" fill="#0E6B54">ISA-95 CORE: THE SKELETON</text>
+<rect x="352" y="88"  width="156" height="36" rx="4" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.75"/><text x="430" y="110" font-size="12" text-anchor="middle" fill="#0E6B54">Equipment, assets</text>
+<rect x="352" y="134" width="156" height="36" rx="4" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.75"/><text x="430" y="156" font-size="12" text-anchor="middle" fill="#0E6B54">Material, lots</text>
+<rect x="352" y="180" width="156" height="36" rx="4" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.75"/><text x="430" y="202" font-size="12" text-anchor="middle" fill="#0E6B54">Personnel</text>
+<rect x="352" y="226" width="156" height="36" rx="4" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.75"/><text x="430" y="248" font-size="12" text-anchor="middle" fill="#0E6B54">Process segments</text>
+<rect x="352" y="272" width="156" height="36" rx="4" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.75"/><text x="430" y="294" font-size="12" text-anchor="middle" fill="#0E6B54">Operations events</text>
+<rect x="60" y="84" width="180" height="52" rx="4" fill="#F9EAE3" stroke="#BF5637" stroke-width="0.75"/>
+<text x="150" y="106" font-size="13" font-weight="bold" text-anchor="middle" fill="#BF5637">Document</text>
+<text x="150" y="122" font-size="10.5" text-anchor="middle" fill="#BF5637">SOP, P&amp;ID, manual</text>
+<line x1="240" y1="110" x2="330" y2="110" stroke="#BF5637" stroke-width="0.9"/>
+<text x="285" y="102" font-size="10.5" text-anchor="middle" fill="#BF5637">describes</text>
+<rect x="60" y="240" width="180" height="52" rx="4" fill="#F9EAE3" stroke="#BF5637" stroke-width="0.75"/>
+<text x="150" y="262" font-size="13" font-weight="bold" text-anchor="middle" fill="#BF5637">Knowledge</text>
+<text x="150" y="278" font-size="10.5" text-anchor="middle" fill="#BF5637">facts from docs and chats</text>
+<line x1="240" y1="266" x2="330" y2="266" stroke="#BF5637" stroke-width="0.9"/>
+<text x="285" y="258" font-size="10.5" text-anchor="middle" fill="#BF5637">observed on</text>
+<rect x="620" y="84" width="180" height="52" rx="4" fill="#F8EEDA" stroke="#A16A0F" stroke-width="0.75"/>
+<text x="710" y="106" font-size="13" font-weight="bold" text-anchor="middle" fill="#A16A0F">Decision</text>
+<text x="710" y="122" font-size="10.5" text-anchor="middle" fill="#A16A0F">human call, rationale</text>
+<line x1="530" y1="110" x2="620" y2="110" stroke="#A16A0F" stroke-width="0.9"/>
+<text x="575" y="102" font-size="10.5" text-anchor="middle" fill="#A16A0F">concerns</text>
+<rect x="620" y="240" width="180" height="52" rx="4" fill="#F9EAE3" stroke="#BF5637" stroke-width="0.75"/>
+<text x="710" y="262" font-size="13" font-weight="bold" text-anchor="middle" fill="#BF5637">Insight</text>
+<text x="710" y="278" font-size="10.5" text-anchor="middle" fill="#BF5637">agent hypothesis, status</text>
+<line x1="530" y1="266" x2="620" y2="266" stroke="#BF5637" stroke-width="0.9" stroke-dasharray="4 3"/>
+<text x="575" y="258" font-size="10.5" text-anchor="middle" fill="#BF5637">evidence</text>
+<rect x="60" y="352" width="740" height="30" fill="#EFEEE8" stroke="#B9B7AC" stroke-width="0.75"/>
+<text x="430" y="371" font-size="11" text-anchor="middle" fill="#4A4C52">every node and edge: source | asserted-by (human, agent, rule) | confidence | approval status</text>
+</svg>
+</div>
+<figcaption>The Knowledge Overlay adds four node families around the ISA-95 skeleton: documents, extracted knowledge, human decisions, and agent insights, each linked by typed edges to the entities they concern. Insight edges are dashed until corroborated, keeping machine conjecture cleanly separated from established fact. The provenance strip applies to everything.</figcaption>
+</figure>
+<p>The overlay introduces four families of nodes. <em>Document nodes</em> represent SOPs, P&amp;IDs, manuals, and specifications, chunked and embedded for retrieval, with typed edges to the ISA-95 entities they describe. <em>Knowledge nodes</em> capture discrete facts extracted from documents and conversations, such as an observation from a shift log or a torque specification from a manual, each linked both to its source and to its subject. <em>Decision nodes</em> record human determinations and their rationale, preserving the “why” that plants chronically lose. <em>Insight nodes</em> hold agent-generated findings, such as a suspected root cause or a detected pattern, explicitly typed as hypotheses, with evidence edges to the signals, events, and documents that support them, and a lifecycle status (proposed, corroborated, confirmed, retired).</p>
+<p>The design rule is compact enough to state in one sentence: <em>ISA-95 is the skeleton, the Knowledge Overlay is the connective tissue, and nothing enters the graph without provenance.</em></p>
+<p>A note on adoption pragmatics. Strict, total ISA-95 conformance has proven its worth in regulated verticals but imposes a steep on-ramp. The MCL specifies a <em>conformance profile</em> (equipment and asset hierarchy, material definitions and lots, personnel, process segments, and operations event records) as the mandatory core, with the full Part 2 object model available as plants mature. The standard is the destination; the profile is the on-ramp.</p>
+<h2 id="reference-architecture">Reference architecture</h2>
+<p>The architecture comprises five planes and one cross-cutting governance plane (Figure <a href="#fig:planes" data-reference-type="ref" data-reference="fig:planes">3</a>). Data flows upward from sources to agents; agent actions flow back down through the same governed access plane. The symmetry is deliberate: there is exactly one door, and everything, human or machine, read or write, passes through it.</p>
+<figure class="plate" id="fig:planes">
+<div class="plate-head"><span class="fig-no">Fig. 03</span><span class="fig-title">The five planes and the governance plane</span></div><div class="plate-body"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 860 604" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect width="860" height="604" fill="#FFFFFF"/>
+<rect x="40" y="40" width="560" height="80" rx="6" fill="#F9EAE3" stroke="#BF5637" stroke-width="0.9"/>
+<text x="60" y="68" font-size="13" font-weight="bold" fill="#BF5637">P5  Agent plane</text>
+<text x="60" y="88" font-size="11" fill="#BF5637">low-code builder | model-agnostic runtime | agent registry</text>
+<text x="60" y="104" font-size="11" fill="#BF5637">pilot-to-production pipeline</text>
+<line x1="250" y1="150" x2="250" y2="126" stroke="#75736B" stroke-width="1" marker-end="url(#ah2)"/>
+<line x1="390" y1="126" x2="390" y2="150" stroke="#BF5637" stroke-width="1" marker-end="url(#ah2)"/>
+<rect x="40" y="156" width="560" height="80" rx="6" fill="#EFEEE8" stroke="#75736B" stroke-width="0.9"/>
+<text x="60" y="184" font-size="13" font-weight="bold" fill="#23252B">P4  Access plane</text>
+<text x="60" y="204" font-size="11" fill="#4A4C52">typed query API (GraphQL) | agent tools (MCP) | open standards (e.g. i3X)</text>
+<text x="60" y="220" font-size="11" fill="#4A4C52">graph-scoped semantic search | one authorization model</text>
+<line x1="250" y1="266" x2="250" y2="242" stroke="#75736B" stroke-width="1" marker-end="url(#ah2)"/>
+<line x1="390" y1="242" x2="390" y2="266" stroke="#BF5637" stroke-width="1" marker-end="url(#ah2)"/>
+<rect x="40" y="272" width="560" height="130" rx="6" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.9"/>
+<text x="60" y="300" font-size="13" font-weight="bold" fill="#0E6B54">P3  Context plane (the weave)</text>
+<rect x="60"  y="316" width="164" height="34" rx="4" fill="#FFFFFF" stroke="#0E6B54" stroke-width="0.7"/><text x="142" y="337" font-size="11" text-anchor="middle" fill="#0E6B54">knowledge graph</text>
+<rect x="238" y="316" width="164" height="34" rx="4" fill="#FFFFFF" stroke="#0E6B54" stroke-width="0.7"/><text x="320" y="337" font-size="11" text-anchor="middle" fill="#0E6B54">time-series store</text>
+<rect x="416" y="316" width="164" height="34" rx="4" fill="#FFFFFF" stroke="#0E6B54" stroke-width="0.7"/><text x="498" y="337" font-size="11" text-anchor="middle" fill="#0E6B54">doc + vector store</text>
+<rect x="60"  y="358" width="253" height="34" rx="4" fill="#FFFFFF" stroke="#0E6B54" stroke-width="0.7"/><text x="186" y="379" font-size="11" text-anchor="middle" fill="#0E6B54">event and rules engine</text>
+<rect x="327" y="358" width="253" height="34" rx="4" fill="#FFFFFF" stroke="#0E6B54" stroke-width="0.7"/><text x="453" y="379" font-size="11" text-anchor="middle" fill="#0E6B54">provenance ledger</text>
+<line x1="250" y1="432" x2="250" y2="408" stroke="#75736B" stroke-width="1" marker-end="url(#ah2)"/>
+<line x1="390" y1="408" x2="390" y2="432" stroke="#BF5637" stroke-width="1" marker-end="url(#ah2)"/>
+<rect x="40" y="438" width="560" height="80" rx="6" fill="#EFEEE8" stroke="#75736B" stroke-width="0.9"/>
+<text x="60" y="466" font-size="13" font-weight="bold" fill="#23252B">P2  Connectivity plane (the threads)</text>
+<text x="60" y="486" font-size="11" fill="#4A4C52">OT connectors | IT/transactional connectors | unstructured ingestors</text>
+<text x="60" y="502" font-size="11" fill="#4A4C52">edge runtime | store-and-forward | declarative configs</text>
+<line x1="250" y1="548" x2="250" y2="524" stroke="#75736B" stroke-width="1" marker-end="url(#ah2)"/>
+<line x1="390" y1="524" x2="390" y2="548" stroke="#BF5637" stroke-width="1" marker-end="url(#ah2)"/>
+<rect x="40" y="554" width="560" height="46" rx="6" fill="#FFFFFF" stroke="#B9B7AC" stroke-width="0.9"/>
+<text x="320" y="582" font-size="11" text-anchor="middle" fill="#4A4C52">P1  Sources: PLC/SCADA | historians | UNS | MES | ERP | CMMS | QMS | PDFs | chat | CAD</text>
+<text x="232" y="140" font-size="11" text-anchor="end" fill="#75736B">data up</text>
+<text x="404" y="140" font-size="11" fill="#BF5637">governed write-back down</text>
+<rect x="640" y="40" width="180" height="560" rx="6" fill="#F8EEDA" stroke="#A16A0F" stroke-width="0.9"/>
+<text x="730" y="70" font-size="13" font-weight="bold" text-anchor="middle" fill="#A16A0F">Governance plane</text>
+<line x1="660" y1="84" x2="800" y2="84" stroke="#A16A0F" stroke-width="0.6" opacity="0.5"/>
+<text x="730" y="112" font-size="11" text-anchor="middle" fill="#A16A0F">identity + graph RBAC</text>
+<text x="730" y="152" font-size="11" text-anchor="middle" fill="#A16A0F">write tiers W0-W3</text>
+<text x="730" y="192" font-size="11" text-anchor="middle" fill="#A16A0F">autonomy tiers A0-A3</text>
+<text x="730" y="232" font-size="11" text-anchor="middle" fill="#A16A0F">human approvals</text>
+<text x="730" y="272" font-size="11" text-anchor="middle" fill="#A16A0F">provenance audit</text>
+<text x="730" y="312" font-size="11" text-anchor="middle" fill="#A16A0F">model registry + routing</text>
+<text x="730" y="352" font-size="11" text-anchor="middle" fill="#A16A0F">evaluation harness</text>
+<text x="730" y="392" font-size="11" text-anchor="middle" fill="#A16A0F">cost metering + budgets</text>
+<text x="730" y="432" font-size="11" text-anchor="middle" fill="#A16A0F">data quality + lineage</text>
+<text x="730" y="472" font-size="11" text-anchor="middle" fill="#A16A0F">deterministic guardrails</text>
+<text x="730" y="512" font-size="11" text-anchor="middle" fill="#A16A0F">named agent owners</text>
+<text x="730" y="552" font-size="11" text-anchor="middle" fill="#A16A0F">data-boundary policy</text>
+</svg>
+</div>
+<figcaption>The five planes and the governance plane. One semantic model behind one door: data flows up through the planes; agent actions flow back down through the same governed access plane. The governance plane is not a layer agents pass through; it is the set of controls enforced at every layer, for humans and agents identically.</figcaption>
+</figure>
+<h3 id="the-connectivity-plane">The connectivity plane</h3>
+<p>Three connector families, separated because their semantics and failure modes differ.</p>
+<p><em>OT connectors</em> stream high-frequency signal data: protocol drivers for OPC-UA<sup>[2]</sup>, MQTT with Sparkplug B<sup>[3]</sup>, Modbus, EtherNet/IP, and historian APIs, all running at the edge close to the machines. They normalize everything into a canonical envelope (timestamp, tag, value, quality, source), buffer through network outages with store-and-forward, and apply downsampling and dead-banding policy at the source. Where a unified namespace already exists, the connector subscribes to it rather than re-wiring the plant. The UNS becomes a source, and prior investment is honored rather than displaced.</p>
+<p><em>IT connectors</em> handle low-frequency, high-meaning transactional objects (work orders, batches, material lots, quality results) from ERP, MES, CMMS, QMS, LIMS, and WMS. These objects map directly onto ISA-95 entities, and the connectors are bidirectional where write-back is required: an agent-created work request committed in the graph is pushed to the CMMS as the system of record.</p>
+<p><em>Unstructured ingestors</em> are the family the industry has neglected. Pipelines for documents and for communication streams (shift-handover logs, chat channels, meeting transcripts) do not merely land files; an extraction agent decomposes them into candidate graph content. This is the mechanism by which conversations become queryable context.</p>
+<p>Three principles govern the plane as a whole. Connectors are declarative configurations, not code, so that a new source is a form and not a project. Every connector continuously emits health and lag telemetry into the governance plane, because an agent reasoning over silently stale data is worse than no agent. And all ingestion is idempotent and replayable from a raw landing log, so the semantic model can be rebuilt as modeling improves without asking the plant for its data twice.</p>
+<h3 id="the-context-plane">The context plane</h3>
+<p>Physically, the context plane is a polyglot store; logically, it is one model. The <strong>knowledge graph</strong> is the master: ISA-95 entities plus the Knowledge Overlay, every element carrying provenance. The <strong>time-series store</strong> holds raw high-frequency samples; the graph stores pointers, so a traversal runs from “Line 2 filler” to its live and historical signals without the graph drowning in samples. The <strong>document and vector store</strong> holds chunked, embedded unstructured content in which every chunk carries graph back-references, making retrieval <em>graph-scoped</em>: “sections describing this equipment class,” never naive whole-corpus similarity. This is retrieval-augmented generation<sup>[8]</sup> constrained by the knowledge graph rather than by embedding distance alone. The <strong>event and rules engine</strong> is the transactional heart: a streaming engine evaluates incoming data against declared rules to derive the events that define operations (downtime start and stop, cycle completion, quality excursion, batch phase change), persisting each as an ISA-95 operations record and publishing it to subscribers. Finally, the <strong>provenance ledger</strong> is an append-only record of every mutation: what changed, asserted by whom, on what evidence, approved by whom. It is simultaneously the audit trail, the rollback mechanism, and the training corpus.</p>
+<h3 id="the-access-plane">The access plane</h3>
+<p>One semantic model behind multiple protocol faces, under one authorization model. The faces are interchangeable by design; the architecture specifies the <em>capabilities</em> each face must provide, and our reference design instantiates three. The first is a <strong>typed query API</strong> with real-time subscriptions for applications and integrations; GraphQL<sup>[4]</sup> is our reference choice for its self-documenting schema, though any typed query contract over the graph satisfies the requirement. The second is an <strong>agent-native tool interface</strong>: the context layer exposes typed tools such as <code>find_asset</code>, <code>get_asset_context</code> (the ISA-95 neighborhood of an asset: parents, children, linked documents, recent events, live KPIs), <code>query_timeseries</code>, <code>search_knowledge</code>, <code>subscribe_events</code>, and the write tools <code>propose_fact</code>, <code>create_event</code>, and <code>create_work_request</code>, so that any agent framework, including general-purpose assistants, can use the layer without bespoke integration. The Model Context Protocol<sup>[5]</sup> is the natural interconnect for this face today, but the tools themselves are protocol-independent and can be re-exposed through whatever agent-interconnect standard prevails. The third face is an <strong>open-standards API</strong>. The access plane is designed so that additional protocol faces can be added without touching the semantic model beneath them. One natural target is CESMII’s Industrial Information Interoperability eXchange (i3X)<sup>[6]</sup>, whose open primitives (discover namespaces, explore types, retrieve instances, navigate relationships, query current and historical values, subscribe) map closely onto the MCL’s capabilities; conforming to it would let the emerging ecosystem of portable industrial applications run on the MCL. We treat i3X as one option rather than a commitment: an implementation may equally expose a native API tuned to its own semantics, and the architecture deliberately keeps the context plane independent of any single access contract so that standards can be adopted, versioned, or replaced as the landscape matures.</p>
+<p>Authorization is graph-native and identical for humans and agents: permissions attach to subtrees of the physical hierarchy (site, area, line, asset) and to data classifications. An agent scoped to Line 2 cannot retrieve Line 5 context through any tool, by construction.</p>
+<h3 id="the-agent-plane">The agent plane</h3>
+<p>Agents appear twice in this architecture, in roles distinct enough to deserve separate treatment; that is the subject of the next section. The plane itself provides a low/no-code builder in which an agent is assembled from a goal, a scoped toolset, a trigger (event subscription, schedule, or user request), an autonomy tier, and an output contract; a model-agnostic runtime for tool-using, reasoning agents<sup>[9]</sup>; a registry in which every agent is a versioned, owned artifact; and a pilot-to-production pipeline that Section <a href="#sec:governance" data-reference-type="ref" data-reference="sec:governance">5</a> formalizes.</p>
+<h2 id="sec:labor">The division of labor: agents build the context, humans govern it</h2>
+<p>The question every architecture in this space must answer concretely is: <em>who does the work?</em> Legacy contextualization was a human labor problem: months of data engineers and system integrators mapping tags and modeling lines, at a cost that made the semantic model a one-time project, instantly decaying. The MCL’s answer is a doctrine we state once and apply everywhere:</p>
+<div class="center">
+<p><em>Agents propose. Humans dispose. Rules enforce.</em></p>
+</div>
+<p>Three <em>platform agents</em> build and maintain the context. The <strong>mapping agent</strong> introspects incoming tags (names, units, value distributions, correlations with known signals) and proposes mappings to ISA-95 equipment and properties, each with a confidence score. The <strong>extraction agent</strong> parses documents and conversations into candidate entities and edges: reading a P&amp;ID and proposing the instrument-to-equipment topology, reading a shift log and proposing a “seal leak observed” knowledge node linked to the filler. The <strong>curation agent</strong> continuously audits the weave (stale mappings, orphaned nodes, contradictory facts, drifting tag statistics) and files reconciliation proposals.</p>
+<p>None of these agents commits model changes autonomously. Every proposal routes to a process expert who confirms, corrects, or rejects, contributing exactly the tacit knowledge no model possesses (“that tag is actually on the spare pump”). The economic transformation is that human effort moves from <em>labor</em> to <em>judgment</em>: experts no longer perform the mapping over months; they review it over days. And every one of those judgments is captured in the provenance ledger, where it becomes evaluation and fine-tuning data: the flywheel of Section <a href="#sec:flywheel" data-reference-type="ref" data-reference="sec:flywheel">6</a>.</p>
+<p><em>Operational agents</em> then consume the context to do work: investigating excursions, classifying downtime, reviewing maintenance plans, drafting shift summaries, proposing process adjustments. The platform ships these as outcome-named templates rather than a blank canvas, reflecting a consistent market lesson: plants adopt agents that are named after problems, and generalize afterward. Figure <a href="#fig:doctrine" data-reference-type="ref" data-reference="fig:doctrine">4</a> shows the doctrine as the loop it is, and Table <a href="#tab:labor" data-reference-type="ref" data-reference="tab:labor">2</a> details it across the lifecycle.</p>
+<figure class="plate" id="fig:doctrine">
+<div class="plate-head"><span class="fig-no">Fig. 04</span><span class="fig-title">The operating doctrine as a loop</span></div><div class="plate-body"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 860 252" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect width="860" height="252" fill="#FFFFFF"/>
+<rect x="40" y="60" width="170" height="64" rx="6" fill="#F9EAE3" stroke="#BF5637" stroke-width="0.9"/>
+<text x="125" y="88" font-size="13" font-weight="bold" text-anchor="middle" fill="#BF5637">Agents propose</text>
+<text x="125" y="106" font-size="10.5" text-anchor="middle" fill="#BF5637">mappings, facts, actions</text>
+<line x1="210" y1="92" x2="248" y2="92" stroke="#75736B" stroke-width="1" marker-end="url(#ah3)"/>
+<rect x="252" y="60" width="170" height="64" rx="6" fill="#F8EEDA" stroke="#A16A0F" stroke-width="0.9"/>
+<text x="337" y="88" font-size="13" font-weight="bold" text-anchor="middle" fill="#A16A0F">Humans dispose</text>
+<text x="337" y="106" font-size="10.5" text-anchor="middle" fill="#A16A0F">confirm, correct, reject</text>
+<line x1="422" y1="92" x2="460" y2="92" stroke="#75736B" stroke-width="1" marker-end="url(#ah3)"/>
+<rect x="464" y="60" width="170" height="64" rx="6" fill="#EFEEE8" stroke="#75736B" stroke-width="0.9"/>
+<text x="549" y="88" font-size="13" font-weight="bold" text-anchor="middle" fill="#23252B">Rules enforce</text>
+<text x="549" y="106" font-size="10.5" text-anchor="middle" fill="#4A4C52">guardrails, schema, scope</text>
+<line x1="634" y1="92" x2="672" y2="92" stroke="#75736B" stroke-width="1" marker-end="url(#ah3)"/>
+<rect x="676" y="60" width="150" height="64" rx="6" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.9"/>
+<text x="751" y="88" font-size="13" font-weight="bold" text-anchor="middle" fill="#0E6B54">Ledger records</text>
+<text x="751" y="106" font-size="10.5" text-anchor="middle" fill="#0E6B54">every judgment</text>
+<path d="M751 124 L751 180 Q751 192 739 192 L137 192 Q125 192 125 180 L125 132" fill="none" stroke="#0E6B54" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#ah3)"/>
+<text x="438" y="212" font-size="11" text-anchor="middle" fill="#0E6B54">approvals and corrections become training and evaluation data; the next proposal is better</text>
+</svg>
+</div>
+<figcaption>The operating doctrine as a loop. Agents do the labor, humans supply judgment, deterministic rules bound both, and the provenance ledger converts each cycle into the training signal for the next.</figcaption>
+</figure>
+<div id="tab:labor">
+<table>
+<caption>Division of labor across the lifecycle. Human effort concentrates where models cannot substitute for it, judgment and tacit knowledge, and every exercise of that judgment is captured as data.</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Stage</strong></th>
+<th style="text-align: left;"><strong>Rules and data do</strong></th>
+<th style="text-align: left;"><strong>Agents do</strong></th>
+<th style="text-align: left;"><strong>Humans do</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Connect</td>
+<td style="text-align: left;">Protocol translation, buffering, normalization</td>
+<td style="text-align: left;">Suggest connector configs; flag anomalous sources</td>
+<td style="text-align: left;">Approve connections; own credentials and security boundaries</td>
+</tr>
+<tr>
+<td style="text-align: left;">Model (structured)</td>
+<td style="text-align: left;">Enforce schema validity</td>
+<td style="text-align: left;">Propose tag<span class="math inline">→</span>asset mappings with confidence</td>
+<td style="text-align: left;">Confirm and correct; contribute tacit knowledge</td>
+</tr>
+<tr>
+<td style="text-align: left;">Model (unstructured)</td>
+<td style="text-align: left;">Chunking, embedding</td>
+<td style="text-align: left;">Extract entities and relations from documents and conversations</td>
+<td style="text-align: left;">Validate topology; resolve ambiguity; set document authority</td>
+</tr>
+<tr>
+<td style="text-align: left;">Derive events, KPIs</td>
+<td style="text-align: left;">Execute rule definitions in real time</td>
+<td style="text-align: left;">Draft rules from observed patterns and SOP text</td>
+<td style="text-align: left;">Approve rules; own the definition of “downtime”</td>
+</tr>
+<tr>
+<td style="text-align: left;">Operate</td>
+<td style="text-align: left;">Stream, fire events, serve transactions</td>
+<td style="text-align: left;">Investigate, diagnose, summarize, propose, act within tier</td>
+<td style="text-align: left;">Review per tier; take physical action; give feedback</td>
+</tr>
+<tr>
+<td style="text-align: left;">Improve</td>
+<td style="text-align: left;">Ledger accumulates every decision</td>
+<td style="text-align: left;">Curate drift; retrain mapping models on approvals</td>
+<td style="text-align: left;">Audit; adjust autonomy tiers; promote or retire agents</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="sec:governance">Governance: making autonomy auditable</h2>
+<p>The industry’s stated reason for keeping agents out of production is rarely capability; it is accountability. The MCL’s answer is a two-axis model precise enough to be written into an operating procedure and, eventually, an insurance policy.</p>
+<h3 id="write-tiers-not-all-writes-are-equal">Write tiers: not all writes are equal</h3>
+<p><strong>W0, annotations.</strong> Comments, tags, hypotheses. Committed immediately, always attributed, never load-bearing.</p>
+<p><strong>W1, derived facts and events.</strong> Downtime classifications, computed genealogy links, facts extracted from documents. Committed with an <code>unverified</code> status; rule or human review promotes to <code>verified</code>. Consumers query at their chosen trust threshold: a dashboard may display unverified classifications, while a batch record includes only verified ones.</p>
+<p><strong>W2, operational transactions.</strong> Work requests, schedule changes, record entries. Executed as ACID transactions against the graph and pushed to the system of record through the bidirectional connector. Gated by autonomy tier.</p>
+<p><strong>W3, model mutations.</strong> Changes to the semantic model itself, such as a new equipment node or a remapped tag. Always proposal-based: staged as a change-set, human-approved, then committed atomically. A W3 change-set is, in effect, a pull request against the plant’s digital model, and it is reviewed like one.</p>
+<p>W2 and W3 writes are atomic, serialized per entity with conflict detection, and reversible: the ledger stores inverse operations, so any committed change-set can be rolled back. Agents may reason speculatively over <em>staged</em> facts and present a whole investigation as one bundle, committed atomically on approval. Human review gates outcomes, not every intermediate step, which is what keeps governance from destroying agent throughput.</p>
+<h3 id="autonomy-tiers-earned-scoped-revocable">Autonomy tiers: earned, scoped, revocable</h3>
+<p>Every operational agent carries an autonomy tier, granted per agent <em>per scope</em>; an agent may be A2 on Line 2 and A1 on Line 5. <strong>A0 (advisor)</strong> is read-only and may write annotations. <strong>A1 (proposer)</strong> may stage any write as a proposal; nothing commits without a named human approval. This is the default tier for anything leaving pilot. <strong>A2 (supervised actor)</strong> commits derived facts and pre-approved classes of operational transactions autonomously, with batch audit. <strong>A3 (autonomous within guardrails)</strong> commits defined transaction classes in real time, bounded by hard guardrails (rate limits, value limits, safe operating envelopes) enforced by the deterministic rules engine, <em>not</em> by the agent’s own judgment. The agent cannot argue its way past a guardrail, because the guardrail does not listen. Figure <a href="#fig:grid" data-reference-type="ref" data-reference="fig:grid">5</a> presents the full grid.</p>
+<figure class="plate" id="fig:grid">
+<div class="plate-head"><span class="fig-no">Fig. 05</span><span class="fig-title">The governance grid</span></div><div class="plate-body"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 860 456" font-family="Helvetica, Arial, sans-serif">
+<defs>
+  <pattern id="hatch" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">
+    <rect width="7" height="7" fill="#E4F1EB"/>
+    <line x1="0" y1="0" x2="0" y2="7" stroke="#0E6B54" stroke-width="1.4" opacity="0.45"/>
+  </pattern>
+</defs>
+<rect width="860" height="456" fill="#FFFFFF"/>
+<text x="278" y="48" font-size="13" font-weight="bold" text-anchor="middle" fill="#23252B">W0</text><text x="278" y="64" font-size="11" text-anchor="middle" fill="#75736B">annotations</text>
+<text x="438" y="48" font-size="13" font-weight="bold" text-anchor="middle" fill="#23252B">W1</text><text x="438" y="64" font-size="11" text-anchor="middle" fill="#75736B">derived facts</text>
+<text x="598" y="48" font-size="13" font-weight="bold" text-anchor="middle" fill="#23252B">W2</text><text x="598" y="64" font-size="11" text-anchor="middle" fill="#75736B">op. transactions</text>
+<text x="758" y="48" font-size="13" font-weight="bold" text-anchor="middle" fill="#23252B">W3</text><text x="758" y="64" font-size="11" text-anchor="middle" fill="#75736B">model mutations</text>
+<text x="188" y="106" font-size="13" font-weight="bold" text-anchor="end" fill="#23252B">A0</text><text x="188" y="122" font-size="11" text-anchor="end" fill="#75736B">advisor</text>
+<text x="188" y="182" font-size="13" font-weight="bold" text-anchor="end" fill="#23252B">A1</text><text x="188" y="198" font-size="11" text-anchor="end" fill="#75736B">proposer</text>
+<text x="188" y="258" font-size="13" font-weight="bold" text-anchor="end" fill="#23252B">A2</text><text x="188" y="274" font-size="11" text-anchor="end" fill="#75736B">supervised actor</text>
+<text x="188" y="334" font-size="13" font-weight="bold" text-anchor="end" fill="#23252B">A3</text><text x="188" y="350" font-size="11" text-anchor="end" fill="#75736B">autonomous</text>
+<rect x="204" y="82"  width="148" height="60" rx="4" fill="#0E6B54"/><text x="278" y="116" font-size="12" text-anchor="middle" fill="#FFFFFF">commit</text>
+<rect x="364" y="82"  width="148" height="60" rx="4" fill="#EFEEE8" stroke="#DCDAD1" stroke-width="0.75"/><text x="438" y="116" font-size="12" text-anchor="middle" fill="#B9B7AC">n/a</text>
+<rect x="524" y="82"  width="148" height="60" rx="4" fill="#EFEEE8" stroke="#DCDAD1" stroke-width="0.75"/><text x="598" y="116" font-size="12" text-anchor="middle" fill="#B9B7AC">n/a</text>
+<rect x="684" y="82"  width="148" height="60" rx="4" fill="#EFEEE8" stroke="#DCDAD1" stroke-width="0.75"/><text x="758" y="116" font-size="12" text-anchor="middle" fill="#B9B7AC">n/a</text>
+<rect x="204" y="158" width="148" height="60" rx="4" fill="#0E6B54"/><text x="278" y="192" font-size="12" text-anchor="middle" fill="#FFFFFF">commit</text>
+<rect x="364" y="158" width="148" height="60" rx="4" fill="#F8EEDA" stroke="#A16A0F" stroke-width="0.9"/><text x="438" y="192" font-size="12" text-anchor="middle" fill="#A16A0F">propose</text>
+<rect x="524" y="158" width="148" height="60" rx="4" fill="#F8EEDA" stroke="#A16A0F" stroke-width="0.9"/><text x="598" y="192" font-size="12" text-anchor="middle" fill="#A16A0F">propose</text>
+<rect x="684" y="158" width="148" height="60" rx="4" fill="#F8EEDA" stroke="#A16A0F" stroke-width="0.9"/><text x="758" y="192" font-size="12" text-anchor="middle" fill="#A16A0F">propose</text>
+<rect x="204" y="234" width="148" height="60" rx="4" fill="#0E6B54"/><text x="278" y="268" font-size="12" text-anchor="middle" fill="#FFFFFF">commit</text>
+<rect x="364" y="234" width="148" height="60" rx="4" fill="#0E6B54"/><text x="438" y="268" font-size="12" text-anchor="middle" fill="#FFFFFF">commit</text>
+<rect x="524" y="234" width="148" height="60" rx="4" fill="url(#hatch)" stroke="#0E6B54" stroke-width="0.9"/><text x="598" y="261" font-size="12" text-anchor="middle" fill="#0E6B54">scoped commit</text><text x="598" y="278" font-size="10.5" text-anchor="middle" fill="#0E6B54">pre-approved classes</text>
+<rect x="684" y="234" width="148" height="60" rx="4" fill="#F8EEDA" stroke="#A16A0F" stroke-width="0.9"/><text x="758" y="268" font-size="12" text-anchor="middle" fill="#A16A0F">propose</text>
+<rect x="204" y="310" width="148" height="60" rx="4" fill="#0E6B54"/><text x="278" y="344" font-size="12" text-anchor="middle" fill="#FFFFFF">commit</text>
+<rect x="364" y="310" width="148" height="60" rx="4" fill="#0E6B54"/><text x="438" y="344" font-size="12" text-anchor="middle" fill="#FFFFFF">commit</text>
+<rect x="524" y="310" width="148" height="60" rx="4" fill="url(#hatch)" stroke="#0E6B54" stroke-width="0.9"/><text x="598" y="337" font-size="12" text-anchor="middle" fill="#0E6B54">commit</text><text x="598" y="354" font-size="10.5" text-anchor="middle" fill="#0E6B54">within hard guardrails</text>
+<rect x="684" y="310" width="148" height="60" rx="4" fill="#F8EEDA" stroke="#A16A0F" stroke-width="0.9"/><text x="758" y="344" font-size="12" text-anchor="middle" fill="#A16A0F">propose</text>
+<rect x="204" y="402" width="14" height="14" rx="2" fill="#0E6B54"/><text x="226" y="413" font-size="11" fill="#4A4C52">autonomous commit</text>
+<rect x="386" y="402" width="14" height="14" rx="2" fill="url(#hatch)" stroke="#0E6B54" stroke-width="0.8"/><text x="408" y="413" font-size="11" fill="#4A4C52">scoped or guardrailed commit</text>
+<rect x="630" y="402" width="14" height="14" rx="2" fill="#F8EEDA" stroke="#A16A0F" stroke-width="0.9"/><text x="652" y="413" font-size="11" fill="#4A4C52">human approval required</text>
+<text x="204" y="442" font-size="11" fill="#75736B">model mutations (W3) are proposal-only at every tier: the digital model changes only by reviewed change-set</text>
+</svg>
+</div>
+<figcaption>The governance grid: write tiers <span class="math inline">×</span> autonomy tiers. An agent’s tier is granted per scope, earned by evidence (approval rate over volume and time), and revoked automatically on evaluation regression or guardrail violation. Every agent has a named human owner; unowned agents cannot run in production.</figcaption>
+</figure>
+<p>Promotion between tiers is evidence-based (a defined volume of proposals at a defined approval rate over a defined period, signed off by the agent’s owner) and demotion is automatic on evaluation regression or guardrail violation. One further absolute completes the model: every agent claim or proposal must cite its evidence (graph nodes, time-series windows, document chunks) through provenance references. The runtime rejects uncited claims rather than merely discouraging them.</p>
+<h3 id="model-governance">Model governance</h3>
+<p>The platform is model-agnostic by architecture and opinionated by default. Every model, whether a frontier LLM, a mid-tier model, a fine-tuned small model, or classical ML, is a registered, versioned resource; agents declare capability needs, and a router binds needs to models under policy: cost ceilings, data-residency constraints, on-premises-only classifications. High-volume, low-ambiguity work (tag classification, event labeling, chunk typing) runs on small fine-tuned models, often at the edge; scarce, high-ambiguity reasoning runs on frontier models. This tiering is simultaneously the cost architecture, the latency architecture, and the data-sovereignty architecture: the same routing policy that saves tokens keeps regulated context on site.</p>
+<p>An evaluation harness holds golden datasets per task type, built substantially from ledger exhaust, since every approved or rejected proposal is a labeled example. It gates both new model versions and new agents before they touch production, with continuous sampled re-review catching drift afterward.</p>
+<h3 id="cost-governance">Cost governance</h3>
+<p>Agent platforms die in production when the token bill surprises the CFO in month three. The MCL treats cost as a governed resource like any other. Every agent run logs tokens, model, tool calls, and wall time to the ledger, making cost attributable per agent, per outcome, per line, which is what turns cost from a liability into a sales asset: <em>this root-cause agent costs fourteen dollars per investigation against a forty-thousand-dollar average downtime event.</em> Each agent carries per-run and daily budgets whose exhaustion degrades gracefully (fall back to a cheaper model, or halt and notify the owner), never silently. And the deepest cost lever is the context layer itself: graph-scoped retrieval hands the agent a neighborhood, not a corpus; event-driven triggering replaces polling; the small-model tier absorbs the volume. Better context per token means fewer tokens.</p>
+<h2 id="sec:flywheel">The flywheel: governance exhaust as a compounding asset</h2>
+<p>The provenance ledger was introduced as a trust mechanism. Its second role is the platform’s engine of improvement, and it deserves to be stated as a claim: <em>a correctly designed context layer manufactures its own training data as a byproduct of being governed.</em></p>
+<p>Every mapping the expert confirms is a labeled example for the mapping model. Every extraction correction improves the extraction agent. Every approved or rejected operational proposal extends the evaluation set against which agents and new model versions are scored. Every promotion or demotion decision calibrates the autonomy thresholds themselves (Figure <a href="#fig:flywheel" data-reference-type="ref" data-reference="fig:flywheel">6</a>).</p>
+<figure class="plate" id="fig:flywheel">
+<div class="plate-head"><span class="fig-no">Fig. 06</span><span class="fig-title">The governance-exhaust flywheel</span></div><div class="plate-body"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 860 400" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect width="860" height="400" fill="#FFFFFF"/>
+<path d="M513 88 A128 128 0 0 1 556 200" fill="none" stroke="#75736B" stroke-width="1.1" marker-end="url(#ah4)"/>
+<path d="M513 312 A128 128 0 0 0 556 200" fill="none" stroke="#75736B" stroke-width="1.1" marker-start="url(#ah4)"/>
+<path d="M347 312 A128 128 0 0 0 304 200" fill="none" stroke="#75736B" stroke-width="1.1" marker-end="url(#ah4)"/>
+<path d="M347 88 A128 128 0 0 1 304 200" fill="none" stroke="#75736B" stroke-width="1.1" marker-start="url(#ah4)"/>
+<text x="430" y="192" font-size="13" font-weight="bold" text-anchor="middle" fill="#0E6B54">compounding</text>
+<text x="430" y="212" font-size="13" font-weight="bold" text-anchor="middle" fill="#0E6B54">context</text>
+<rect x="345" y="40" width="170" height="56" rx="6" fill="#F9EAE3" stroke="#BF5637" stroke-width="0.9"/>
+<text x="430" y="64" font-size="13" font-weight="bold" text-anchor="middle" fill="#BF5637">Agents propose</text>
+<text x="430" y="82" font-size="10.5" text-anchor="middle" fill="#BF5637">with cited evidence</text>
+<rect x="560" y="172" width="170" height="56" rx="6" fill="#F8EEDA" stroke="#A16A0F" stroke-width="0.9"/>
+<text x="645" y="196" font-size="13" font-weight="bold" text-anchor="middle" fill="#A16A0F">Experts review</text>
+<text x="645" y="214" font-size="10.5" text-anchor="middle" fill="#A16A0F">approve, correct, reject</text>
+<rect x="345" y="304" width="170" height="56" rx="6" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.9"/>
+<text x="430" y="328" font-size="13" font-weight="bold" text-anchor="middle" fill="#0E6B54">Ledger records</text>
+<text x="430" y="346" font-size="10.5" text-anchor="middle" fill="#0E6B54">every judgment, labeled</text>
+<rect x="120" y="172" width="180" height="56" rx="6" fill="#E4F1EB" stroke="#0E6B54" stroke-width="0.9"/>
+<text x="210" y="196" font-size="13" font-weight="bold" text-anchor="middle" fill="#0E6B54">Models improve</text>
+<text x="210" y="214" font-size="10.5" text-anchor="middle" fill="#0E6B54">retrain; evals grow</text>
+<text x="760" y="120" font-size="11" text-anchor="middle" fill="#75736B">trust is earned,</text>
+<text x="760" y="136" font-size="11" text-anchor="middle" fill="#75736B">not asserted</text>
+<text x="760" y="290" font-size="11" text-anchor="middle" fill="#75736B">autonomy tiers</text>
+<text x="760" y="306" font-size="11" text-anchor="middle" fill="#75736B">backed by record</text>
+<text x="98" y="120" font-size="11" text-anchor="middle" fill="#75736B">deployment cost</text>
+<text x="98" y="136" font-size="11" text-anchor="middle" fill="#75736B">falls per plant</text>
+<text x="98" y="290" font-size="11" text-anchor="middle" fill="#75736B">review burden</text>
+<text x="98" y="306" font-size="11" text-anchor="middle" fill="#75736B">shrinks with use</text>
+</svg>
+</div>
+<figcaption>The governance-exhaust flywheel. Each turn of the loop makes the next turn cheaper and more trusted: the mapping agent’s accuracy at the tenth plant reflects nine plants of expert corrections, and every agent’s autonomy tier is backed by a statistical record any auditor can inspect.</figcaption>
+</figure>
+<p>The consequences compound in three directions. Deployment gets cheaper: the mapping agent’s accuracy on the tenth plant reflects nine plants of expert corrections, so the human review burden, the last remaining deployment cost, shrinks with every installation. Trust gets earned rather than asserted: an agent’s tier is backed by a statistical record any auditor can inspect. And the moat deepens with use rather than eroding: connectors commoditize and models are rented, but a ledger of expert judgments woven through a customer’s own operations is neither.</p>
+<h2 id="anatomy-of-an-investigation">Anatomy of an investigation</h2>
+<p>To make the architecture concrete, consider the scenario from Section 1 running on the MCL. A fill-weight excursion event fires on Line 2, derived by the rules engine from checkweigher data, persisted as an ISA-95 operations event, and published to subscribers. A root-cause agent at tier A1, triggered by its subscription, works the problem through the governed tools; a reliability engineer, the agent’s named owner, closes the loop. Table <a href="#tab:trace" data-reference-type="ref" data-reference="tab:trace">3</a> shows the full trace.</p>
+<div id="tab:trace">
+<table>
+<caption>Investigation trace for a fill-weight excursion on Line 2. Nine minutes end to end, every step attributable, and the plant’s model of itself one fact richer than it was this morning.</caption>
+<thead>
+<tr>
+<th style="text-align: left;"><strong>Time</strong></th>
+<th style="text-align: left;"><strong>Actor</strong></th>
+<th style="text-align: left;"><strong>Action</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">14:02:11</td>
+<td style="text-align: left;">Rules</td>
+<td style="text-align: left;">Fill-weight excursion derived from checkweigher stream; ISA-95 operations event persisted, published to subscribers</td>
+</tr>
+<tr>
+<td style="text-align: left;">14:02:12</td>
+<td style="text-align: left;">Agent</td>
+<td style="text-align: left;">Root-cause agent (tier A1, owner: reliability engineer) triggered by subscription; calls <code>get_asset_context("L2-Filler")</code>. Returned neighborhood: blender <span class="math inline">→</span> filler <span class="math inline">→</span> capper; 41 mapped signals; 3 linked documents; 1 open work order; 1 handover note (Knowledge Overlay)</td>
+</tr>
+<tr>
+<td style="text-align: left;">14:02:19</td>
+<td style="text-align: left;">Agent</td>
+<td style="text-align: left;">Queries time-series around the event; finds pressure oscillation on <code>L2_FIL_PT_004</code> beginning 90 minutes prior</td>
+</tr>
+<tr>
+<td style="text-align: left;">14:02:27</td>
+<td style="text-align: left;">Agent</td>
+<td style="text-align: left;">Graph-scoped search retrieves OEM manual §4.3 on seal degradation signatures; matches handover note: “seal four sounded off after changeover”</td>
+</tr>
+<tr>
+<td style="text-align: left;">14:02:41</td>
+<td style="text-align: left;">Agent</td>
+<td style="text-align: left;">Stages bundle: Insight node “probable seal degradation, head 4” with evidence edges to the pressure window, the handover note, and manual §4.3; a W1 downtime classification; a W2 work-request proposal referencing the seal part number from maintenance history</td>
+</tr>
+<tr>
+<td style="text-align: left;">14:11:03</td>
+<td style="text-align: left;">Human</td>
+<td style="text-align: left;">Reliability engineer inspects each evidence link; corrects classification from “equipment failure” to “wear-out”; approves the bundle</td>
+</tr>
+<tr>
+<td style="text-align: left;">14:11:04</td>
+<td style="text-align: left;">Rules</td>
+<td style="text-align: left;">Atomic commit: insight confirmed, classification verified, work request pushed to the CMMS via the bidirectional connector</td>
+</tr>
+<tr>
+<td style="text-align: left;">14:11:04</td>
+<td style="text-align: left;">Ledger</td>
+<td style="text-align: left;">Correction recorded with full provenance; becomes a labeled example for the downtime classifier’s next fine-tune</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Nothing in this sequence is exotic. What makes it work is that every kind of knowledge the investigation needed (signal, topology, operational record, document, conversation) was reachable from one node through governed tools, that every action the agent took had a defined write tier, a named owner, and an evidence trail, and that the correction the human made on the way to approval was captured, at zero additional effort, as training data.</p>
+<h2 id="deployment-topology">Deployment topology</h2>
+<p>The MCL is hybrid by default (Figure <a href="#fig:deploy" data-reference-type="ref" data-reference="fig:deploy">7</a>). An edge node per site runs the OT connectors, buffering, the rules engine (events must fire during WAN outages), a local time-series cache, and the small-model inference tier. The graph, document store, and agent runtime run in cloud or on-premises clusters per customer policy, with a site-survivability mode maintaining a read replica of each site’s graph subtree at the edge so operational agents keep functioning offline. Multi-site enterprises federate per-site graphs under a global namespace rather than centralizing one monolith: data sovereignty, latency, and blast-radius all argue for federation, and ISA-95’s hierarchy model makes the federation boundaries natural.</p>
+<figure class="plate" id="fig:deploy">
+<div class="plate-head"><span class="fig-no">Fig. 07</span><span class="fig-title">Hybrid, federated deployment</span></div><div class="plate-body"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 860 384" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect width="860" height="384" fill="#FFFFFF"/>
+<rect x="40" y="48" width="320" height="128" rx="6" fill="#FFFFFF" stroke="#75736B" stroke-width="0.9" stroke-dasharray="6 4"/>
+<text x="60" y="76" font-size="13" font-weight="bold" fill="#23252B">Site A: edge node</text>
+<text x="60" y="100" font-size="11" fill="#4A4C52">OT connectors | store-and-forward buffer</text>
+<text x="60" y="118" font-size="11" fill="#4A4C52">rules engine (events fire offline)</text>
+<text x="60" y="136" font-size="11" fill="#4A4C52">time-series cache | SLM inference</text>
+<text x="60" y="154" font-size="11" fill="#4A4C52">graph replica for site survivability</text>
+<rect x="40" y="216" width="320" height="128" rx="6" fill="#FFFFFF" stroke="#75736B" stroke-width="0.9" stroke-dasharray="6 4"/>
+<text x="60" y="244" font-size="13" font-weight="bold" fill="#23252B">Site B: edge node</text>
+<text x="60" y="268" font-size="11" fill="#4A4C52">same footprint, own graph subtree</text>
+<text x="60" y="286" font-size="11" fill="#4A4C52">data-boundary policy applied at source</text>
+<text x="60" y="304" font-size="11" fill="#4A4C52">regulated context served on site</text>
+<text x="60" y="322" font-size="11" fill="#4A4C52">frontier calls only where policy allows</text>
+<line x1="360" y1="112" x2="516" y2="160" stroke="#0E6B54" stroke-width="1.1" marker-end="url(#ah5)" marker-start="url(#ah5)"/>
+<line x1="360" y1="280" x2="516" y2="232" stroke="#0E6B54" stroke-width="1.1" marker-end="url(#ah5)" marker-start="url(#ah5)"/>
+<text x="438" y="120" font-size="11" text-anchor="middle" fill="#0E6B54">sync, federation</text>
+<text x="438" y="276" font-size="11" text-anchor="middle" fill="#0E6B54">per-site subtree</text>
+<rect x="520" y="88" width="300" height="216" rx="6" fill="#E4F1EB" stroke="#0E6B54" stroke-width="1"/>
+<text x="540" y="118" font-size="13" font-weight="bold" fill="#0E6B54">Core: cloud or on-prem, per policy</text>
+<text x="540" y="144" font-size="11" fill="#0E6B54">federated knowledge graph, global namespace</text>
+<text x="540" y="164" font-size="11" fill="#0E6B54">document + vector store</text>
+<text x="540" y="184" font-size="11" fill="#0E6B54">agent runtime | registry | builder</text>
+<text x="540" y="204" font-size="11" fill="#0E6B54">model registry and router</text>
+<text x="540" y="224" font-size="11" fill="#0E6B54">evaluation harness</text>
+<text x="540" y="244" font-size="11" fill="#0E6B54">provenance ledger</text>
+<text x="540" y="264" font-size="11" fill="#0E6B54">governance plane: tiers, budgets, approvals</text>
+<text x="540" y="284" font-size="11" fill="#0E6B54">container-orchestrated, horizontally scaled</text>
+<text x="430" y="368" font-size="11" text-anchor="middle" fill="#75736B">federation, not centralization: data sovereignty, latency, and blast-radius all argue for per-site graphs under a global namespace</text>
+</svg>
+</div>
+<figcaption>Hybrid, federated deployment. Events must fire during WAN outages, so the rules engine and a read replica of the site’s graph subtree live at the edge; the small-model tier keeps regulated context on site. Federation, not centralization: data sovereignty, latency, and blast-radius all argue for per-site graphs under a global namespace.</figcaption>
+</figure>
+<h2 id="related-work-and-positioning">Related work and positioning</h2>
+<p>The category this paper defines has visible ancestors, and honesty about them strengthens the argument. Industrial DataOps platforms, most prominently Cognite Data Fusion<sup>[11]</sup>, whose 2026 acquisition by Schneider Electric at a reported $3.1 billion<sup>[12]</sup> is the clearest market validation of the contextualization thesis, established that a contextualized graph with low-code agent tooling creates enterprise value at scale<sup>[13]</sup>. Standards-based manufacturing data hubs, notably Rhize<sup>[14]</sup>, proved that a strict ISA-95 knowledge graph behind a unified GraphQL API can serve as a real-time operational system of record. Sight Machine’s 2026 platform<sup>[15]</sup> demonstrated agent-constructed semantic models with expert approval and per-element provenance, collapsing deployment from months to days. Edge platforms such as Litmus<sup>[16]</sup> commoditized OT connectivity and pushed inference to the edge. Outcome-packaged agent vendors such as UptimeAI<sup>[17]</sup> demonstrated that evidence-linked, outcome-named agents achieve pilot-to-production rates the industry had stopped believing possible. And CESMII’s i3X initiative<sup>[6]</sup> is establishing an open API contract that contextualized information platforms can choose to expose.</p>
+<p>The MCL synthesizes these threads and adds what none provides alone: conversations and tribal knowledge as first-class graph content; provenance as a schema-level requirement rather than a logging feature; a formal two-axis governance model (write tiers <span class="math inline">×</span> autonomy tiers) for agent write-back; and the governance-exhaust flywheel that makes the whole system compound. ContextWeaver is being built as a reference implementation of this architecture, with the ISA-95 conformance profile at its core and support for open access standards such as i3X under evaluation alongside a native API.</p>
+<h2 id="open-questions">Open questions</h2>
+<p>We flag four questions the architecture leaves genuinely open, as invitations rather than omissions. First, conflict resolution: when the ERP asserts lot X and the operator log asserts lot Y, should precedence rules pick a winner, or should the graph carry dual assertions with confidence, and what should agents do when they encounter the fork? Second, the boundary of the conformance profile: how little ISA-95 is too little before portability claims collapse? Third, cross-customer learning: the flywheel compounds within a customer by right; whether mapping-model improvements can be shared across customers without leaking operational knowledge is a federated-learning problem with real teeth. Fourth, benchmarking: the field lacks a public measure of <em>context quality</em>. Agent task success as a function of context-layer completeness would make the central claim of this paper falsifiable, and we intend to propose such a benchmark.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The industrial AI conversation has been dominated by models: which one, how large, how tuned. This paper has argued that the question is mislocated. Reasoning is now abundant; what remains scarce is a machine-readable, trustworthy, living account of how a plant actually works: its assets, its processes, its documents, and the tribal knowledge in its conversations. We have defined the Manufacturing Context Layer as the system category that provides this account: standards-based in its semantics, total in its sources, transactional in its operation, and governed in a way that lets autonomy be earned in tiers and audited in full.</p>
+<p>The plants that build this layer will find that agents stop being pilots and start being colleagues: ones that cite their evidence, respect their scope, stay within budget, and get better every time a human tells them they were wrong.</p>
+<h2 class="unnumbered" id="references">References</h2>
+<ol>
+<li><p>International Society of Automation. <em>ANSI/ISA-95.00: Enterprise-Control System Integration</em> (IEC 62264). ISA, 2010–2023.</p></li>
+<li><p>OPC Foundation. <em>OPC Unified Architecture Specification</em> (IEC 62541). <a href="https://opcfoundation.org/about/opc-technologies/opc-ua/" class="uri">https://opcfoundation.org/about/opc-technologies/opc-ua/</a>.</p></li>
+<li><p>Eclipse Foundation. <em>Sparkplug Specification v3.0</em> (ISO/IEC 20237). <a href="https://sparkplug.eclipse.org/" class="uri">https://sparkplug.eclipse.org/</a>.</p></li>
+<li><p>GraphQL Foundation. <em>GraphQL Specification</em>. <a href="https://spec.graphql.org/" class="uri">https://spec.graphql.org/</a>.</p></li>
+<li><p>Anthropic. <em>Introducing the Model Context Protocol</em>. November 2024. <a href="https://www.anthropic.com/news/model-context-protocol" class="uri">https://www.anthropic.com/news/model-context-protocol</a>.</p></li>
+<li><p>CESMII: The Smart Manufacturing Institute. <em>Industrial Information Interoperability eXchange (i3X)</em>. <a href="https://www.i3x.dev/" class="uri">https://www.i3x.dev/</a>.</p></li>
+<li><p>A. Hogan et al. Knowledge graphs. <em>ACM Computing Surveys</em>, 54(4):1–37, 2021.</p></li>
+<li><p>P. Lewis et al. Retrieval-augmented generation for knowledge-intensive NLP tasks. In <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 2020.</p></li>
+<li><p>S. Yao et al. ReAct: Synergizing reasoning and acting in language models. In <em>International Conference on Learning Representations (ICLR)</em>, 2023.</p></li>
+<li><p>Gartner. <em>Gartner Predicts 30% of Generative AI Projects Will Be Abandoned After Proof of Concept by End of 2025</em>. Press release, July 2024.</p></li>
+<li><p>Cognite. <em>Cognite Data Fusion: Industrial DataOps Platform</em>. <a href="https://www.cognite.com/en/product/cognite_data_fusion_industrial_dataops_platform" class="uri">https://www.cognite.com/en/product/cognite_data_fusion_industrial_dataops_platform</a>.</p></li>
+<li><p>SiliconANGLE. <em>Schneider Electric acquires Cognite for $3.1B in industrial AI push</em>. June 2026. <a href="https://siliconangle.com/2026/06/30/schneider-electric-acquires-cognite-3-1b-industrial-ai-push/" class="uri">https://siliconangle.com/2026/06/30/schneider-electric-acquires-cognite-3-1b-industrial-ai-push/</a>.</p></li>
+<li><p>Forrester Consulting. <em>The Total Economic Impact of Cognite Data Fusion</em>. Commissioned study, 2022.</p></li>
+<li><p>Rhize (Libre Technologies). <em>The Manufacturing Data Hub: Platform Documentation</em>. <a href="https://docs.rhize.com/" class="uri">https://docs.rhize.com/</a>.</p></li>
+<li><p>Sight Machine. <em>Sight Machine Launches Agentic Manufacturing Platform</em>. Press release, June 2026. <a href="https://www.sightmachine.com/news-agentic-manufacturing-platform" class="uri">https://www.sightmachine.com/news-agentic-manufacturing-platform</a>.</p></li>
+<li><p>Litmus Automation. <em>Litmus Edge: Industrial Data Platform for AI</em>. <a href="https://litmus.io/" class="uri">https://litmus.io/</a>.</p></li>
+<li><p>UptimeAI. <em>AI Reasoning Agents for Industrial Operations</em>. <a href="https://www.uptimeai.com/products/" class="uri">https://www.uptimeai.com/products/</a>.</p></li>
+</ol>
+
+</main>
+<footer>ContextWeaver &middot; The Manufacturing Context Layer &middot; July 2026</footer>
+</body>
+</html>

@@ -28,6 +28,8 @@ import { CTABand } from "@/components/cta-band"
 import { HeroStackDiagram } from "@/components/hero-stack-diagram"
 import { AgentsAtWorkDashboard } from "@/components/agents-at-work-dashboard"
 import { LLMModelDiagram } from "@/components/llm-model-diagram"
+import { useWhitepaperRibbonVisible } from "@/lib/use-whitepaper-ribbon"
+import { cn } from "@/lib/utils"
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -256,6 +258,7 @@ export default function HomePage() {
   const trustInView = useInView(trustRef, { once: true, margin: "-100px" })
 
   const currentYear = new Date().getFullYear()
+  const showRibbon = useWhitepaperRibbonVisible(true)
 
   return (
     <>
@@ -267,7 +270,12 @@ export default function HomePage() {
         className="min-h-screen"
       >
         {/* ── Hero ── */}
-        <section className="relative py-16 lg:py-20 px-4 border-b border-border/50 overflow-hidden">
+        <section
+          className={cn(
+            "relative px-4 border-b border-border/50 overflow-hidden transition-[padding] duration-300",
+            showRibbon ? "pt-[104px] pb-16 lg:pt-[120px] lg:pb-20" : "py-16 lg:py-20",
+          )}
+        >
           <div className="max-w-7xl mx-auto">
             <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-10 lg:gap-16 items-center">
               <div>

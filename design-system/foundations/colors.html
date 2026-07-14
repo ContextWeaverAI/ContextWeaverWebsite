@@ -1,0 +1,81 @@
+<!-- @dsCard group="Foundations" title="Color Tokens" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Color Tokens · ContextWeaver</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --card: oklch(0.995 0.002 80);
+    --primary: oklch(0.22 0.008 60);
+    --primary-foreground: oklch(0.98 0.003 80);
+    --secondary: oklch(0.94 0.005 80);
+    --muted: oklch(0.93 0.006 80);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.88 0.006 80);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Outfit", system-ui, sans-serif;
+    color: var(--foreground);
+    background-color: var(--background);
+    background-image:
+      linear-gradient(to right, oklch(0.2 0.008 60 / 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, oklch(0.2 0.008 60 / 0.05) 1px, transparent 1px),
+      radial-gradient(circle at 1px 1px, oklch(0.2 0.008 60 / 0.35) 1.2px, transparent 1.4px),
+      radial-gradient(ellipse 70% 40% at 50% -10%, oklch(0.9 0.01 80 / 0.5), transparent);
+    background-size: 96px 100%, 100% 96px, 24px 24px, auto;
+    padding: 48px;
+  }
+  h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .sub { color: var(--muted-foreground); font-size: 0.9rem; margin: 0 0 32px; }
+  h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--orange);
+       font-weight: 600; margin: 32px 0 14px; font-variant-numeric: tabular-nums; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+  .swatch {
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; box-shadow: 0 1px 2px oklch(0.2 0.005 60 / 0.05);
+  }
+  .chip { height: 76px; }
+  .meta { padding: 10px 12px; }
+  .meta .name { font-size: 0.82rem; font-weight: 600; }
+  .meta .val { font-size: 0.68rem; color: var(--muted-foreground);
+               font-family: ui-monospace, SFMono-Regular, Menlo, monospace; margin-top: 2px; }
+</style>
+</head>
+<body>
+  <h1>Color</h1>
+  <p class="sub">OKLCH warm-neutral palette — charcoal ink on off-white, one amber accent for calls to action.</p>
+
+  <h2>Surface &amp; Ink</h2>
+  <div class="grid">
+    <div class="swatch"><div class="chip" style="background:oklch(0.975 0.004 80)"></div><div class="meta"><div class="name">background</div><div class="val">0.975 0.004 80</div></div></div>
+    <div class="swatch"><div class="chip" style="background:oklch(0.995 0.002 80)"></div><div class="meta"><div class="name">card</div><div class="val">0.995 0.002 80</div></div></div>
+    <div class="swatch"><div class="chip" style="background:oklch(0.2 0.005 60)"></div><div class="meta"><div class="name">foreground</div><div class="val">0.2 0.005 60</div></div></div>
+    <div class="swatch"><div class="chip" style="background:oklch(0.48 0.008 60)"></div><div class="meta"><div class="name">muted-foreground</div><div class="val">0.48 0.008 60</div></div></div>
+  </div>
+
+  <h2>Primary &amp; Neutral</h2>
+  <div class="grid">
+    <div class="swatch"><div class="chip" style="background:oklch(0.22 0.008 60)"></div><div class="meta"><div class="name">primary</div><div class="val">0.22 0.008 60</div></div></div>
+    <div class="swatch"><div class="chip" style="background:oklch(0.94 0.005 80)"></div><div class="meta"><div class="name">secondary</div><div class="val">0.94 0.005 80</div></div></div>
+    <div class="swatch"><div class="chip" style="background:oklch(0.93 0.006 80)"></div><div class="meta"><div class="name">muted</div><div class="val">0.93 0.006 80</div></div></div>
+    <div class="swatch"><div class="chip" style="background:oklch(0.88 0.006 80)"></div><div class="meta"><div class="name">border</div><div class="val">0.88 0.006 80</div></div></div>
+  </div>
+
+  <h2>Accent — CTA</h2>
+  <div class="grid">
+    <div class="swatch"><div class="chip" style="background:oklch(0.62 0.21 35)"></div><div class="meta"><div class="name">orange / accent-cta</div><div class="val">0.62 0.21 35</div></div></div>
+    <div class="swatch"><div class="chip" style="background:oklch(0.7 0.2 45)"></div><div class="meta"><div class="name">cta gradient end</div><div class="val">0.7 0.2 45</div></div></div>
+    <div class="swatch"><div class="chip" style="background:oklch(0.5 0.18 25)"></div><div class="meta"><div class="name">destructive</div><div class="val">0.5 0.18 25</div></div></div>
+  </div>
+</body>
+</html>

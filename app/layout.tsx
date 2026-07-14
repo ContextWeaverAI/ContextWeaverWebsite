@@ -11,7 +11,7 @@ const outfit = Outfit({
   display: "swap",
 })
 
-const SITE_URL = "https://www.contextweaver.info"
+const SITE_URL = "https://getcontextweaver.com"
 const SITE_TITLE = "ContextWeaver"
 const SITE_DESCRIPTION =
   "Agentic layers over your entire manufacturing stack. ContextWeaver builds semantic and agent-application layers on top of your SCADA, MES, and ERP systems — and trains your team to extend them."

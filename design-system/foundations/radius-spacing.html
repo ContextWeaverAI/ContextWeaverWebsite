@@ -1,0 +1,70 @@
+<!-- @dsCard group="Foundations" title="Radius & Spacing" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Radius &amp; Spacing · ContextWeaver</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --card: oklch(0.995 0.002 80);
+    --secondary: oklch(0.94 0.005 80);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.88 0.006 80);
+    --radius: 1rem;
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+    --radius-2xl: calc(var(--radius) + 8px);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Outfit", system-ui, sans-serif; color: var(--foreground);
+    background: var(--background); padding: 48px; }
+  h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .sub { color: var(--muted-foreground); font-size: 0.9rem; margin: 0 0 32px; }
+  h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--orange);
+    font-weight: 600; margin: 32px 0 16px; }
+  .radii { display: flex; gap: 18px; flex-wrap: wrap; }
+  .r { width: 96px; text-align: center; }
+  .r .box { height: 96px; background: var(--secondary); border: 1px solid var(--border); }
+  .r .lbl { font-size: 0.72rem; margin-top: 8px; font-weight: 600; }
+  .r .val { font-size: 0.64rem; color: var(--muted-foreground);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .scale { display: flex; align-items: flex-end; gap: 12px; }
+  .s { text-align: center; }
+  .s .bar { background: var(--orange); border-radius: 3px; width: 34px; }
+  .s .lbl { font-size: 0.62rem; color: var(--muted-foreground); margin-top: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+</style>
+</head>
+<body>
+  <h1>Radius &amp; Spacing</h1>
+  <p class="sub">Generous 1rem base radius softens the industrial grid. Spacing steps on a 4px rhythm.</p>
+
+  <h2>Radius scale</h2>
+  <div class="radii">
+    <div class="r"><div class="box" style="border-radius:var(--radius-sm)"></div><div class="lbl">sm</div><div class="val">12px</div></div>
+    <div class="r"><div class="box" style="border-radius:var(--radius-md)"></div><div class="lbl">md</div><div class="val">14px</div></div>
+    <div class="r"><div class="box" style="border-radius:var(--radius-lg)"></div><div class="lbl">lg</div><div class="val">16px</div></div>
+    <div class="r"><div class="box" style="border-radius:var(--radius-xl)"></div><div class="lbl">xl</div><div class="val">20px</div></div>
+    <div class="r"><div class="box" style="border-radius:var(--radius-2xl)"></div><div class="lbl">2xl</div><div class="val">24px</div></div>
+    <div class="r"><div class="box" style="border-radius:9999px"></div><div class="lbl">full</div><div class="val">pill</div></div>
+  </div>
+
+  <h2>Spacing rhythm (4px base)</h2>
+  <div class="scale">
+    <div class="s"><div class="bar" style="height:8px"></div><div class="lbl">2</div></div>
+    <div class="s"><div class="bar" style="height:16px"></div><div class="lbl">4</div></div>
+    <div class="s"><div class="bar" style="height:24px"></div><div class="lbl">6</div></div>
+    <div class="s"><div class="bar" style="height:32px"></div><div class="lbl">8</div></div>
+    <div class="s"><div class="bar" style="height:48px"></div><div class="lbl">12</div></div>
+    <div class="s"><div class="bar" style="height:64px"></div><div class="lbl">16</div></div>
+    <div class="s"><div class="bar" style="height:96px"></div><div class="lbl">24</div></div>
+  </div>
+</body>
+</html>

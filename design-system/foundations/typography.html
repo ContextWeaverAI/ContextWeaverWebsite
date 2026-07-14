@@ -1,0 +1,52 @@
+<!-- @dsCard group="Foundations" title="Typography" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Typography · ContextWeaver</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.88 0.006 80);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Outfit", system-ui, sans-serif; color: var(--foreground);
+    background-color: var(--background);
+    background-image: radial-gradient(circle at 1px 1px, oklch(0.2 0.008 60 / 0.25) 1.2px, transparent 1.4px);
+    background-size: 24px 24px; padding: 48px 56px;
+  }
+  .eyebrow { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--orange);
+    font-weight: 600; margin-bottom: 24px; }
+  .row { display: flex; align-items: baseline; gap: 18px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .tag { flex: 0 0 92px; font-size: 0.66rem; color: var(--muted-foreground);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; padding-top: 8px; }
+  .d1 { font-size: 3.5rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+  .h1 { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.02em; }
+  .h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.015em; }
+  .h3 { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em; }
+  .body { font-size: 1.0625rem; line-height: 1.75; color: var(--muted-foreground); max-width: 46ch; }
+  .small { font-size: 0.85rem; color: var(--muted-foreground); }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums;
+    font-size: 0.85rem; letter-spacing: 0.04em; color: var(--foreground); }
+  .num { color: var(--orange); }
+</style>
+</head>
+<body>
+  <div class="eyebrow">Typeface — Outfit</div>
+  <div class="row"><div class="tag">display</div><div class="d1">Ship context to every layer.</div></div>
+  <div class="row"><div class="tag">h1 / 700</div><div class="h1">Agentic layers over your stack</div></div>
+  <div class="row"><div class="tag">h2 / 700</div><div class="h2">Semantic &amp; agent-application layers</div></div>
+  <div class="row"><div class="tag">h3 / 600</div><div class="h3">On top of SCADA, MES, and ERP</div></div>
+  <div class="row"><div class="tag">body / 400</div><div class="body">ContextWeaver builds semantic layers on top of your manufacturing systems — and trains your team to extend them.</div></div>
+  <div class="row"><div class="tag">small</div><div class="small">Supporting caption &amp; metadata</div></div>
+  <div class="row" style="border-bottom:none"><div class="tag">mono</div><div class="mono"><span class="num">01</span> · TABULAR NUMS · 1,240 units · 99.9%</div></div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!-- @dsCard group="Foundations" title="Signature Backgrounds" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Signature Backgrounds · ContextWeaver</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.88 0.006 80);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Outfit", system-ui, sans-serif; color: var(--foreground);
+    background: var(--background); padding: 40px; }
+  h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .sub { color: var(--muted-foreground); font-size: 0.9rem; margin: 0 0 28px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .tile { height: 190px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+    position: relative; }
+  .tile .cap { position: absolute; left: 14px; bottom: 12px; font-size: 0.72rem; font-weight: 600;
+    background: oklch(0.995 0.002 80 / 0.85); padding: 4px 10px; border-radius: 8px;
+    border: 1px solid var(--border); backdrop-filter: blur(4px); }
+
+  .t-grid { background-color: var(--background);
+    background-image:
+      linear-gradient(to right, oklch(0.2 0.008 60 / 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, oklch(0.2 0.008 60 / 0.05) 1px, transparent 1px);
+    background-size: 48px 48px; }
+  .t-dots { background-color: var(--background);
+    background-image: radial-gradient(circle at 1px 1px, oklch(0.2 0.008 60 / 0.35) 1.2px, transparent 1.4px);
+    background-size: 24px 24px; }
+  .t-glow { background-color: var(--background);
+    background-image:
+      radial-gradient(ellipse 70% 60% at 50% -10%, oklch(0.9 0.01 80 / 0.7), transparent),
+      radial-gradient(ellipse 50% 40% at 100% 30%, oklch(0.85 0.1 45 / 0.35), transparent),
+      radial-gradient(ellipse 55% 45% at 0% 90%, oklch(0.85 0.08 45 / 0.25), transparent); }
+  .t-noise { background-color: var(--background); }
+  .t-noise::after { content: ""; position: absolute; inset: 0; opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+</style>
+</head>
+<body>
+  <h1>Signature Backgrounds</h1>
+  <p class="sub">Layered fixed background — engineering grid + dot lattice + warm radial glow, finished with a fine noise grain.</p>
+  <div class="grid">
+    <div class="tile t-grid"><span class="cap">Engineering grid — 96px lines</span></div>
+    <div class="tile t-dots"><span class="cap">Dot lattice — 24px</span></div>
+    <div class="tile t-glow"><span class="cap">Warm radial glow</span></div>
+    <div class="tile t-noise"><span class="cap">Fractal noise overlay — 3.5–5%</span></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 460" font-family="'Outfit','Helvetica Neue',Arial,sans-serif">
+<style>
+.bg{fill:#f6f4f1}
+.title{fill:#221f1c;font-size:30px;font-weight:700;letter-spacing:-.5px}
+.sub{fill:#6f6b66;font-size:15px;font-weight:500}
+.label{fill:#2b2926;font-size:15px;font-weight:600}
+.acc{fill:#cf4a1a;font-size:16px;font-weight:700}
+.box{fill:#fefdfb;stroke:#c3bdb4;stroke-width:1.6}
+.boxacc{fill:#f9e6dd;stroke:#cf4a1a;stroke-width:2}
+.conn{stroke:#9a938b;stroke-width:1.6;fill:none}
+.spoke{stroke:#cf4a1a;stroke-width:2.2;fill:none}
+.leg{fill:#6f6b66;font-size:13px;font-weight:500}
+</style>
+<rect class="bg" x="0" y="0" width="680" height="460" rx="18"/>
+<text class="title" x="42" y="56">A car isn&#39;t a tree.</text>
+<text class="sub" x="42" y="82">Which is exactly why the tidy org-chart model breaks.</text>
+
+<!-- tree connectors -->
+<g class="conn">
+<path d="M340 176 V208"/><path d="M94 208 H586"/>
+<path d="M94 208 V240"/><path d="M258 208 V240"/><path d="M422 208 V240"/><path d="M586 208 V240"/>
+</g>
+
+<!-- car -->
+<rect class="box" x="275" y="132" width="130" height="44" rx="10"/>
+<text class="label" x="340" y="159" text-anchor="middle">Car</text>
+
+<!-- wheels -->
+<rect class="box" x="24" y="240" width="140" height="46" rx="10"/><text class="label" x="94" y="268" text-anchor="middle">Front&#8209;left</text>
+<rect class="box" x="188" y="240" width="140" height="46" rx="10"/><text class="label" x="258" y="268" text-anchor="middle">Front&#8209;right</text>
+<rect class="box" x="352" y="240" width="140" height="46" rx="10"/><text class="label" x="422" y="268" text-anchor="middle">Rear&#8209;left</text>
+<rect class="box" x="516" y="240" width="140" height="46" rx="10"/><text class="label" x="586" y="268" text-anchor="middle">Rear&#8209;right</text>
+
+<!-- shared ABS edges -->
+<g class="spoke">
+<line x1="252" y1="352" x2="96" y2="288" stroke-dasharray="6 5"/>
+<line x1="302" y1="352" x2="258" y2="288" stroke-dasharray="6 5"/>
+<line x1="380" y1="352" x2="422" y2="288" stroke-dasharray="6 5"/>
+<line x1="430" y1="352" x2="584" y2="288" stroke-dasharray="6 5"/>
+</g>
+
+<!-- shared box -->
+<rect class="boxacc" x="196" y="352" width="288" height="56" rx="12"/>
+<text class="acc" x="340" y="378" text-anchor="middle">ABS brake computer</text>
+<text class="sub" x="340" y="398" text-anchor="middle">reads all four wheels at once</text>
+
+<!-- legend -->
+<line class="conn" x1="150" y1="434" x2="186" y2="434"/>
+<text class="leg" x="194" y="438" text-anchor="start">the tidy tree (one parent)</text>
+<line class="spoke" x1="392" y1="434" x2="428" y2="434" stroke-dasharray="6 5"/>
+<text class="leg" x="436" y="438" text-anchor="start">how it really works (belongs to all)</text>
+</svg>

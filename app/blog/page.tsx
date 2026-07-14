@@ -2,10 +2,11 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { ArrowUpRight, BookOpen, Clock, Layers } from "lucide-react"
+import { ArrowUpRight, BookOpen, Clock, FileText, Layers } from "lucide-react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { CTABand } from "@/components/cta-band"
+import { WhitepaperPreview } from "@/components/whitepaper-preview"
 import { getSeriesParts } from "./posts"
 
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -178,12 +179,69 @@ export default function BlogPage() {
           </div>
         </section>
 
-        {/* ── More coming ── */}
+        {/* ── White paper ── */}
         <section className="py-12 lg:py-16 px-4 border-b border-border/50">
           <div className="max-w-6xl mx-auto">
             <div className="inline-flex items-center gap-3 text-[11px] font-medium tracking-[0.2em] text-muted-foreground uppercase mb-8">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--orange)]" />
               <span className="font-mono tabular-nums">02</span>
+              <span className="w-6 h-px bg-border" />
+              <span>White paper</span>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.7, ease: EASE }}
+              className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] gap-10 lg:gap-16 items-center rounded-3xl border border-border bg-secondary/20 p-8 lg:p-12"
+            >
+              <WhitepaperPreview size="card" className="max-w-xs mx-auto lg:mx-0" />
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full bg-[var(--orange)]/10 text-[var(--orange)] px-3 py-1 text-[11px] font-semibold tracking-wide uppercase mb-6">
+                  <FileText className="w-3.5 h-3.5" />
+                  White paper
+                </span>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground leading-[1.08] mb-4">
+                  The Manufacturing Context Layer
+                </h2>
+                <p className="text-sm lg:text-base text-muted-foreground leading-relaxed max-w-md mb-6">
+                  Manufacturers have spent a decade centralizing plant data — but the bottleneck to
+                  production AI isn&apos;t connectivity or storage. It&apos;s context. A reference
+                  architecture for governed, agent-ready operational context: connectors, an ISA-95
+                  knowledge graph, and governed agents.
+                </p>
+                <div className="flex items-center gap-4 font-mono text-[11px] tabular-nums text-muted-foreground tracking-wider mb-8">
+                  <span className="inline-flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5" />7 figures
+                  </span>
+                  <span className="w-4 h-px bg-border" />
+                  <span className="inline-flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5" />
+                    ~20 min read
+                  </span>
+                </div>
+                <Link
+                  href="/whitepaper"
+                  className="group inline-flex items-stretch rounded-full bg-foreground text-background hover:bg-foreground/90 transition-colors overflow-hidden"
+                >
+                  <span className="inline-flex items-center px-6 py-3 text-sm font-semibold">
+                    Read the white paper
+                  </span>
+                  <span className="inline-flex items-center justify-center w-11 my-1 mr-1 rounded-full bg-[var(--orange)] text-[var(--orange-foreground)]">
+                    <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </span>
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── More coming ── */}
+        <section className="py-12 lg:py-16 px-4 border-b border-border/50">
+          <div className="max-w-6xl mx-auto">
+            <div className="inline-flex items-center gap-3 text-[11px] font-medium tracking-[0.2em] text-muted-foreground uppercase mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--orange)]" />
+              <span className="font-mono tabular-nums">03</span>
               <span className="w-6 h-px bg-border" />
               <span>More</span>
             </div>

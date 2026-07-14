@@ -34,8 +34,9 @@ Two kinds of post:
 - The "Sources & citations" card in `blog-article.tsx` is gated to the **voice series id**
   (it links to a voice-only sources page) — not to `series` in general. Any new series that
   needs sources must add its own gate + page.
-- The article-footer `CTABand` is currently voice-worded for all posts — retheme per series
-  when it matters.
+- The article-footer `CTABand` is themed per post in `blog-article.tsx`: voice series → the
+  voice pitch; everything else → the context-layer pitch. Add a branch when a series needs
+  its own CTA.
 
 ## Adding a post
 

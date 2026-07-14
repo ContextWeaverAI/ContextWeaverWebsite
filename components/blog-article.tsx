@@ -15,6 +15,21 @@ export function BlogArticle({ post, html }: { post: BlogPost; html: string }) {
   const parts = series ? getSeriesParts(series.id) : []
   const { prev, next } = getSeriesNeighbors(post.slug)
 
+  // CTA is themed per post: the voice series keeps its voice pitch; everything
+  // else (the Smart Factory series, standalone posts) gets the context-layer pitch.
+  const cta =
+    series?.id === "voice-agent-tradeoffs"
+      ? {
+          title: "Want a tour of a production voice agent?",
+          description:
+            "ContextWeaver builds production voice agents for Indian manufacturing: work orders, preventive maintenance, voice intake, WhatsApp escalation. If you want a deep-engineering walkthrough, talk to us.",
+        }
+      : {
+          title: "Your plant moves the data. What understands it?",
+          description:
+            "ContextWeaver builds the Manufacturing Context Layer: a governed, standards-based model of your plant — its assets, its history, its documents, and the tribal knowledge in between — that AI agents can actually reason over. If your UNS moves the data but nothing on the other end understands it, talk to us.",
+        }
+
   return (
     <>
       <Navbar />
@@ -245,10 +260,7 @@ export function BlogArticle({ post, html }: { post: BlogPost; html: string }) {
           )}
         </section>
 
-        <CTABand
-          title="Want a tour of a production voice agent?"
-          description="ContextWeaver builds production voice agents for Indian manufacturing: work orders, preventive maintenance, voice intake, WhatsApp escalation. If you want a deep-engineering walkthrough, talk to us."
-        />
+        <CTABand title={cta.title} description={cta.description} />
       </motion.main>
       <Footer />
     </>

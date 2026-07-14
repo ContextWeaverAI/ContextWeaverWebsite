@@ -19,9 +19,11 @@ So where does that computer go on your tidy tree? Under the front-left wheel? It
 
 There's no clean slot for it. Because a car isn't really a tree. It's a web of parts that share and depend on each other.
 
-Factories are the same, just bigger. And the popular blueprint for a "smart factory" — the Unified Namespace — is exactly that tidy tree. It works beautifully right up until the first shared thing: one compressor feeding every line, one chiller cooling two at once, one batch flowing across the whole plant.
+A factory is the same, just bigger.
 
-Real operations aren't trees. Pretending they are is where it quietly breaks.
+Making one "smart" starts the exact same tidy way: name and organize every machine and signal into one clean hierarchy. In the industry it's called a Unified Namespace — and it's a genuine, important first step.
+
+But a plant, like a car, is a web. The moment you hit something shared, the tidy tree cracks. Getting that first step right — and knowing exactly where it stops — is the whole game.
 
 Part 1 of a new series: Deconstructing the Smart Factory.
 

@@ -1,10 +1,37 @@
-# LinkedIn post — Unified Namespace (lay-audience, bottling-line hooks)
+# LinkedIn post — Unified Namespace (lay-audience hooks)
 
 **Link (goes in the first comment):** https://getcontextweaver.com/blog/unified-namespace
+**Image for Option A:** `assets/linkedin-car-not-a-tree.png`
 
 ---
 
-## Option A — "The tidy chart breaks" (shared-resource angle)
+## Option A — Cars & brakes (RECOMMENDED — has a matching image)
+
+Quick thought experiment. Organize a car the tidy way.
+
+Car → four wheels. Each wheel gets its own tire, its own brake, its own sensor. A neat little tree, everything in its place.
+
+Now — how does ABS actually work?
+
+The moment you stomp the brakes, one computer reads all four wheel sensors at once, spots the wheel that's about to lock up, and pumps that brake dozens of times a second.
+
+So where does that computer go on your tidy tree? Under the front-left wheel? It's watching all four. In its own little box off to the side? Then you've hidden the one thing that matters — it depends on every wheel at the same time.
+
+There's no clean slot for it. Because a car isn't really a tree. It's a web of parts that share and depend on each other.
+
+Factories are the same, just bigger. And the popular blueprint for a "smart factory" — the Unified Namespace — is exactly that tidy tree. It works beautifully right up until the first shared thing: one compressor feeding every line, one chiller cooling two at once, one batch flowing across the whole plant.
+
+Real operations aren't trees. Pretending they are is where it quietly breaks.
+
+Part 1 of a new series: Deconstructing the Smart Factory.
+
+(link in the comments 👇)
+
+#Manufacturing #SmartFactory #IIoT #Industry40
+
+---
+
+## Option B — Bottling line, "the tidy chart breaks"
 
 Ever seen how a soda bottle gets made?
 
@@ -30,34 +57,7 @@ I wrote up why. Part 1 of a new series: Deconstructing the Smart Factory.
 
 ---
 
-## Option B — "Four simple questions" (no-memory angle)
-
-A bottle comes off the line only half full. Something's off — and you've got about a minute before hundreds more go out the door.
-
-Modern factories have a slick system that instantly tells you the exact pressure inside that filling machine right now. No waiting. Impressive.
-
-Then you ask the obvious follow-ups:
-
-- What was that pressure doing five minutes ago? → no idea, it only knows "right now"
-- What else does this machine rely on? → can't tell you
-- Has this happened before? → no memory
-- Did someone last shift already flag it? → that's in a WhatsApp group, not the system
-
-Four simple questions. It answered none.
-
-That's the odd truth about the technology everyone in manufacturing is excited about — the "Unified Namespace." It's brilliant at telling you what's happening this second, and it remembers nothing. It moves information around the factory; it doesn't actually understand any of it.
-
-A genuinely smart factory needs both: the fast reflexes, and a real memory.
-
-Part 1 of a new series — Deconstructing the Smart Factory — breaks it down.
-
-(link in the comments 👇)
-
-#Manufacturing #SmartFactory #IIoT #Industry40
-
----
-
-## First comment (paste this below the post, with the link)
+## First comment (paste below the post, with the link)
 
 Full piece here 👇
 https://getcontextweaver.com/blog/unified-namespace
@@ -67,8 +67,7 @@ Part 1 of Deconstructing the Smart Factory — more coming.
 ---
 
 ## Notes
-- Grounded in a soda-bottling line so a non-technical reader is hooked before any jargon.
-- Link lives in the first comment (LinkedIn throttles posts with outbound links); the post
-  itself ends on "link in the comments 👇".
-- Option A = the shared-resource / "not a tree" idea; Option B = the "moves data, no memory"
-  idea. Both map to sections of the article.
+- Option A is grounded in ABS/brakes — near-universal, and it has the matching
+  `assets/linkedin-car-not-a-tree.png` image (same design scheme as the article diagrams).
+- Link lives in the first comment (LinkedIn throttles posts with outbound links).
+- Attaching the image also lifts reach; the post text stands alone without it.

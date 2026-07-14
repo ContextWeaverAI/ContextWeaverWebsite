@@ -224,6 +224,38 @@ with typed relationships, documents, and human context &mdash; none of which a
 transport layer was ever designed to hold. It&rsquo;s a nervous system without a
 memory or a model.</p>
 <hr />
+<h2 id="the-world-isnt-a-tree">The world isn&rsquo;t a tree</h2>
+<p>Here&rsquo;s the part that looks trivial on a slide and turns into months of
+meetings: the namespace is a <strong>strict hierarchy</strong>, and a real plant
+isn&rsquo;t one. <code>enterprise/site/area/line/cell/asset</code> is a tree &mdash;
+every asset has exactly one parent. That holds right up until the first resource
+that&rsquo;s <em>shared</em>, because a tree cannot say &ldquo;belongs to many.&rdquo;</p>
+<p>Take the glycol loop from earlier. One refrigeration skid chills the jacket on Line
+2&rsquo;s filler <em>and</em> Line 4&rsquo;s. Where does it live &mdash; under
+<code>line2</code>, under <code>line4</code>, or under a <code>utilities</code> branch
+where the fact that it&rsquo;s load-bearing for two production lines quietly vanishes?
+Every option is wrong in a different way. And it&rsquo;s everywhere once you look:</p>
+<ul>
+<li><strong>Shared utilities.</strong> One compressor house feeding every line; a
+boiler, a DI-water system, an electrical feeder that spans areas. Physically upstream
+of everything, structurally a child of nothing.</li>
+<li><strong>A CIP skid</strong> cleaning a dozen tanks across the plant on a rotating
+schedule &mdash; time-multiplexed ownership that no fixed path can express.</li>
+<li><strong>A batch that flows reactor &rarr; filter &rarr; dryer &rarr; packaging</strong>,
+crossing the very physical units the tree keeps in separate branches. The equipment
+hierarchy (ISA-95) and the batch genealogy (ISA-88) are two different graphs stapled to
+the same steel.</li>
+<li><strong>A mold or die</strong> whose history follows the tool as it moves between
+presses &mdash; not the press it happens to sit in this week.</li>
+</ul>
+<p>The real topology is a <strong>graph</strong>: many-to-many, full of lateral
+dependencies and things that move. Force it into one tree and you&rsquo;re choosing a
+single spanning path and dropping every edge that doesn&rsquo;t fit &mdash; either
+duplicating a resource under several branches (congratulations, you now own a sync
+problem) or crowning one arbitrary parent and losing the rest. It&rsquo;s the lesson
+software keeps relearning: filesystems, org charts, category trees &mdash; every strict
+hierarchy eventually meets the thing that belongs in two places at once.</p>
+<hr />
 <h2 id="the-hard-parts">What it costs to run one</h2>
 <p>None of this is free, and the marketing rarely mentions the bill. A UNS is
 production infrastructure, and standing one up runs into the same walls any

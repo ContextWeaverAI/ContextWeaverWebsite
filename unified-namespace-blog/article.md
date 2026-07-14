@@ -69,6 +69,21 @@ Five questions. The UNS answered one. The rest need history, a real domain model
 
 ---
 
+## The world isn't a tree
+
+Here's the part that looks trivial on a slide and turns into months of meetings: the namespace is a **strict hierarchy**, and a real plant isn't one. `enterprise/site/area/line/cell/asset` is a tree — every asset has exactly one parent. That holds right up until the first resource that's *shared*, because a tree cannot say "belongs to many."
+
+Take the glycol loop from earlier. One refrigeration skid chills the jacket on Line 2's filler *and* Line 4's. Where does it live — under `line2`, under `line4`, or under a `utilities` branch where the fact that it's load-bearing for two production lines quietly vanishes? Every option is wrong in a different way. And it's everywhere once you look:
+
+- **Shared utilities.** One compressor house feeding every line; a boiler, a DI-water system, an electrical feeder that spans areas. Physically upstream of everything, structurally a child of nothing.
+- **A CIP skid** cleaning a dozen tanks across the plant on a rotating schedule — time-multiplexed ownership that no fixed path can express.
+- **A batch that flows reactor → filter → dryer → packaging**, crossing the very physical units the tree keeps in separate branches. The equipment hierarchy (ISA-95) and the batch genealogy (ISA-88) are two different graphs stapled to the same steel.
+- **A mold or die** whose history follows the tool as it moves between presses — not the press it happens to sit in this week.
+
+The real topology is a **graph**: many-to-many, full of lateral dependencies and things that move. Force it into one tree and you're choosing a single spanning path and dropping every edge that doesn't fit — either duplicating a resource under several branches (congratulations, you now own a sync problem) or crowning one arbitrary parent and losing the rest. It's the lesson software keeps relearning: filesystems, org charts, category trees — every strict hierarchy eventually meets the thing that belongs in two places at once.
+
+---
+
 ## What it costs to run one
 
 None of this is free, and the marketing rarely mentions the bill. A UNS is production infrastructure, and standing one up runs into the same walls any distributed system does.

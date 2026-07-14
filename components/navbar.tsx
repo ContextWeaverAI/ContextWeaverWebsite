@@ -44,7 +44,10 @@ export function Navbar() {
     >
       {showRibbon && (
         <div className="relative h-10 flex items-center justify-center bg-foreground text-background px-10 text-xs sm:text-sm font-medium">
-          <Link href="/whitepaper" className="group inline-flex items-center gap-1.5 hover:underline underline-offset-2">
+          <Link
+            href="/whitepaper"
+            className="group inline-flex items-center gap-1.5 hover:underline underline-offset-2 outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/60 rounded-sm"
+          >
             <span className="hidden sm:inline">New —</span>
             <span>Read our white paper: The Manufacturing Context Layer</span>
             <ArrowUpRight className="w-3.5 h-3.5 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -53,7 +56,7 @@ export function Navbar() {
             type="button"
             aria-label="Dismiss announcement"
             onClick={() => dismissWhitepaperRibbon()}
-            className="absolute right-3 sm:right-4 inline-flex p-1 text-background/70 hover:text-background transition-colors"
+            className="absolute right-3 sm:right-4 inline-flex p-1 text-background/70 hover:text-background transition-colors outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-background/60 rounded-sm"
           >
             <X className="w-3.5 h-3.5" />
           </button>

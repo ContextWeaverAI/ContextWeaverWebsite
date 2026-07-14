@@ -21,7 +21,11 @@ export function WhitepaperGate() {
   const [company, setCompany] = useState("")
 
   useEffect(() => {
-    setUnlocked(window.localStorage.getItem(UNLOCK_KEY) === "1")
+    try {
+      setUnlocked(window.localStorage.getItem(UNLOCK_KEY) === "1")
+    } catch {
+      setUnlocked(false)
+    }
     setCheckedStorage(true)
   }, [])
 
@@ -35,7 +39,11 @@ export function WhitepaperGate() {
         body: JSON.stringify({ email, name, company, source: "whitepaper-gate" }),
       })
       if (!res.ok) throw new Error("Formspree request failed")
-      window.localStorage.setItem(UNLOCK_KEY, "1")
+      try {
+        window.localStorage.setItem(UNLOCK_KEY, "1")
+      } catch {
+        // Storage may be blocked; the submission still succeeded, so proceed to unlocked UI.
+      }
       setUnlocked(true)
       setStatus("idle")
     } catch {

@@ -7,6 +7,7 @@ import { Menu, X, ArrowUpRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { WovenOrb } from "@/components/woven-orb"
 import { cn } from "@/lib/utils"
+import { useWhitepaperRibbonVisible, dismissWhitepaperRibbon } from "@/lib/use-whitepaper-ribbon"
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -21,6 +22,7 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
+  const showRibbon = useWhitepaperRibbonVisible(pathname === "/")
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`)
@@ -40,6 +42,23 @@ export function Navbar() {
         scrolled ? "bg-background/80 backdrop-blur-xl border-b border-border/50" : "bg-transparent",
       )}
     >
+      {showRibbon && (
+        <div className="relative h-10 flex items-center justify-center bg-foreground text-background px-10 text-xs sm:text-sm font-medium">
+          <Link href="/whitepaper" className="group inline-flex items-center gap-1.5 hover:underline underline-offset-2">
+            <span className="hidden sm:inline">New —</span>
+            <span>Read our white paper: The Manufacturing Context Layer</span>
+            <ArrowUpRight className="w-3.5 h-3.5 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </Link>
+          <button
+            type="button"
+            aria-label="Dismiss announcement"
+            onClick={() => dismissWhitepaperRibbon()}
+            className="absolute right-3 sm:right-4 inline-flex p-1 text-background/70 hover:text-background transition-colors"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-2.5">

@@ -177,15 +177,15 @@ edit, or the note they left on the way out. It records the symptom, never the ac
 It knows <em>what every number was.</em> It has no idea what any of them <em>meant.</em>
 It&rsquo;s a perfect memory attached to nothing.</p>
 <hr />
-<h2 id="a-number-isnt-a-fact">A number isn&rsquo;t a fact</h2>
+<h2 id="a-number-isnt-an-answer">A number isn&rsquo;t an answer</h2>
 <p>Here&rsquo;s the part a wall of trends hides: the historian&rsquo;s entire model is a
 flat set of tags keyed by time, and a bare number carries no <em>identity,</em> no
-<em>relationships,</em> and no <em>meaning.</em> Which means it isn&rsquo;t yet a fact you
-can reason on &mdash; it&rsquo;s a measurement waiting for the context that would make it
-one.</p>
+<em>relationships,</em> and no <em>meaning.</em> The reading is a fact &mdash; true and
+precise. It just isn&rsquo;t yet an <em>answer</em> to anything: it&rsquo;s a measurement
+waiting for the context that would make it one.</p>
 <figure class="diagram">
 <svg viewBox="0 0 640 300" role="img" aria-labelledby="dgh3-title">
-<title id="dgh3-title">The same reading: an isolated tag versus a fact with context</title>
+<title id="dgh3-title">The same reading: an isolated tag versus the context that turns it into an answer</title>
 <line class="dg-divider" x1="300" y1="20" x2="300" y2="284" stroke-dasharray="4 6" />
 <text class="dg-panel-title" x="150" y="26" text-anchor="middle">What the historian has</text>
 <text class="dg-panel-title" x="490" y="26" text-anchor="middle">What makes it a fact</text>
@@ -206,7 +206,7 @@ one.</p>
 <circle class="dg-hub" cx="470" cy="155" r="22" />
 <text class="dg-accent-text" x="470" y="159" text-anchor="middle" style="font-size:10px">4.2 bar</text>
 </svg>
-<figcaption>To the historian, the reading is an island: a tag, a timestamp, a number. The same 4.2 bar only becomes a fact you can act on once it&rsquo;s tied to the asset it came from, the batch that was running, the spec it&rsquo;s judged against, and the operator&rsquo;s note &mdash; the edges a flat namespace of numbers throws away.</figcaption>
+<figcaption>To the historian, the reading is an island: a tag, a timestamp, a number. The same 4.2 bar only becomes an answer you can act on once it&rsquo;s tied to the asset it came from, the batch that was running, the spec it&rsquo;s judged against, and the operator&rsquo;s note &mdash; the edges a flat namespace of numbers throws away, and the difference between a stored value and an answer.</figcaption>
 </figure>
 <p>Watch what falls through:</p>
 <ul>
@@ -228,8 +228,8 @@ Not the recipe change at 14:01 that caused it, nor the operator note at 14:06 th
 explains it. The symptom is stored; the cause and the context live in other systems, or
 in someone&rsquo;s head.</li>
 </ul>
-<p>A tag is a measurement; a fact is a measurement plus what it&rsquo;s attached to, what
-it depends on, and what it meant at the time. That&rsquo;s identity, edges, and context
+<p>A tag is a fact; an answer is that fact plus what it&rsquo;s attached to, what it
+depends on, and what it meant at the time. That&rsquo;s identity, edges, and context
 &mdash; exactly what a flat namespace of numbers was never built to carry. It&rsquo;s the
 lesson observability keeps relearning: a metric tells you the system twitched, and it
 takes a model to tell you why.</p>

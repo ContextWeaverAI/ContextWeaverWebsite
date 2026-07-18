@@ -70,9 +70,9 @@ The historian answered the one question the UNS handed it, and then ran out of r
 
 ---
 
-## A number isn't a fact
+## A number isn't an answer
 
-Here's the part a wall of trends hides: the historian's entire model is a flat set of tags keyed by time, and a bare number carries no *identity,* no *relationships,* and no *meaning.* Which means it isn't yet a fact you can reason on — it's a measurement waiting for the context that would make it one.
+Here's the part a wall of trends hides: the historian's entire model is a flat set of tags keyed by time, and a bare number carries no *identity,* no *relationships,* and no *meaning.* The reading is a fact — true and precise. It just isn't yet an *answer* to anything: it's a measurement waiting for the context that would make it one.
 
 *[Diagram: the same reading as an isolated tag (`PT_004`, 14:03, 4.2 bar) versus the same 4.2 bar wired to the asset, the batch, the spec, and the operator note that make it a fact.]*
 
@@ -83,7 +83,7 @@ Watch what falls through:
 - **Meaning in context.** A value has no product, no batch, no operating mode attached. 4.2 bar is in-spec for one SKU and a defect for the next; a startup ramp and a genuine fault trace the same curve. Same number, opposite truth — and nothing in the historian can tell them apart.
 - **The event behind the number.** It records that pressure fell at 14:03. Not the recipe change at 14:01 that caused it, nor the operator note at 14:06 that explains it. The symptom is stored; the cause and the context live in other systems, or in someone's head.
 
-A tag is a measurement; a fact is a measurement plus what it's attached to, what it depends on, and what it meant at the time. That's identity, edges, and context — exactly what a flat namespace of numbers was never built to carry. It's the lesson observability keeps relearning: a metric tells you the system twitched, and it takes a model to tell you why.
+A tag is a fact; an answer is that fact plus what it's attached to, what it depends on, and what it meant at the time. That's identity, edges, and context — exactly what a flat namespace of numbers was never built to carry. It's the lesson observability keeps relearning: a metric tells you the system twitched, and it takes a model to tell you why.
 
 ---
 

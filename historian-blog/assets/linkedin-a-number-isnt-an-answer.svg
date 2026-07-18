@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 460" font-family="'Outfit','Helvetica Neue',Arial,sans-serif">
+<style>
+.bg{fill:#f6f4f1}
+.title{fill:#221f1c;font-size:30px;font-weight:700;letter-spacing:-.5px}
+.sub{fill:#6f6b66;font-size:15px;font-weight:500}
+.ptitle{fill:#8a847c;font-size:13px;font-weight:700;letter-spacing:1.5px}
+.label{fill:#2b2926;font-size:15px;font-weight:600}
+.mono{fill:#2b2926;font-size:16px;font-weight:700;font-family:'DejaVu Sans Mono',ui-monospace,Menlo,monospace}
+.acc{fill:#cf4a1a;font-size:16px;font-weight:700}
+.box{fill:#fefdfb;stroke:#c3bdb4;stroke-width:1.6}
+.hub{fill:#f9e6dd;stroke:#cf4a1a;stroke-width:2.2}
+.spoke{stroke:#cf4a1a;stroke-width:2.2;fill:none}
+.divider{stroke:#c3bdb4;stroke-width:1.4}
+.leg{fill:#6f6b66;font-size:13px;font-weight:500}
+</style>
+<rect class="bg" x="0" y="0" width="680" height="460" rx="18"/>
+<text class="title" x="42" y="56">A number isn&#39;t an answer.</text>
+<text class="sub" x="42" y="82">A historian remembers every value &#8212; and connects none of them.</text>
+
+<line class="divider" x1="340" y1="120" x2="340" y2="410" stroke-dasharray="4 7"/>
+<text class="ptitle" x="180" y="140" text-anchor="middle">WHAT THE HISTORIAN STORES</text>
+<text class="ptitle" x="510" y="140" text-anchor="middle">WHAT MAKES IT AN ANSWER</text>
+
+<!-- left: an isolated tag -->
+<rect class="box" x="110" y="248" width="140" height="56" rx="12"/>
+<text class="mono" x="180" y="275" text-anchor="middle">PT_004</text>
+<text class="sub" x="180" y="294" text-anchor="middle">14:03 &#183; 4.2 bar</text>
+<text class="leg" x="180" y="332" text-anchor="middle">a tag, a timestamp, a number</text>
+
+<!-- right: the same reading, wired to context -->
+<g class="spoke">
+<line x1="510" y1="242" x2="510" y2="201" stroke-dasharray="6 5"/>
+<line x1="510" y1="304" x2="510" y2="345" stroke-dasharray="6 5"/>
+<line x1="474" y1="273" x2="461" y2="273" stroke-dasharray="6 5"/>
+<line x1="546" y1="273" x2="559" y2="273" stroke-dasharray="6 5"/>
+</g>
+<rect class="box" x="443" y="157" width="134" height="44" rx="10"/>
+<text class="label" x="510" y="184" text-anchor="middle">Filler &#183; Line 2</text>
+<rect class="box" x="443" y="345" width="134" height="44" rx="10"/>
+<text class="label" x="510" y="372" text-anchor="middle">Spec 3.8&#8211;4.4 bar</text>
+<rect class="box" x="357" y="251" width="104" height="44" rx="10"/>
+<text class="label" x="409" y="278" text-anchor="middle">Batch #4471</text>
+<rect class="box" x="559" y="251" width="112" height="44" rx="10"/>
+<text class="label" x="615" y="278" text-anchor="middle">Op note 14:06</text>
+<circle class="hub" cx="510" cy="273" r="36"/>
+<text class="acc" x="510" y="279" text-anchor="middle">4.2 bar</text>
+
+<!-- legend -->
+<rect class="box" x="150" y="428" width="20" height="13" rx="3"/>
+<text class="leg" x="178" y="438" text-anchor="start">what&#39;s stored</text>
+<line class="spoke" x1="360" y1="434" x2="396" y2="434" stroke-dasharray="6 5"/>
+<text class="leg" x="404" y="438" text-anchor="start">the context it&#39;s missing</text>
+</svg>

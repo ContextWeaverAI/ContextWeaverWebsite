@@ -35,6 +35,20 @@ const SMART_FACTORY_SERIES = {
 
 export const posts: BlogPost[] = [
   {
+    slug: "historian",
+    title: "The Historian, Honestly",
+    subtitle: "What it stores, what it can't, and the software patterns underneath it",
+    dek: "Strip the manufacturing vocabulary away and a historian is a time-series database for the plant floor. A technologist's read on what it remembers, where recall stops being understanding, and why a store of numbers is memory — not a model.",
+    category: "Architecture",
+    date: "2026-07-18",
+    dateLabel: "Jul 18, 2026",
+    readingTime: "7 min read",
+    wordCount: "Concept · ~1,700 words",
+    charts: "",
+    author: "Ishan Bhanuka, CTO",
+    series: { ...SMART_FACTORY_SERIES, part: 2 },
+  },
+  {
     slug: "unified-namespace",
     title: "The Unified Namespace, Honestly",
     subtitle: "What it is, what it actually solves, and the software patterns underneath it",

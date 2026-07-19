@@ -2,11 +2,10 @@ import type { Metadata } from "next"
 import { BlogArticle } from "@/components/blog-article"
 import { getPost } from "../posts"
 import { articleHtml } from "./article-html"
+import { SITE_URL, OG_IMAGE } from "@/lib/site"
 
 const post = getPost("unified-namespace")!
-const SITE_URL = "https://getcontextweaver.com"
 const PATH = "/blog/unified-namespace"
-const OG_IMAGE = "/contextweaver.png"
 
 export const metadata: Metadata = {
   title: `${post.title} — ContextWeaver`,

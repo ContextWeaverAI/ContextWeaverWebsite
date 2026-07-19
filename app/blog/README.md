@@ -61,9 +61,13 @@ SEO lives in the **server-component `page.tsx`**:
 
 Without this a post inherits the generic site title/description — the single biggest SEO gap.
 
-**Domain:** canonical is `https://getcontextweaver.com` (set as `metadataBase` in
-`app/layout.tsx`). Note `getcontextweaver.com` currently 301-redirects to `contextweaver.info`
-at the host level — the redirect should be flipped so the canonical isn't a redirect target.
+**Domain:** canonical is `https://www.contextweaver.info` — the domain bound to GitHub
+Pages via `public/CNAME`, the only host that serves every path and `/contextweaver.png`
+with `200`. It is defined once in `lib/site.ts` (`SITE_URL`, `OG_IMAGE`) and imported by
+`app/layout.tsx` and every page — do **not** re-declare it per page. `getcontextweaver.com`
+is only a root-domain forward and 404s on deep paths/files, so pointing metadata there
+breaks link previews. If the `.com` becomes the real brand host, repoint DNS + `CNAME`
+first, then change `SITE_URL` in one place.
 
 **Links:** weave a few real internal links (`/architecture`, `/use-cases`, sibling posts) and
 2–4 authoritative external links (`target="_blank" rel="noopener noreferrer"`). Verify every

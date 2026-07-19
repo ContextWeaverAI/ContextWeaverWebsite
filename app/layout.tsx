@@ -4,6 +4,7 @@ import { Outfit } from "next/font/google"
 import "./globals.css"
 import { ScrollProgress } from "@/components/scroll-progress"
 import { BackToTop } from "@/components/back-to-top"
+import { SITE_URL, SITE_TITLE, SITE_DESCRIPTION, OG_IMAGE } from "@/lib/site"
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -11,15 +12,11 @@ const outfit = Outfit({
   display: "swap",
 })
 
-const SITE_URL = "https://getcontextweaver.com"
-const SITE_TITLE = "ContextWeaver"
-const SITE_DESCRIPTION =
-  "Agentic layers over your entire manufacturing stack. ContextWeaver builds semantic and agent-application layers on top of your SCADA, MES, and ERP systems — and trains your team to extend them."
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: SITE_URL,
@@ -28,7 +25,7 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: [
       {
-        url: "/contextweaver.png",
+        url: OG_IMAGE,
         width: 1200,
         height: 630,
         alt: SITE_TITLE,
@@ -39,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: ["/contextweaver.png"],
+    images: [OG_IMAGE],
   },
   generator: "v0.app",
 }

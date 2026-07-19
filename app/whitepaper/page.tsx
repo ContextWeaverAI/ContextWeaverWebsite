@@ -1,63 +1,42 @@
-"use client"
+import type { Metadata } from "next"
+import { SITE_URL, OG_IMAGE } from "@/lib/site"
+import { WhitepaperClient } from "./whitepaper-client"
 
-import { motion } from "framer-motion"
-import { FileText, ShieldCheck } from "lucide-react"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import { WhitepaperPreview } from "@/components/whitepaper-preview"
-import { WhitepaperGate } from "@/components/whitepaper-gate"
+const PATH = "/whitepaper"
+const TITLE = "The Manufacturing Context Layer — ContextWeaver White Paper"
+const DESCRIPTION =
+  "Most industrial AI initiatives stall at the pilot because the bottleneck is context, not connectivity or model capability. A reference architecture for a governed, agent-ready context layer built on ISA-95."
 
-const EASE = [0.22, 1, 0.36, 1] as const
+export const metadata: Metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  keywords: [
+    "manufacturing context layer",
+    "industrial AI",
+    "ISA-95",
+    "agent-ready data",
+    "SCADA MES ERP",
+    "manufacturing AI architecture",
+    "operational context",
+    "smart factory white paper",
+  ],
+  alternates: { canonical: PATH },
+  openGraph: {
+    type: "article",
+    url: `${SITE_URL}${PATH}`,
+    siteName: "ContextWeaver",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: TITLE }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [OG_IMAGE],
+  },
+}
 
 export default function WhitepaperPage() {
-  return (
-    <>
-      <Navbar />
-      <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, ease: EASE }}
-        className="min-h-screen pt-20"
-      >
-        <section className="py-16 lg:py-24 px-4">
-          <div className="max-w-5xl mx-auto grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-12 lg:gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-            >
-              <span className="inline-flex items-center gap-2 rounded-full bg-[var(--orange)]/10 text-[var(--orange)] px-3 py-1 text-[11px] font-semibold tracking-wide uppercase mb-6">
-                <FileText className="w-3.5 h-3.5" />
-                White paper
-              </span>
-              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground leading-[1.05] mb-5">
-                The Manufacturing Context Layer
-              </h1>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-xl">
-                Manufacturers have spent a decade centralizing plant data in historians, data lakes, and
-                warehouses, yet most industrial AI initiatives still fail to move from pilot to production.
-                This paper argues the bottleneck is context, not connectivity or model capability — and lays
-                out a reference architecture for a governed, agent-ready context layer built on ISA-95.
-              </p>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-10">
-                <ShieldCheck className="w-4 h-4 text-[var(--orange)] shrink-0" />
-                Takes 10 seconds. We&apos;ll never share your email.
-              </div>
-              <WhitepaperGate />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
-              className="w-full max-w-sm mx-auto lg:mx-0 lg:ml-auto"
-            >
-              <WhitepaperPreview size="large" />
-            </motion.div>
-          </div>
-        </section>
-      </motion.main>
-      <Footer />
-    </>
-  )
+  return <WhitepaperClient />
 }

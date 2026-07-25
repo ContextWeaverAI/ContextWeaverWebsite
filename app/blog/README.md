@@ -50,6 +50,26 @@ Two kinds of post:
 4. Keep a plain-markdown mirror of the prose (`<slug>-blog/article.md`) in sync — it's the
    readable source of truth and what gets adapted into the LinkedIn post.
 
+## Publishing checklist (run before every push to `main`)
+
+Pushing to `main` deploys via GitHub Pages — treat it as publish. Don't skip these; they
+are the SEO/quality gate the sections below only describe in prose:
+
+1. **Per-post SEO present** — `page.tsx` exports `metadata` (title, dek as description,
+   `keywords`, `authors`, `alternates.canonical`, `openGraph`, `twitter`) **and** a JSON-LD
+   `Article` block. Both import `SITE_URL`/`OG_IMAGE` from `lib/site.ts` — never hard-code a
+   domain. See "SEO (do not skip)" below.
+2. **Sitemap is automatic** — `app/sitemap.ts` maps over `posts`, so adding the entry to
+   `posts.ts` is all it takes. After building, confirm the slug is in `out/sitemap.xml` and
+   any parked/removed slug is gone.
+3. **Links verified live** — every external link has `target="_blank" rel="noopener noreferrer"`
+   and returns 200 (WebFetch each one). Internal links (`/architecture`, `/use-cases`, sibling
+   posts) resolve to real routes.
+4. **Build is clean + static** — `pnpm build`; the new route shows `○ (Static)` in the route
+   table and there are no errors from your files (the pre-existing `bento-grid.tsx` type
+   warnings are unrelated).
+5. **Prose mirror in sync** — `<slug>-blog/article.md` matches the shipped `article-html.ts`.
+
 ## SEO (do not skip)
 
 `components/blog-article.tsx` is `"use client"`, so it **cannot** export `metadata`. Per-post

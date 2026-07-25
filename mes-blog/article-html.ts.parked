@@ -25,58 +25,119 @@ export const articleHtml = `<style>
 .blog-prose .dg-no{fill:none;stroke:var(--muted-foreground);stroke-width:1.75;}
 .blog-prose .dg-glyph{stroke:var(--card);stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;}
 .blog-prose .dg-glyph-no{stroke:var(--muted-foreground);stroke-width:1.75;fill:none;stroke-linecap:round;}
+.blog-prose .dg-alt{stroke:var(--orange);stroke-width:1.75;fill:none;}
+.blog-prose .dg-alt-arrow{fill:var(--orange);}
+.blog-prose .dg-alt-text{fill:var(--orange);font-size:12px;font-weight:700;}
+.blog-prose .dg-alt-box{fill:color-mix(in oklch,var(--orange) 12%,var(--card));stroke:var(--orange);stroke-width:1.5;}
+.blog-prose pre.impl{margin:1.6rem 0;padding:1.15rem 1.35rem;border:1px solid var(--border);border-radius:12px;background:color-mix(in oklch,var(--muted) 55%,var(--card));font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem;line-height:1.6;color:var(--foreground);overflow-x:auto;white-space:pre;}
 </style>
 <p>In <a href="/blog/historian">Part 2</a>, the historian gave us Line 2&rsquo;s pressure
-history in seconds and then ran out of road on a question that wasn&rsquo;t about numbers
-at all: <em>which batch was on the line at 14:03, and where did that lot go next?</em> Tag
-<code>PT_004</code> had never heard of batch&nbsp;#4471. The historian punted us to the
-system that has &mdash; and that system is the one this piece is about.</p>
-<p>Walk over to it and you&rsquo;re looking at a different kind of screen. Not a trend, a
-<strong>work-order list</strong>. Order #4471, product 500&nbsp;ml SKU, a route defined
-step by step, a status against each step, a timestamp, an operator&rsquo;s name. Ask which
-batch ran at 14:03 and you have it instantly: #4471, filled on Line 2, released to
-packaging at 14:40, palletized into shipment S-201. After two systems that knew signals
-and numbers, here at last is one that knows <em>things</em> &mdash; orders, batches, lots,
-the units of work the plant actually makes.</p>
-<p>It feels like the missing piece. In a real sense it is. It&rsquo;s also the third
-system in a row that keeps exactly the structure it was built for and quietly drops
-everything that crosses it. To see why, strip the vocabulary off.</p>
+history in seconds, then stalled on a question that wasn&rsquo;t about numbers at all:
+<em>which batch was on the line at 14:03, and where did that lot go next?</em> Tag
+<code>PT_004</code> had never heard of batch&nbsp;#4471. It punted us to the system that
+has, and that system is this one.</p>
+<p>Walk over and the screen changes: not a trend, a <strong>work-order list</strong>. Order
+#4471, 500&nbsp;ml SKU, a route, a status against each step, an operator&rsquo;s name. Ask
+which batch ran at 14:03 and it answers instantly. After two systems that knew only signals
+and numbers, here is one that knows <em>things</em> &mdash; orders, batches, lots. It feels
+like the missing piece, and in part it is. Strip the vocabulary off and you can see both why
+it helps, and where it stops.</p>
 <hr />
 <h2 id="what-an-mes-actually-is">What an MES actually is</h2>
 <p>&ldquo;MES&rdquo; barely names one thing. Ask two plants and you&rsquo;ll get two
 different suites: planning and scheduling here, quality and holds there, product tracking
-and genealogy, work instructions, labor, OEE &mdash; the <a href="https://www.mesa.org/" target="_blank" rel="noopener noreferrer">MESA model</a> lists around
+and genealogy, work instructions, labor, OEE &mdash; the <a href="https://mesa.org/topics-resources/mesa-model/history-of-the-mesa-models/" target="_blank" rel="noopener noreferrer">MESA model</a> lists around
 eleven functions, and most deployments are a stack of modules from a stack of vendors. It
 looks less like a product than a category.</p>
 <p>Strip the vocabulary away, though, and every one of those modules is a front-end over
 the <strong>same primitive: a workflow engine.</strong> A state machine per unit of work,
 and an append-only log of its transitions.</p>
-<p>Watch one work order move and the whole suite collapses into that shape.
-<strong>Planning</strong> writes the intended path: #4471 runs on Line 2 at 14:00, recipe
-R-12. <strong>Execution</strong> advances a pointer along it &mdash;
-<code>dispatched &rarr; filling &rarr; capping &rarr; labeling &rarr; QA &rarr; complete</code>
-&mdash; stamping each transition with the resin lot consumed, the machine, the operator.
-<strong>Quality</strong> gates a transition: pass releases the order downstream; fail
-forces it into <code>HOLD</code> and blocks the move until someone records a disposition.
-<strong>Genealogy</strong> is nothing more than that transition log read back afterward.
-Four modules, four screens, one object underneath: a unit of work with a current state, a
-set of legal next states, and a durable history of how it got there.</p>
-<p>If you&rsquo;ve reached for <a href="https://temporal.io/" target="_blank" rel="noopener noreferrer">Temporal</a> or a workflow engine, you
-already understand an MES, because that&rsquo;s what it is: <strong>event sourcing on the
-plant floor.</strong> Two properties make it more than &ldquo;a table with a status
-column&rdquo;:</p>
-<ul>
-<li><strong>It enforces the transitions.</strong> A historian stores whatever you send it;
-an MES won&rsquo;t let you ship an order that hasn&rsquo;t passed QA. The routing
-isn&rsquo;t a suggestion, it&rsquo;s a guard. That&rsquo;s the &ldquo;E&rdquo; in MES
-&mdash; it&rsquo;s an <em>active</em> record, one that can say no.</li>
-<li><strong>The log is the record.</strong> The live question (&ldquo;where is #4471 right
-now, what&rsquo;s allowed next&rdquo;) and the permanent one (&ldquo;every step it ever
-went through&rdquo;) are the same event log read two ways. State is a fold over the
-history. That&rsquo;s why the old argument about whether an MES is &ldquo;really&rdquo; a
-state machine or &ldquo;really&rdquo; a system of record dissolves: it&rsquo;s a state
-machine <em>whose transition log is the system of record.</em> One object, two faces.</li>
-</ul>
+<p>Watch one work order move and the suite collapses into that shape.
+<strong>Planning</strong> writes the intended path, <strong>Execution</strong> walks the
+order along it and stamps each step, <strong>Quality</strong> gates the moves, and
+<strong>Genealogy</strong> is just the log read back afterward. Four modules, one object: a
+unit of work with a current state, a set of legal next states, and a durable history of how
+it got there. On a slide it looks like a clean line.</p>
+<figure class="diagram">
+<svg viewBox="0 0 660 322" role="img" aria-labelledby="dgm0-title">
+<title id="dgm0-title">The happy-path state machine versus the one you actually ship</title>
+<line class="dg-divider" x1="300" y1="40" x2="300" y2="300" stroke-dasharray="4 6" />
+<text class="dg-panel-title" x="150" y="30" text-anchor="middle">The happy path</text>
+<text class="dg-panel-title" x="480" y="30" text-anchor="middle">What you actually ship</text>
+<rect class="dg-box" x="82" y="52" width="136" height="34" rx="8" /><text class="dg-label-sm" x="150" y="74" text-anchor="middle">DISPATCHED</text>
+<rect class="dg-box" x="82" y="101" width="136" height="34" rx="8" /><text class="dg-label-sm" x="150" y="123" text-anchor="middle">FILLING</text>
+<rect class="dg-box" x="82" y="150" width="136" height="34" rx="8" /><text class="dg-label-sm" x="150" y="172" text-anchor="middle">CAPPING</text>
+<rect class="dg-box" x="82" y="199" width="136" height="34" rx="8" /><text class="dg-label-sm" x="150" y="221" text-anchor="middle">QA</text>
+<rect class="dg-box" x="82" y="248" width="136" height="34" rx="8" /><text class="dg-label-sm" x="150" y="270" text-anchor="middle">RELEASED</text>
+<g class="dg-connector"><path d="M150 86 V99" /><path d="M150 135 V148" /><path d="M150 184 V197" /><path d="M150 233 V246" /></g>
+<g class="dg-arrow"><polygon points="145,99 155,99 150,105" /><polygon points="145,148 155,148 150,154" /><polygon points="145,197 155,197 150,203" /><polygon points="145,246 155,246 150,252" /></g>
+<rect class="dg-box" x="395" y="52" width="120" height="34" rx="8" /><text class="dg-label-sm" x="455" y="74" text-anchor="middle">DISPATCHED</text>
+<rect class="dg-box" x="395" y="101" width="120" height="34" rx="8" /><text class="dg-label-sm" x="455" y="123" text-anchor="middle">FILLING</text>
+<rect class="dg-box" x="395" y="150" width="120" height="34" rx="8" /><text class="dg-label-sm" x="455" y="172" text-anchor="middle">CAPPING</text>
+<rect class="dg-box" x="395" y="199" width="120" height="34" rx="8" /><text class="dg-label-sm" x="455" y="221" text-anchor="middle">QA</text>
+<rect class="dg-box" x="395" y="248" width="120" height="34" rx="8" /><text class="dg-label-sm" x="455" y="270" text-anchor="middle">RELEASED</text>
+<g class="dg-connector"><path d="M455 86 V99" /><path d="M455 135 V148" /><path d="M455 184 V197" /><path d="M455 233 V246" /></g>
+<g class="dg-arrow"><polygon points="450,99 460,99 455,105" /><polygon points="450,148 460,148 455,154" /><polygon points="450,197 460,197 455,203" /><polygon points="450,246 460,246 455,252" /></g>
+<path class="dg-alt" d="M395 216 C 348 205, 348 130, 393 118" />
+<polygon class="dg-alt-arrow" points="389,113 389,123 397,118" />
+<text class="dg-alt-text" x="340" y="170" text-anchor="middle">rework</text>
+<path class="dg-alt" d="M515 216 H544" />
+<polygon class="dg-alt-arrow" points="544,211 544,221 551,216" />
+<rect class="dg-alt-box" x="551" y="199" width="94" height="34" rx="8" /><text class="dg-alt-text" x="598" y="220" text-anchor="middle">HOLD</text>
+<path class="dg-alt" d="M598 233 V246" />
+<polygon class="dg-alt-arrow" points="593,246 603,246 598,252" />
+<rect class="dg-alt-box" x="551" y="248" width="94" height="34" rx="8" /><text class="dg-alt-text" x="598" y="269" text-anchor="middle">SCRAP</text>
+<path class="dg-alt" d="M551 226 C 532 236, 524 254, 517 261" />
+<polygon class="dg-alt-arrow" points="521,255 522,265 514,261" />
+<text class="dg-sub" x="480" y="298" text-anchor="middle" style="font-size:11px">+ splits, merges, resume-from-hold, manual overrides&hellip;</text>
+</svg>
+<figcaption>Left: the state machine as it&rsquo;s pitched &mdash; a handful of steps in a row. Right: the one you actually ship. Rework loops, holds, scrap, splits and manual overrides are all real transitions someone has to define, and there is always one more. Modeling the happy path takes an afternoon; modeling the exceptions is the project.</figcaption>
+</figure>
+<p>That gap is where MES work actually lives. A unit fails QA and loops back for rework
+&mdash; from which step? A batch splits into two pallets bound for different customers, and
+one order becomes two genealogies. A line stops mid-fill and resumes an hour later &mdash;
+same run, or not? An operator forces a move the model never allowed. Each is a transition
+someone has to define, and no two plants define them the same way. Modeling the happy path
+is an afternoon; modeling every exception is the multi-year project, and most of why no two
+MES deployments look alike.</p>
+<p>None of it needs an exotic engine, though. The core of an MES is two tables and a
+rule:</p>
+<pre class="impl">CREATE TABLE order_event (      -- the append-only log
+  order_id   int,
+  from_state text,
+  to_state   text,
+  at         timestamptz,
+  operator   text
+);
+
+-- batch #4471&rsquo;s whole life, one row per transition:
+--   (none)      &rarr; DISPATCHED   14:00   scheduler
+--   DISPATCHED  &rarr; FILLING      14:03   priya
+--   FILLING     &rarr; QA           14:36   priya
+--   QA          &rarr; HOLD         14:37   qa-check
+--   HOLD        &rarr; RELEASED     14:40   r.menon
+
+-- &ldquo;current state&rdquo; isn&rsquo;t stored. it&rsquo;s a fold over the log:
+SELECT to_state FROM order_event
+WHERE order_id = 4471
+ORDER BY at DESC LIMIT 1;        -- &rarr; RELEASED</pre>
+<p>That&rsquo;s the heart of it. An append-only <code>order_event</code> log, a
+<code>transitions</code> table listing which moves are legal, and a current state that
+isn&rsquo;t stored but <em>derived</em> &mdash; a fold over the log. This is
+<strong>event sourcing</strong>, and you can stand the core up on Postgres in an afternoon.
+<a href="https://temporal.io/" target="_blank" rel="noopener noreferrer">Temporal</a>,
+Camunda, or a commercial MES add durability, retries, a UI, and a decade of
+exception-handling on top &mdash; but the engine underneath is these two tables. It&rsquo;s
+also why most plants have three half-built ones: an Access app, a SQL Server instance, and a
+SaaS tool nobody ever decommissioned.</p>
+<p>Two things separate that from &ldquo;a table with a status column.&rdquo; It
+<strong>enforces</strong> the legal moves &mdash; a historian stores whatever you send it;
+an MES won&rsquo;t let you ship an order that hasn&rsquo;t passed QA, because the
+<code>transitions</code> table forbids the jump. And <strong>the log is the record</strong>:
+the live &ldquo;where is #4471 now&rdquo; and the permanent &ldquo;every step it took&rdquo;
+are the same events read two ways. That&rsquo;s why the old argument over whether an MES is
+&ldquo;really&rdquo; a state machine or a system of record dissolves &mdash; it&rsquo;s a
+state machine whose transition log is the system of record. One object, two faces.</p>
 <hr />
 <h2 id="what-it-solves">What it solves</h2>
 <p>The win is exactly the thing the last two systems structurally couldn&rsquo;t give:

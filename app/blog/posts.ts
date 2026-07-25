@@ -35,13 +35,13 @@ const SMART_FACTORY_SERIES = {
 
 export const posts: BlogPost[] = [
   {
-    slug: "mes",
-    title: "The MES, Honestly",
-    subtitle: "What it tracks, what it can't, and the software patterns underneath it",
-    dek: "Strip the manufacturing vocabulary away and an MES is a workflow engine for the plant floor. A technologist's read on what it solves, where it stops, and why an event log of the process is a record — not a model of the plant.",
+    slug: "scada",
+    title: "SCADA, Honestly",
+    subtitle: "What it watches, what it can't, and the software patterns underneath it",
+    dek: "Strip the manufacturing vocabulary away and SCADA is a real-time monitoring-and-control console for the plant floor. A technologist's read on what it solves, where it stops, and why reacting to the present is reflexes — not judgment.",
     category: "Architecture",
-    date: "2026-07-25",
-    dateLabel: "Jul 25, 2026",
+    date: "2026-07-26",
+    dateLabel: "Jul 26, 2026",
     readingTime: "8 min read",
     wordCount: "Concept · ~2,100 words",
     charts: "",

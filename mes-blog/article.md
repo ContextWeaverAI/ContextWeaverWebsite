@@ -6,26 +6,51 @@
 
 ---
 
-In [Part 2](/blog/historian), the historian gave us Line 2's pressure history in seconds and then ran out of road on a question that wasn't about numbers at all: *which batch was on the line at 14:03, and where did that lot go next?* Tag `PT_004` had never heard of batch #4471. The historian punted us to the system that has — and that system is the one this piece is about.
+In [Part 2](/blog/historian), the historian gave us Line 2's pressure history in seconds, then stalled on a question that wasn't about numbers at all: *which batch was on the line at 14:03, and where did that lot go next?* Tag `PT_004` had never heard of batch #4471. It punted us to the system that has, and that system is this one.
 
-Walk over to it and you're looking at a different kind of screen. Not a trend, a **work-order list**. Order #4471, product 500 ml SKU, a route defined step by step, a status against each step, a timestamp, an operator's name. Ask which batch ran at 14:03 and you have it instantly: #4471, filled on Line 2, released to packaging at 14:40, palletized into shipment S-201. After two systems that knew signals and numbers, here at last is one that knows *things* — orders, batches, lots, the units of work the plant actually makes.
-
-It feels like the missing piece. In a real sense it is. It's also the third system in a row that keeps exactly the structure it was built for and quietly drops everything that crosses it. To see why, strip the vocabulary off.
+Walk over and the screen changes: not a trend, a **work-order list**. Order #4471, 500 ml SKU, a route, a status against each step, an operator's name. Ask which batch ran at 14:03 and it answers instantly. After two systems that knew only signals and numbers, here is one that knows *things* — orders, batches, lots. It feels like the missing piece, and in part it is. Strip the vocabulary off and you can see both why it helps, and where it stops.
 
 ---
 
 ## What an MES actually is
 
-"MES" barely names one thing. Ask two plants and you'll get two different suites: planning and scheduling here, quality and holds there, product tracking and genealogy, work instructions, labor, OEE — the [MESA model](https://www.mesa.org/) lists around eleven functions, and most deployments are a stack of modules from a stack of vendors. It looks less like a product than a category.
+"MES" barely names one thing. Ask two plants and you'll get two different suites: planning and scheduling here, quality and holds there, product tracking and genealogy, work instructions, labor, OEE — the [MESA model](https://mesa.org/topics-resources/mesa-model/history-of-the-mesa-models/) lists around eleven functions, and most deployments are a stack of modules from a stack of vendors. It looks less like a product than a category.
 
 Strip the vocabulary away, though, and every one of those modules is a front-end over the **same primitive: a workflow engine.** A state machine per unit of work, and an append-only log of its transitions.
 
-Watch one work order move and the whole suite collapses into that shape. **Planning** writes the intended path: #4471 runs on Line 2 at 14:00, recipe R-12. **Execution** advances a pointer along it — `dispatched → filling → capping → labeling → QA → complete` — stamping each transition with the resin lot consumed, the machine, the operator. **Quality** gates a transition: pass releases the order downstream; fail forces it into `HOLD` and blocks the move until someone records a disposition. **Genealogy** is nothing more than that transition log read back afterward. Four modules, four screens, one object underneath: a unit of work with a current state, a set of legal next states, and a durable history of how it got there.
+Watch one work order move and the suite collapses into that shape. **Planning** writes the intended path, **Execution** walks the order along it and stamps each step, **Quality** gates the moves, and **Genealogy** is just the log read back afterward. Four modules, one object: a unit of work with a current state, a set of legal next states, and a durable history of how it got there. On a slide it looks like a clean line.
 
-If you've reached for [Temporal](https://temporal.io/) or a workflow engine, you already understand an MES, because that's what it is: **event sourcing on the plant floor.** Two properties make it more than "a table with a status column":
+*[Diagram: two panels. Left "the happy path" — DISPATCHED → FILLING → CAPPING → QA → RELEASED, a clean chain. Right "what you actually ship" — the same spine tangled with a rework loop (QA back to FILLING), a HOLD branch, a SCRAP terminal, and "+ splits, merges, resume-from-hold, manual overrides…". Caption: modeling the happy path takes an afternoon; modeling the exceptions is the project.]*
 
-- **It enforces the transitions.** A historian stores whatever you send it; an MES won't let you ship an order that hasn't passed QA. The routing isn't a suggestion, it's a guard. That's the "E" in MES — it's an *active* record, one that can say no.
-- **The log is the record.** The live question ("where is #4471 right now, what's allowed next") and the permanent one ("every step it ever went through") are the same event log read two ways. State is a fold over the history. That's why the old argument about whether an MES is "really" a state machine or "really" a system of record dissolves: it's a state machine *whose transition log is the system of record.* One object, two faces.
+That gap is where MES work actually lives. A unit fails QA and loops back for rework — from which step? A batch splits into two pallets bound for different customers, and one order becomes two genealogies. A line stops mid-fill and resumes an hour later — same run, or not? An operator forces a move the model never allowed. Each is a transition someone has to define, and no two plants define them the same way. Modeling the happy path is an afternoon; modeling every exception is the multi-year project, and most of why no two MES deployments look alike.
+
+None of it needs an exotic engine, though. The core of an MES is two tables and a rule:
+
+```sql
+CREATE TABLE order_event (      -- the append-only log
+  order_id   int,
+  from_state text,
+  to_state   text,
+  at         timestamptz,
+  operator   text
+);
+
+-- batch #4471's whole life, one row per transition:
+--   (none)      → DISPATCHED   14:00   scheduler
+--   DISPATCHED  → FILLING      14:03   priya
+--   FILLING     → QA           14:36   priya
+--   QA          → HOLD         14:37   qa-check
+--   HOLD        → RELEASED     14:40   r.menon
+
+-- "current state" isn't stored. it's a fold over the log:
+SELECT to_state FROM order_event
+WHERE order_id = 4471
+ORDER BY at DESC LIMIT 1;        -- → RELEASED
+```
+
+That's the heart of it. An append-only `order_event` log, a `transitions` table listing which moves are legal, and a current state that isn't stored but *derived* — a fold over the log. This is **event sourcing**, and you can stand the core up on Postgres in an afternoon. [Temporal](https://temporal.io/), Camunda, or a commercial MES add durability, retries, a UI, and a decade of exception-handling on top — but the engine underneath is these two tables. It's also why most plants have three half-built ones: an Access app, a SQL Server instance, and a SaaS tool nobody ever decommissioned.
+
+Two things separate that from "a table with a status column." It **enforces** the legal moves — a historian stores whatever you send it; an MES won't let you ship an order that hasn't passed QA, because the `transitions` table forbids the jump. And **the log is the record**: the live "where is #4471 now" and the permanent "every step it took" are the same events read two ways. That's why the old argument over whether an MES is "really" a state machine or a system of record dissolves — it's a state machine whose transition log is the system of record. One object, two faces.
 
 ---
 

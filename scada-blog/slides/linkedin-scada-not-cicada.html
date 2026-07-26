@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>SCADA, not cicada · ContextWeaver</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --card: oklch(0.995 0.002 80);
+    --muted: oklch(0.93 0.006 80);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.86 0.006 80);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1080px; overflow: hidden; }
+  body {
+    font-family: "Outfit", system-ui, sans-serif;
+    color: var(--foreground);
+    background:
+      radial-gradient(120% 90% at 50% 6%, color-mix(in oklch, var(--orange) 6%, transparent), transparent 55%),
+      repeating-linear-gradient(0deg, color-mix(in oklch, var(--foreground) 3.5%, transparent) 0 1px, transparent 1px 72px),
+      repeating-linear-gradient(90deg, color-mix(in oklch, var(--foreground) 3.5%, transparent) 0 1px, transparent 1px 72px),
+      var(--background);
+    padding: 84px 88px;
+    display: flex;
+    flex-direction: column;
+  }
+  .kicker {
+    font-size: 22px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 26px;
+  }
+  h1 {
+    font-size: 86px; line-height: 1.02; font-weight: 800; letter-spacing: -0.025em;
+  }
+  h1 .dim { color: var(--muted-foreground); font-weight: 700; }
+  .sub {
+    font-size: 26px; line-height: 1.5; color: var(--muted-foreground); font-weight: 500;
+    margin-top: 26px; max-width: 840px;
+  }
+  .panels { display: flex; gap: 30px; margin-top: 56px; align-items: stretch; }
+  .panel {
+    flex: 1; background: var(--card); border: 1.5px solid var(--border);
+    border-radius: 26px; padding: 36px 38px 40px;
+    box-shadow: 0 24px 60px -44px rgba(0,0,0,.5);
+  }
+  .panel.hot { border-color: var(--orange); background: color-mix(in oklch, var(--orange) 6%, var(--card)); }
+  .panel-title {
+    font-size: 26px; font-weight: 800; letter-spacing: .02em;
+    color: var(--muted-foreground); margin-bottom: 8px;
+  }
+  .panel.hot .panel-title { color: var(--orange); }
+  .panel-tag { font-size: 18px; font-weight: 600; letter-spacing:.08em; text-transform:uppercase; color: var(--muted-foreground); opacity:.7; margin-bottom: 26px; }
+  ul { list-style: none; }
+  li { font-size: 26px; line-height: 1.3; font-weight: 600; padding: 15px 0; border-top: 1.5px solid var(--border); }
+  li:first-child { border-top: none; }
+  li .n { display:block; font-size:17px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; color: var(--muted-foreground); margin-bottom: 5px; }
+  .punch {
+    margin-top: 40px; text-align:center; font-size: 30px; font-weight: 800; letter-spacing:-0.01em;
+  }
+  .punch .hot { color: var(--orange); }
+  .footer {
+    margin-top: auto; display: flex; align-items: center; justify-content: space-between;
+    padding-top: 34px;
+  }
+  .brand { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+  .brand .cw { color: var(--orange); }
+  .series { font-size: 21px; font-weight: 500; color: var(--muted-foreground); }
+</style>
+</head>
+<body>
+  <div class="kicker">Deconstructing the Smart Factory · Part 3</div>
+  <h1>SCADA, <span class="dim">not cicada.</span></h1>
+  <div class="sub">One letter apart. Weirdly, that is where the differences end.</div>
+
+  <div class="panels">
+    <div class="panel">
+      <div class="panel-title">CICADA</div>
+      <div class="panel-tag">the insect</div>
+      <ul>
+        <li><span class="n">lifecycle</span>13 years underground</li>
+        <li><span class="n">volume</span>emerges screaming</li>
+        <li><span class="n">behaviour</span>runs on pure instinct</li>
+        <li><span class="n">comprehension</span>no idea why it&rsquo;s doing this</li>
+      </ul>
+    </div>
+    <div class="panel hot">
+      <div class="panel-title">SCADA</div>
+      <div class="panel-tag">the control system</div>
+      <ul>
+        <li><span class="n">lifecycle</span>runs 24/7 for decades</li>
+        <li><span class="n">volume</span>alarm flood at 3 a.m.</li>
+        <li><span class="n">behaviour</span>runs on a threshold</li>
+        <li><span class="n">comprehension</span>also no idea why</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="punch">Reacts to everything. <span class="hot">Understands nothing.</span></div>
+
+  <div class="footer">
+    <div class="brand"><span class="cw">Context</span>Weaver</div>
+    <div class="series">SCADA, honestly · contextweaver.info/blog/scada</div>
+  </div>
+</body>
+</html>

@@ -318,8 +318,11 @@ it is right for the product running now (that needs a model), or why it moved an
 with it (that needs the plant graph). A reflex is an action; judgment is that action plus
 what came before, what it depends on, and what it means.</p>
 <p>And that gap matters more here than anywhere else in the series, because this is the
-layer that <em>acts</em>. A historian that misunderstands a number stores a wrong answer.
-SCADA that misunderstands a number <em>moves a valve.</em></p>
+layer that <em>acts</em>. Part&nbsp;2 made the case that a stored number isn&rsquo;t an
+answer &mdash; but a historian can keep a number it doesn&rsquo;t understand and nothing
+happens. SCADA is the one layer that <em>acts</em> on the number it doesn&rsquo;t
+understand, and when it acts, steel moves. Same blind spot; only here does it have a hand
+on the plant.</p>
 <hr />
 <h2 id="the-hard-parts">What it costs to run one</h2>
 <p>None of this is free, and SCADA&rsquo;s bill has a sharper edge than the others, because

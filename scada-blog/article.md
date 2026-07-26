@@ -84,7 +84,7 @@ SCADA sensed, compared against a number, and acted — start to finish, in secon
 
 Strip it to the logic and SCADA is *sense, compare to a threshold, react* — and a threshold carries no memory, no relationships, and no meaning. It is the plant's autonomic nervous system: a knee jerking when the hammer taps it, at machine scale, across ten thousand tags. It cannot tell whether 4.2 bar is normal (that is the historian), whether it is right for the product running now (that needs a model), or why it moved and what moved with it (that needs the plant graph). A reflex is an action; judgment is that action plus what came before, what it depends on, and what it means.
 
-And that gap matters more here than anywhere else in the series, because this is the layer that *acts*. A historian that misunderstands a number stores a wrong answer. SCADA that misunderstands a number *moves a valve.*
+And that gap matters more here than anywhere else in the series, because this is the layer that *acts*. Part 2 made the case that a stored number isn't an answer, but a historian can keep a number it doesn't understand and nothing happens. SCADA is the one layer that *acts* on the number it doesn't understand, and when it acts, steel moves. Same blind spot; only here does it have a hand on the plant.
 
 ---
 

@@ -40,6 +40,14 @@ Two kinds of post:
 
 ## Adding a post
 
+**If the post is part of a series, read that series' canon doc first** (e.g.
+`series-canon-smart-factory.md`) and update it the moment the part ships. The series makes
+*cumulative* arguments — each part leans on claims the earlier ones established, so a new part
+that contradicts an earlier thesis (or invents a fresh analogy when the series already has one)
+quietly breaks the whole thing. The canon pins the throughline, the per-part theses, the frozen
+running example, and the shared analogy register; the cohesion checklist at its end is a
+ship-gate for both the article and its LinkedIn post.
+
 1. Add an entry to `posts.ts` (`BlogPost`). Standalone → omit `series`. Set `charts: ""`
    unless you have a charts hero stat.
 2. Create `app/blog/<slug>/article-html.ts` exporting `articleHtml` — a template-literal

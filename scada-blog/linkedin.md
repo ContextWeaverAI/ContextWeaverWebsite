@@ -1,5 +1,5 @@
 HOW TO POST (LinkedIn throttles links in the body, so the URL goes in the first comment):
-  1. New post → attach the image  assets/linkedin-a-reflex-isnt-judgment.png
+  1. New post → attach the image  assets/linkedin-scada-not-cicada.png
   2. Paste the POST text below
   3. Publish
   4. Immediately add the FIRST COMMENT below
@@ -7,21 +7,25 @@ HOW TO POST (LinkedIn throttles links in the body, so the URL goes in the first 
 
 ====================  POST  ====================
 
-Every smart factory runs on SCADA. Strip the vocabulary and it's a real-time control console: poll every sensor, paint the value on a screen, check it against a limit, and, alone among the plant's systems, reach back and move a valve.
+SCADA is one letter off from cicada, and the resemblance runs deeper than the spelling.
 
-It's the plant's reflexes. On the night shift, when a pressure drifts and someone has thirty seconds to catch it, SCADA is the screen that goes red and the hand that throttles the valve. Nothing else in the stack can act on the physical world. That's the whole point of it.
+A cicada spends 13 years underground, then surfaces all at once to scream its head off for a few weeks. SCADA never goes underground, but it has the screaming part down cold (anyone who has stood in a control room during an alarm flood knows the exact sound), and it has quietly run every factory on earth for decades while nobody spared it a thought.
 
-It's also the whole risk. SCADA senses, compares to a threshold, and acts, and a threshold carries no memory and no meaning. When PT_004 crosses 4.0 bar, SCADA fires the alarm and lets the operator act. It can't tell you whether 4.2 bar is even a problem for the SKU running now (that needs a model), whether it was climbing or spiked (that's the historian), or what else moved with it (that's the plant graph). A perfect reflex, attached to nothing.
+So, honestly, what is it?
 
-A historian that misreads a number stores a wrong answer. SCADA that misreads a number moves a valve.
+Back in Part 1 I used ABS to explain the Unified Namespace: stomp the brakes and one computer reads all four wheels at once and pumps the brake dozens of times a second. That computer is basically SCADA. It watches every sensor, and the instant a number crosses a line, it reacts: alarm, and a hand on the controls. It is the one system in the plant that actually touches the physical world. Everything else just watches.
 
-We named the plant (the Unified Namespace, Part 1) and remembered it (the Historian, Part 2). SCADA is how it acts. None of the three understand it.
+That is the whole point of it, and the whole problem. Braking is a reflex, not a decision. You slam the pedal when the brake lights ahead flare, you do not first work out whether it is a deer, a red light, or someone missing their exit. SCADA is identical: a number crosses a threshold, it reacts. It cannot tell you whether the number was even a problem (that needs a model), whether it was drifting or spiked (that is the historian), or what else moved with it (that is the plant graph).
 
-Part 3 of Deconstructing the Smart Factory.
+Part 2 said a stored number is not an answer. Here is the sharper version: a historian can hold a number it cannot explain and nothing happens. SCADA acts on the number it cannot explain, and something moves. A dashcam that misreads the road records a bad clip. Brakes that fire at the wrong moment put you in the next lane.
+
+Name the plant (Part 1). Remember it (Part 2). React to it (Part 3, SCADA). One number runs through all three, and not one of them knows what it means.
+
+Deconstructing the Smart Factory, Part 3.
 
 (link in comments)
 
-#Manufacturing #Deconstructing #SmartFactory #Industry40 #SCADA #OT #IndustrialAutomation #ReflexesNotJudgment
+#Manufacturing #SmartFactory #Industry40 #SCADA #IIoT
 
 
 ====================  FIRST COMMENT  ====================

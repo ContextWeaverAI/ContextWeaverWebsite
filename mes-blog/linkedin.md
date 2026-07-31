@@ -7,19 +7,19 @@ HOW TO POST (LinkedIn throttles links in the body, so the URL goes in the first 
 
 ====================  POST  ====================
 
-Every smart factory runs an MES. Strip the acronym and it's a workflow engine for the plant floor: every production order is a little state machine, every step a transition, and the log of those transitions is the record of what got made.
+Every car has a service book in the glovebox. Every service stamped, dated and signed, in order. Exactly what you want when a fault turns out to be systemic rather than a one off.
 
-The first three parts of this series followed one number. A pressure reading on Line 2 hits 4.2 bar: SCADA senses it and throws the alarm, the namespace carries it, the historian files it away. Three systems, and not one of them can tell you what the plant was actually making at the time.
+It also has nothing to say about why the pads keep wearing early, and the ABS computer from Part 1 appears nowhere in it.
 
-That question belongs here. Which batch ran on Line 2 at 2pm? Which resin lot went into it? Who ran it, did it pass QA, where did the pallet ship? The MES answers all of it instantly, and that genealogy is the backbone of every recall. After three systems that knew only signals and numbers, here is one that knows things.
+That book is an MES. Strip the acronym and it's a workflow engine for the plant floor: every production order is a state machine, every step a transition, and the log of those transitions is the record of what got made. Which batch ran on Line 2 at 2pm, which resin lot went into it, who ran it, did it pass QA, where the pallet shipped. It answers all of that instantly, and that genealogy is the backbone of every recall. After three parts about systems that only knew numbers, here is one that knows things.
 
-Then you ask why that batch nearly failed QA. The MES hands you a code: "pressure deviation, released on review." Not the cause. The pressure trace is in the historian. The recipe change is in the control system. The shared chiller that actually drove it isn't in the MES at all, because it was never a step in any routing.
+Then you ask why that batch nearly failed QA. You get a code: "pressure deviation, released on review." Not the cause. The pressure trace is in the historian. The recipe change is in the control system. The shared chiller that actually drove it was never a step in any routing, so the MES has never heard of it.
 
-Think of the service book in a car's glovebox. Every service stamped, dated and signed, in order, and exactly what you want when a fault turns out to be systemic rather than a one off. It still has nothing to say about why the pads keep wearing early, and the ABS computer from Part 1 appears nowhere in it. A faithful account of what was done to the car, kept by people who never had to explain the car.
+A faithful record of what was done to the car, kept by people who never had to explain the car.
 
-Part 3 said SCADA has reflexes, not judgment. Here is the other half: the MES has a perfect record, and no explanation. A state machine can tell you an order went on hold. It takes a model to tell you why holds keep happening.
+Part 3 said SCADA has reflexes, not judgment. Here is the other half: the MES has a perfect record and no explanation. A state machine can tell you an order went on hold. It takes a model to tell you why holds keep happening.
 
-Name the plant (Part 1). Remember it (Part 2). React to it (Part 3). Record the work (Part 4, the MES). Four systems, two different questions, and not one of them knows what any of it means.
+Name the plant (Part 1). Remember it (Part 2). React to it (Part 3). Record the work (Part 4, the MES). Not one of them knows what any of it means.
 
 Deconstructing the Smart Factory, Part 4.
 
@@ -38,11 +38,18 @@ Part 3 (SCADA, honestly): https://contextweaver.info/blog/scada
 
 
 ====================  NOTES  ====================
-- Style matched to historian-blog/linkedin.md and scada-blog/linkedin.md: the
-  "strip the vocabulary" opener from Part 2, an explicit callback to the prior part's
-  thesis in its own words (Part 3's "reflexes, not judgment"), the car register carried
-  forward (Part 1 ABS → Part 2 dashcam → Part 3 brakes → Part 4 service book), and the
-  ladder close naming every part so far.
+- Style matched to historian-blog/linkedin.md and scada-blog/linkedin.md: an explicit
+  callback to the prior part's thesis in its own words (Part 3's "reflexes, not judgment"),
+  the car register carried forward (Part 1 ABS → Part 2 dashcam → Part 3 brakes → Part 4
+  service book), and the ladder close naming every part so far.
+- **Opens on the car, not the plant.** An earlier draft led with the PT_004 / 4.2 bar
+  pressure example and spent a whole paragraph walking it through the three prior systems.
+  That is the article's concrete spine, not the post's hook: the canon says prefer the car
+  register over shop-floor jargon for a broad audience, and the plant example is for the
+  spine while the car is for intuition. Leading with the service book let the entire
+  "three parts followed one number" paragraph go and cut the post by about a quarter.
+  The pressure trace survives only where it earns its place, as the thing the MES cannot
+  explain.
 - No em dashes in the post body (house style), spaced hyphens / parentheses instead.
 - Link lives in the first comment; LinkedIn throttles posts with outbound links.
 - URLs use contextweaver.info without the www, matching Parts 1-3's first comments.

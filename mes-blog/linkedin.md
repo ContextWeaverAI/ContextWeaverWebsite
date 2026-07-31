@@ -9,13 +9,15 @@ HOW TO POST (LinkedIn throttles links in the body, so the URL goes in the first 
 
 Every car has a service book in the glovebox. Every service stamped, dated and signed, in order. Exactly what you want when a fault turns out to be systemic rather than a one off.
 
-It also has nothing to say about why the pads keep wearing early, and the ABS computer from Part 1 appears nowhere in it.
+It also has nothing to say about why the pads keep wearing early.
 
-That book is an MES. Strip the acronym and it's a workflow engine for the plant floor: every production order is a state machine, every step a transition, and the log of those transitions is the record of what got made. Which batch ran on Line 2 at 2pm, which resin lot went into it, who ran it, did it pass QA, where the pallet shipped. It answers all of that instantly, and that genealogy is the backbone of every recall. After three parts about systems that only knew numbers, here is one that knows things.
+A plant has the same thing, except it is not paper and it does considerably more than write things down. An MES is a workflow engine for the plant floor: every production order is a state machine, every step a transition, and the log of those transitions is the record of what got made. It does not only keep the record, it enforces it. Try to ship an order that never passed QA and it refuses.
+
+So it answers the hard questions instantly. Which batch ran on Line 2 at 2pm, which resin lot went into it, who ran it, where the pallet shipped. That genealogy is the backbone of every recall. After three parts about systems that only knew numbers, here is one that knows things.
 
 Then you ask why that batch nearly failed QA. You get a code: "pressure deviation, released on review." Not the cause. The pressure trace is in the historian. The recipe change is in the control system. The shared chiller that actually drove it was never a step in any routing, so the MES has never heard of it.
 
-A faithful record of what was done to the car, kept by people who never had to explain the car.
+And there the glovebox catches up with it. A faithful record of what was done, kept by something that never had to explain any of it.
 
 Part 3 said SCADA has reflexes, not judgment. Here is the other half: the MES has a perfect record and no explanation. A state machine can tell you an order went on hold. It takes a model to tell you why holds keep happening.
 
@@ -42,6 +44,14 @@ Part 3 (SCADA, honestly): https://contextweaver.info/blog/scada
   callback to the prior part's thesis in its own words (Part 3's "reflexes, not judgment"),
   the car register carried forward (Part 1 ABS → Part 2 dashcam → Part 3 brakes → Part 4
   service book), and the ladder close naming every part so far.
+- **Never equate the service book with the MES.** A draft opened "That book is an MES",
+  then called it a workflow engine one sentence later: two incompatible claims side by side.
+  The book only records; the MES also *enforces* (it refuses to ship an order that skipped
+  QA) and *dispatches* work. The analogy is only true about the recording, so the post now
+  bounds it explicitly ("the same thing, except it is not paper and it does considerably
+  more than write things down") and returns to the glovebox only at the limitation, where
+  it holds. This mirrors the article, which defines the workflow engine first and reaches
+  for the car only to illustrate what the record cannot do.
 - **Opens on the car, not the plant.** An earlier draft led with the PT_004 / 4.2 bar
   pressure example and spent a whole paragraph walking it through the three prior systems.
   That is the article's concrete spine, not the post's hook: the canon says prefer the car

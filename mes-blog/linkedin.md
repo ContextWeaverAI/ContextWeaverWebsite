@@ -7,28 +7,31 @@ HOW TO POST (LinkedIn throttles links in the body, so the URL goes in the first 
 
 ====================  POST  ====================
 
-Every car has a service book in the glovebox. Every service stamped, dated and signed, in order. Exactly what you want when a fault turns out to be systemic rather than a one off.
+This is the most important system in your factory. It is also the one nobody outside the industry has ever heard of.
 
-It also has nothing to say about why the pads keep wearing early.
+Part 4 of Deconstructing the Smart Factory: the MES.
 
-A plant has the same thing, except it is not paper and it does considerably more than write things down. An MES is a workflow engine for the plant floor: every production order is a state machine, every step a transition, and the log of those transitions is the record of what got made. It does not only keep the record, it enforces it. Try to ship an order that never passed QA and it refuses.
+The first three parts took apart systems that only ever knew numbers. One moves them. One stores them. One reacts to them. Not one of them can tell you what the factory was actually building at the time.
 
-So it answers the hard questions instantly. Which batch ran on Line 2 at 2pm, which resin lot went into it, who ran it, where the pallet shipped. That genealogy is the backbone of every recall. After three parts about systems that only knew numbers, here is one that knows things.
+The MES can. It is the first system on the floor that knows things instead of readings: which order, which batch, what went into it, who signed it off, where it shipped. Every product recall you have ever read about was traced with one of these.
 
-Then you ask why that batch nearly failed QA. You get a code: "pressure deviation, released on review." Not the cause. The pressure trace is in the historian. The recipe change is in the control system. The shared chiller that actually drove it was never a step in any routing, so the MES has never heard of it.
+And it does not just write things down. It enforces. Try to ship something that skipped a quality check and it refuses. That is why no serious manufacturer runs without one.
 
-And there the glovebox catches up with it. A faithful record of what was done, kept by something that never had to explain any of it.
+Then you ask it the only question that matters after something goes wrong. Why did this happen?
 
-Part 3 said SCADA has reflexes, not judgment. Here is the other half: the MES has a perfect record and no explanation. A state machine can tell you an order went on hold. It takes a model to tell you why holds keep happening.
+It hands you a code. "Deviation, released on review." That is the whole answer. Not the cause. The cause is sitting in three other systems and one operator's head, and the MES has never heard of any of them.
 
-Name the plant (Part 1). Remember it (Part 2). React to it (Part 3). Record the work (Part 4, the MES). Not one of them knows what any of it means.
+A perfect record of what was done, kept by something that never had to explain any of it.
+
+Part 3 said your control system has reflexes, not judgment. Here is the other half: your MES has a memory, not an understanding. It can tell you an order went on hold. It takes a model to tell you why holds keep happening.
+
+Name the plant. Remember it. React to it. Record the work. Four systems, and not one of them knows what any of it means.
 
 Deconstructing the Smart Factory, Part 4.
 
 (link in comments)
 
 #Manufacturing #SmartFactory #Industry40 #MES #IIoT
-
 
 ====================  FIRST COMMENT  ====================
 
@@ -40,32 +43,22 @@ Part 3 (SCADA, honestly): https://contextweaver.info/blog/scada
 
 
 ====================  NOTES  ====================
-- Style matched to historian-blog/linkedin.md and scada-blog/linkedin.md: an explicit
-  callback to the prior part's thesis in its own words (Part 3's "reflexes, not judgment"),
-  the car register carried forward (Part 1 ABS → Part 2 dashcam → Part 3 brakes → Part 4
-  service book), and the ladder close naming every part so far.
-- **Never equate the service book with the MES.** A draft opened "That book is an MES",
-  then called it a workflow engine one sentence later: two incompatible claims side by side.
-  The book only records; the MES also *enforces* (it refuses to ship an order that skipped
-  QA) and *dispatches* work. The analogy is only true about the recording, so the post now
-  bounds it explicitly ("the same thing, except it is not paper and it does considerably
-  more than write things down") and returns to the glovebox only at the limitation, where
-  it holds. This mirrors the article, which defines the workflow engine first and reaches
-  for the car only to illustrate what the record cannot do.
-- **Opens on the car, not the plant.** An earlier draft led with the PT_004 / 4.2 bar
-  pressure example and spent a whole paragraph walking it through the three prior systems.
-  That is the article's concrete spine, not the post's hook: the canon says prefer the car
-  register over shop-floor jargon for a broad audience, and the plant example is for the
-  spine while the car is for intuition. Leading with the service book let the entire
-  "three parts followed one number" paragraph go and cut the post by about a quarter.
-  The pressure trace survives only where it earns its place, as the thing the MES cannot
-  explain.
+- **The post is broad-audience. No plant jargon.** No tag names, no Line 2, no resin lot,
+  no pressure trace, no chiller, no shipment number. Those are the article's concrete
+  spine and they belong there, not here. Drafts kept leaking them back in; if a specific
+  is not doing work a general noun cannot, cut it.
+- **Open loud.** The hook states the stake ("the most important system in your factory")
+  and names the series slot in line two. Earlier drafts opened on a car service book and
+  read as flat and confusing: the book only records, while an MES also enforces and
+  dispatches, so equating them fought itself. The car register stays in the article,
+  where it is introduced properly; it is not the hook.
+- Keeps the series conventions from historian-blog/ and scada-blog/ linkedin.md: an
+  explicit callback to the prior part's thesis in its own words (Part 3's "reflexes, not
+  judgment"), the ladder close naming every part so far, "(link in comments)", and the
+  link block as the first comment.
 - No em dashes in the post body (house style), spaced hyphens / parentheses instead.
-- Link lives in the first comment; LinkedIn throttles posts with outbound links.
 - URLs use contextweaver.info without the www, matching Parts 1-3's first comments.
   (Both forms resolve 200; the site's canonical metadata uses www.)
 - Image: assets/linkedin-plan-not-a-model.png (rendered, 1080x1080, article design scheme;
-  source slide at slides/linkedin-plan-not-a-model.html). The "a record of the plan isn't a
-  model of the plant" hook: QA hold as a bare code vs. wired to what explains it. Post text
-  stands alone without it.
+  source slide at slides/linkedin-plan-not-a-model.html). Post text stands alone without it.
 - Article published 2026-07-31 at https://contextweaver.info/blog/mes (Part 4).

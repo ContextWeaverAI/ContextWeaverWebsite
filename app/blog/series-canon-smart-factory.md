@@ -18,20 +18,68 @@ and one honest limit. Stakes escalate as you go down toward the metal:
 | 1 | Unified Namespace | **moves** the number | pub/sub event bus | a message broker is transport, not a system of record; the world is a **graph, not a tree** | a **car is a web, not a tree** — ABS reads all four wheels at once, so it has no clean slot on the tidy tree |
 | 2 | Historian | **remembers** the number | append-only time-series log | perfect recall, zero comprehension — **a stored number is not an answer** | the **dashcam / black box**: records everything, understands nothing |
 | 3 | SCADA | **acts on** the number | mutable key-value tag table (overwritten every scan) | **reflexes, not judgment** — the only layer with a hand on the plant | the **brakes / ABS** themselves: sense, react dozens of times a second, no idea why you're braking |
-| (parked) MES | records **how work moved** | workflow engine + event-sourced log | a record of the plan isn't a model of the plant | — |
+| 4 | MES | **records the work** the number was serving | workflow engine + event-sourced log | **a record of the plan isn't a model of the plant** — a closed world bounded by its own routing | the **service book** in the glovebox: every service stamped, dated and signed, and no idea why the pads keep wearing early |
 
 **The escalation is the payoff line of Part 3:** moving or storing a misunderstood number is
 inert; *acting* on one moves steel. Don't frame the historian or UNS as "getting a number
 wrong" — they don't; they handle it faithfully and still can't explain it. Only the stakes change.
+
+**Part 4 turns the axis rather than continuing the descent.** Parts 1–3 walk one *signal* down
+toward the metal, and SCADA is the floor of that descent — the MES sits *above* SCADA, so Part 4
+cannot escalate further down without breaking the ordering. Instead it opens the plant's **second
+axis: the work** (batch #4471, lot RL-88, shipment S-201) as against the signal (`PT_004` = 4.2 bar).
+The pivot is the question *what was the plant making at the time?* — unanswerable at any of the
+three signal layers, and the setup for the draft's own line: "after three systems that knew only
+signals and numbers, here is one that knows *things*." The throughline survives the turn, because
+the verdict is identical on both axes: still not a model.
+
+## Core and components, not every nuance
+
+**The series explains the core of each system and how the components fit together. It does not
+chase every real-world exception.** Industrial architecture has an edge case for everything;
+a part that reaches for all of them stops being an explainer. When a nuance is *more accurate*
+but costs clarity — or worse, contradicts a clean claim an earlier part already made — **the
+simplification wins.** Being right in a footnote is not worth being muddled in the argument.
+
+Worked example (Part 4, caught in review). The draft read "SCADA **or an edge node** turns the
+command into a Modbus or OPC UA write." Strictly true — an edge gateway can subscribe to a
+command topic and write to the PLC without SCADA in the path. But Part 3 states twice that
+SCADA is "the **only** layer with a hand on the plant" and "the **one system** that can move
+actuators," and leans on that exclusivity for its security argument (compromise is a safety
+event, not a data breach). The nuance bought the reader nothing and cost a cross-part
+contradiction, so it was cut: Part 4 now says SCADA "owns the write to the machines." Part 3
+was **not** amended. Protocol-level detail (Sparkplug `NCMD`/`DCMD`, Modbus, OPC UA) went with
+it, for the same reason.
+
+**Standing rule: SCADA owns the write.** Don't undercut it in a later part.
+
+## The stack is a read path. Commands run the other way — don't draw only one.
+
+Parts 1–3 describe readings *rising*: SCADA senses, the namespace moves, the historian keeps.
+That is a **read-path abstraction, not the whole architecture**, and Part 4's first layer
+diagram got this wrong by drawing every arrow upward. Work is also **dispatched** — the MES
+releases an order and hands down recipes and setpoints — and that command runs down through
+the namespace into SCADA.
+
+Two rules follow:
+
+1. **Never draw the stack as purely upward once the MES is in frame.** Show the command path.
+   It runs MES → UNS → SCADA and **skips the historian** — nothing is ever dispatched to memory.
+2. **"SCADA sits at the bottom" means closest to the metal, not the literal floor.** The PLC
+   runs beneath it (Part 3 says so explicitly), and SCADA is the only layer speaking fieldbus.
+   Don't upgrade this into "everything originates in SCADA" — commands originate above it.
 
 ## The car analogy is the series' relatable register — keep extending it
 
 Part 1 already chose **cars & brakes (ABS)** as the lay-audience hook (`car isn't a tree`).
 That is now the series' everyday vocabulary. **Reuse and extend it; don't invent a new metaphor
 per post.** The strongest Part-3 move is a *callback*: the ABS computer that broke the UNS tree
-in Part 1 is the archetype of SCADA in Part 3 (senses, reacts, no idea why). Prefer cars /
-brakes / dashcam over shop-floor jargon (valves, setpoints) when writing for a broad audience —
-the plant example (below) stays for the concrete spine; the car is for intuition.
+in Part 1 is the archetype of SCADA in Part 3 (senses, reacts, no idea why). Part 4 extends the
+same car to its **service book** — a faithful, stamped record of what was done, kept by people
+who never had to explain the car, and with no entry anywhere for that same ABS computer. Prefer
+cars / brakes / dashcam / service book over shop-floor jargon (valves, setpoints) when writing
+for a broad audience — the plant example (below) stays for the concrete spine; the car is for
+intuition.
 
 ## The frozen running example (identical facts in every part)
 

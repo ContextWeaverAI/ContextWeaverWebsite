@@ -35,6 +35,20 @@ const SMART_FACTORY_SERIES = {
 
 export const posts: BlogPost[] = [
   {
+    slug: "mes",
+    title: "The MES, Honestly",
+    subtitle: "What it tracks, what it can't, and the software patterns underneath it",
+    dek: "Strip the manufacturing vocabulary away and an MES is a workflow engine for the plant floor. A technologist's read on what it records, where the routing runs out, and why a record of the plan is not a model of the plant.",
+    category: "Architecture",
+    date: "2026-07-29",
+    dateLabel: "Jul 29, 2026",
+    readingTime: "9 min read",
+    wordCount: "Concept · ~2,550 words",
+    charts: "",
+    author: "Ishan Bhanuka, CTO",
+    series: { ...SMART_FACTORY_SERIES, part: 4 },
+  },
+  {
     slug: "scada",
     title: "SCADA, Honestly",
     subtitle: "What it watches, what it can't, and the software patterns underneath it",

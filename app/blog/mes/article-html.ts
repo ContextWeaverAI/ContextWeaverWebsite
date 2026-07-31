@@ -29,16 +29,27 @@ export const articleHtml = `<style>
 .blog-prose .dg-alt-arrow{fill:var(--orange);}
 .blog-prose .dg-alt-text{fill:var(--orange);font-size:12px;font-weight:700;}
 .blog-prose .dg-alt-box{fill:color-mix(in oklch,var(--orange) 12%,var(--card));stroke:var(--orange);stroke-width:1.5;}
+.blog-prose p.pivot{margin:2.75rem 0;text-align:center;font-size:1.7rem;line-height:1.3;font-weight:650;letter-spacing:-.02em;font-style:italic;color:var(--foreground);}
+.blog-prose p.pivot::before{content:"";display:block;width:52px;height:3px;margin:0 auto 1.4rem;border-radius:2px;background:var(--orange);}
+@media (max-width:640px){.blog-prose p.pivot{font-size:1.35rem;margin:2.25rem 0;}}
 .blog-prose pre.impl{margin:1.6rem 0;padding:1.15rem 1.35rem;border:1px solid var(--border);border-radius:12px;background:color-mix(in oklch,var(--muted) 55%,var(--card));font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem;line-height:1.6;color:var(--foreground);overflow-x:auto;white-space:pre;}
 </style>
-<p>In <a href="/blog/historian">Part 2</a>, the historian gave us Line 2&rsquo;s pressure
-history in seconds, then stalled on a question that wasn&rsquo;t about numbers at all:
-<em>which batch was on the line at 14:03, and where did that lot go next?</em> Tag
-<code>PT_004</code> had never heard of batch&nbsp;#4471. It punted us to the system that
-has, and that system is this one.</p>
+<p>Three parts, one number. <code>PT_004</code> on Line 2&rsquo;s filler read 4.2&nbsp;bar
+last Tuesday: <a href="/blog/scada">SCADA</a> sensed it and threw the alarm, the
+<a href="/blog/unified-namespace">unified namespace</a> carried it, the
+<a href="/blog/historian">historian</a> filed it away. Part 3 landed on the sharpest version
+of the problem &mdash; SCADA is the one layer with a hand on the plant, and it acts on that
+number with a reflex against a threshold, never a judgment about it.</p>
+<p>Now ask a question that number cannot answer at any of those three layers.</p>
+<p class="pivot">What was the plant making at the time?</p>
+<p>Not what the pressure was. What was <strong>in</strong> the machine &mdash; which batch,
+on which order, from which resin lot, bound for which shipment. Tag <code>PT_004</code> has
+never heard of batch&nbsp;#4471, and no amount of sensing, moving, or remembering a pressure
+reading will introduce them. That question belongs to a different system, because it belongs
+to a different axis of the plant: not the signal, but the work.</p>
 <p>Walk over and the screen changes: not a trend, a <strong>work-order list</strong>. Order
 #4471, 500&nbsp;ml SKU, a route, a status against each step, an operator&rsquo;s name. Ask
-which batch ran at 14:03 and it answers instantly. After two systems that knew only signals
+which batch ran at 14:03 and it answers instantly. After three systems that knew only signals
 and numbers, here is one that knows <em>things</em> &mdash; orders, batches, lots. It feels
 like the missing piece, and in part it is. Strip the vocabulary off and you can see both why
 it helps, and where it stops.</p>
@@ -130,6 +141,59 @@ Camunda, or a commercial MES add durability, retries, a UI, and a decade of
 exception-handling on top &mdash; but the engine underneath is these two tables. It&rsquo;s
 also why most plants have three half-built ones: an Access app, a SQL Server instance, and a
 SaaS tool nobody ever decommissioned.</p>
+<figure class="diagram">
+<svg viewBox="0 0 660 400" role="img" aria-labelledby="dgm-log-title">
+<title id="dgm-log-title">An append-only transition log, the state folded out of it, and the table that guards which moves are legal</title>
+<text class="dg-panel-title" x="30" y="24">The log &mdash; append only</text>
+<rect class="dg-box" x="30" y="44" width="330" height="30" rx="7" />
+<text class="dg-mono" x="44" y="64">(none) &rarr; DISPATCHED</text>
+<text class="dg-sub" x="350" y="64" text-anchor="end" style="font-size:11px">14:00 &middot; scheduler</text>
+<rect class="dg-box" x="30" y="78" width="330" height="30" rx="7" />
+<text class="dg-mono" x="44" y="98">DISPATCHED &rarr; FILLING</text>
+<text class="dg-sub" x="350" y="98" text-anchor="end" style="font-size:11px">14:03 &middot; priya</text>
+<rect class="dg-box" x="30" y="112" width="330" height="30" rx="7" />
+<text class="dg-mono" x="44" y="132">FILLING &rarr; QA</text>
+<text class="dg-sub" x="350" y="132" text-anchor="end" style="font-size:11px">14:36 &middot; priya</text>
+<rect class="dg-box" x="30" y="146" width="330" height="30" rx="7" />
+<text class="dg-mono" x="44" y="166">QA &rarr; HOLD</text>
+<text class="dg-sub" x="350" y="166" text-anchor="end" style="font-size:11px">14:37 &middot; qa-check</text>
+<rect class="dg-box-accent" x="30" y="180" width="330" height="30" rx="7" />
+<text class="dg-mono" x="44" y="200">HOLD &rarr; RELEASED</text>
+<text class="dg-sub" x="350" y="200" text-anchor="end" style="font-size:11px">14:40 &middot; r.menon</text>
+<path class="dg-spoke" d="M362 195 H422" />
+<polygon class="dg-alt-arrow" points="422,190 422,200 430,195" />
+<rect class="dg-chip-accent" x="436" y="180" width="204" height="30" rx="15" />
+<text class="dg-accent-text" x="538" y="199" text-anchor="middle" style="font-size:12px">current state = RELEASED</text>
+<text class="dg-sub" x="538" y="170" text-anchor="middle" style="font-size:11px">derived by folding the log, never stored</text>
+<text class="dg-sub" x="30" y="232" style="font-size:11px">Rows are only ever appended. Nothing above is updated, and nothing is deleted.</text>
+<line class="dg-divider" x1="30" y1="256" x2="640" y2="256" stroke-dasharray="4 6" />
+<text class="dg-panel-title" x="30" y="286">The guard &mdash; the transitions table</text>
+<circle class="dg-ok" cx="44" cy="317" r="13" />
+<polyline class="dg-glyph" points="38,317 42,322 50,312" />
+<rect class="dg-chip" x="70" y="302" width="90" height="30" rx="8" />
+<text class="dg-label-sm" x="115" y="322" text-anchor="middle">FILLING</text>
+<path class="dg-connector" d="M162 317 H174" />
+<polygon class="dg-arrow" points="174,312 174,322 181,317" />
+<rect class="dg-chip" x="186" y="302" width="60" height="30" rx="8" />
+<text class="dg-label-sm" x="216" y="322" text-anchor="middle">QA</text>
+<path class="dg-connector" d="M248 317 H260" />
+<polygon class="dg-arrow" points="260,312 260,322 267,317" />
+<rect class="dg-chip" x="272" y="302" width="100" height="30" rx="8" />
+<text class="dg-label-sm" x="322" y="322" text-anchor="middle">RELEASED</text>
+<text class="dg-sub" x="392" y="322" style="font-size:11px">legal: every step is in the log</text>
+<circle class="dg-no" cx="44" cy="365" r="13" />
+<line class="dg-glyph-no" x1="39" y1="360" x2="49" y2="370" />
+<line class="dg-glyph-no" x1="49" y1="360" x2="39" y2="370" />
+<rect class="dg-chip" x="70" y="350" width="90" height="30" rx="8" />
+<text class="dg-label-sm" x="115" y="370" text-anchor="middle">FILLING</text>
+<path class="dg-connector" d="M162 365 H260" stroke-dasharray="4 4" />
+<polygon class="dg-arrow" points="260,360 260,370 267,365" />
+<rect class="dg-chip" x="272" y="350" width="100" height="30" rx="8" />
+<text class="dg-label-sm" x="322" y="370" text-anchor="middle">RELEASED</text>
+<text class="dg-sub" x="392" y="370" style="font-size:11px">rejected: no such edge, QA never happened</text>
+</svg>
+<figcaption>The whole primitive in one picture. Every step appends a row and nothing is ever overwritten, so &ldquo;where is #4471 now&rdquo; is not a stored field but the last row folded out of the log &mdash; which is why the live status and the permanent audit trail can never disagree. The transitions table is the other half: ship-without-QA isn&rsquo;t an edge it knows, so the jump is refused rather than recorded.</figcaption>
+</figure>
 <p>Two things separate that from &ldquo;a table with a status column.&rdquo; It
 <strong>enforces</strong> the legal moves &mdash; a historian stores whatever you send it;
 an MES won&rsquo;t let you ship an order that hasn&rsquo;t passed QA, because the
@@ -140,11 +204,12 @@ are the same events read two ways. That&rsquo;s why the old argument over whethe
 state machine whose transition log is the system of record. One object, two faces.</p>
 <hr />
 <h2 id="what-it-solves">What it solves</h2>
-<p>The win is exactly the thing the last two systems structurally couldn&rsquo;t give:
+<p>The win is exactly the thing the last three systems structurally couldn&rsquo;t give:
 <strong>identity and linkage for what the plant made.</strong></p>
-<p>The UNS moved live signals; the historian remembered numbers; neither had ever heard of
-a batch. The MES is built around the batch. It knows #4471 consumed resin lot RL-88, ran
-on Line 2, was operated by Priya, passed QA at 14:38, and shipped in S-201 &mdash; and it
+<p>SCADA sensed live signals and acted on them; the UNS moved them; the historian remembered
+them; not one of the three had ever heard of a batch. The MES is built around the batch. It knows #4471 consumed resin lot RL-88, ran
+on Line 2, was operated by Priya, was held at QA and released on review at 14:40, and
+shipped in S-201 &mdash; and it
 can walk that chain in either direction. That&rsquo;s <strong>genealogy</strong>, and
 it&rsquo;s the backbone of every recall, every &ldquo;which units got the bad lot,&rdquo;
 every regulated e-record. When a defect surfaces in the field three months out, the MES is
@@ -156,51 +221,72 @@ production on it.</p>
 <hr />
 <h2 id="where-it-fits">Where it fits</h2>
 <p>An MES is a <strong>system of record for the process</strong> &mdash; the ledger of what
-was made and how it moved. It sits beside the two systems from the earlier parts: the UNS
-moves the live event, the historian remembers the numbers, the MES records the
-<em>work</em>. In software terms, it&rsquo;s the workflow service and its event store,
-sitting on the same plant as the message bus and the time-series database. A well-run
-factory has all three, and needs all three.</p>
+was made and how it moved. It sits beside the three systems from the earlier parts: SCADA
+senses the live value and acts on it, the UNS moves it, the historian remembers it, and the
+MES records the <em>work</em> all three were serving the whole time. In software terms,
+it&rsquo;s the workflow service and its event store, sitting on the same plant as the control
+console, the message bus, and the time-series database. A well-run factory has all four, and
+needs all four.</p>
+<p>One caveat on that picture: the arrows do not all point up. Work gets
+<em>dispatched</em> as well as recorded. The MES releases the order to the line and hands
+down the recipe and setpoints the batch is meant to run at, and that path runs the other way
+&mdash; down through the namespace and into <a href="/blog/scada">SCADA</a>, which owns the
+write to the machines. It skips the historian entirely: nothing is ever dispatched to memory.
+The MES sits on both paths, and only one of them is a record.</p>
 <figure class="diagram">
-<svg viewBox="0 0 560 360" role="img" aria-labelledby="dgm1-title">
-<title id="dgm1-title">The MES is the plant&rsquo;s execution record, and the record still sits below understanding</title>
-<rect class="dg-box" x="20" y="18" width="520" height="68" rx="10" />
-<text class="dg-label" x="40" y="48">Understanding</text>
-<text class="dg-sub" x="40" y="72">why did it happen? &middot; why do holds keep recurring? &middot; what caused the deviation?</text>
-<rect class="dg-box-accent" x="20" y="114" width="520" height="64" rx="10" />
-<text class="dg-label" x="40" y="144" style="fill:var(--orange)">MES</text>
-<text class="dg-sub" x="40" y="166">every order, ever &mdash; the process, its states &amp; its transitions, and nothing off it</text>
-<rect class="dg-box" x="20" y="206" width="520" height="56" rx="10" />
-<text class="dg-label" x="40" y="232">Historian</text>
-<text class="dg-sub" x="40" y="252">every value, ever &mdash; Part 2</text>
-<rect class="dg-box" x="20" y="290" width="520" height="56" rx="10" />
-<text class="dg-label" x="40" y="316">Unified Namespace</text>
-<text class="dg-sub" x="40" y="336">live state, in motion &mdash; Part 1</text>
-<g class="dg-connector">
-<path d="M140 288 V272" /><path d="M280 288 V272" /><path d="M420 288 V272" /><path d="M140 204 V188" /><path d="M280 204 V188" /><path d="M420 204 V188" /><path d="M140 112 V96" /><path d="M280 112 V96" /><path d="M420 112 V96" />
-</g>
-<g class="dg-arrow">
-<polygon points="135,275 145,275 140,267" /><polygon points="275,275 285,275 280,267" /><polygon points="415,275 425,275 420,267" /><polygon points="135,191 145,191 140,183" /><polygon points="275,191 285,191 280,183" /><polygon points="415,191 425,191 420,183" /><polygon points="135,99 145,99 140,91" /><polygon points="275,99 285,99 280,91" /><polygon points="415,99 425,99 420,91" />
-</g>
+<svg viewBox="0 0 660 400" role="img" aria-labelledby="dgm1-title">
+<title id="dgm1-title">The tidy stack every architecture slide draws, against how the plant is actually wired</title>
+<line class="dg-divider" x1="266" y1="20" x2="266" y2="390" stroke-dasharray="4 6" />
+<text class="dg-panel-title" x="135" y="26" text-anchor="middle">The stack we draw</text>
+<text class="dg-panel-title" x="470" y="26" text-anchor="middle">What&rsquo;s actually wired</text>
+<rect class="dg-box" x="60" y="48" width="150" height="28" rx="7" /><text class="dg-label-sm" x="135" y="67" text-anchor="middle">Understanding</text>
+<rect class="dg-box-accent" x="60" y="110" width="150" height="28" rx="7" /><text class="dg-label-sm" x="135" y="129" text-anchor="middle" style="fill:var(--orange)">MES</text>
+<rect class="dg-box" x="60" y="172" width="150" height="28" rx="7" /><text class="dg-label-sm" x="135" y="191" text-anchor="middle">Historian</text>
+<rect class="dg-box" x="60" y="234" width="150" height="28" rx="7" /><text class="dg-label-sm" x="135" y="253" text-anchor="middle">Unified Namespace</text>
+<rect class="dg-box" x="60" y="296" width="150" height="28" rx="7" /><text class="dg-label-sm" x="135" y="315" text-anchor="middle">SCADA</text>
+<g class="dg-connector"><path d="M135 294 V272" /><path d="M135 232 V210" /><path d="M135 170 V148" /><path d="M135 108 V86" /></g>
+<g class="dg-arrow"><polygon points="130,272 140,272 135,264" /><polygon points="130,210 140,210 135,202" /><polygon points="130,148 140,148 135,140" /><polygon points="130,86 140,86 135,78" /></g>
+<text class="dg-sub" x="135" y="346" text-anchor="middle" style="font-size:11px">One chain, bottom to top.</text>
+<rect class="dg-box" x="300" y="48" width="340" height="30" rx="8" /><text class="dg-label-sm" x="470" y="68" text-anchor="middle">Understanding</text>
+<rect class="dg-box-accent" x="300" y="130" width="102" height="30" rx="8" /><text class="dg-label-sm" x="351" y="150" text-anchor="middle" style="fill:var(--orange)">MES</text>
+<rect class="dg-box" x="518" y="130" width="122" height="30" rx="8" /><text class="dg-label-sm" x="579" y="150" text-anchor="middle">Historian</text>
+<rect class="dg-box" x="330" y="212" width="270" height="30" rx="8" /><text class="dg-label-sm" x="465" y="232" text-anchor="middle">Unified Namespace</text>
+<rect class="dg-box" x="400" y="284" width="130" height="30" rx="8" /><text class="dg-label-sm" x="465" y="304" text-anchor="middle">SCADA</text>
+<rect class="dg-chip" x="400" y="352" width="130" height="26" rx="8" /><text class="dg-sub" x="465" y="369" text-anchor="middle" style="font-size:11px">PLCs &amp; sensors</text>
+<g class="dg-connector"><path d="M350 128 V90" /><path d="M580 128 V90" /><path d="M344 210 V170" /><path d="M580 210 V170" /><path d="M452 282 V252" /><path d="M452 350 V324" /></g>
+<g class="dg-arrow"><polygon points="345,90 355,90 350,80" /><polygon points="575,90 585,90 580,80" /><polygon points="339,170 349,170 344,162" /><polygon points="575,170 585,170 580,162" /><polygon points="447,252 457,252 452,244" /><polygon points="447,324 457,324 452,316" /></g>
+<g class="dg-alt"><path d="M366 162 V202" /><path d="M478 244 V274" /><path d="M478 316 V342" /></g>
+<g class="dg-alt-arrow"><polygon points="361,202 371,202 366,210" /><polygon points="473,274 483,274 478,282" /><polygon points="473,342 483,342 478,350" /></g>
+<g class="dg-glyph-no" stroke-dasharray="5 4"><path d="M402 145 H444" /><path d="M476 145 H518" /></g>
+<g class="dg-glyph-no"><line x1="452" y1="137" x2="468" y2="153" /><line x1="468" y1="137" x2="452" y2="153" /></g>
+<text class="dg-sub" x="465" y="180" text-anchor="middle" style="font-size:10px">no link: the hold stays unexplained</text>
 </svg>
-<figcaption>The MES records the work the UNS carried and the historian measured &mdash; the plant&rsquo;s execution record. But a record of the process still sits below understanding: it can tell you what happened to every order, never why it happened. A workflow engine is a system of record, not a model.</figcaption>
+<figcaption>Left: the stack every architecture slide draws. Right: the same four systems as they are actually wired. Readings rise from the machines; commands (accent) run back down through the namespace into SCADA, which owns the write. The historian only ever receives &mdash; nothing is dispatched to memory. And the edge that would explain the QA hold, MES to historian, is the one that was never built: the batch record and the pressure trace sit in separate systems that have no idea about each other. Part 1 said the plant is a graph, not a tree. So is the software running it.</figcaption>
 </figure>
 <p>What it is <em>not</em> is a place where anything is <em>understood</em> &mdash; and here
 a technologist&rsquo;s instincts should twitch again, because <strong>a workflow engine
 models the process, not the world the process runs in.</strong> It captures the states you
 defined, on the schema you configured, and nothing else. Temporal knows your workflow ran
 step 4 after step 3; it has no opinion on the machine that did step 4, the physics inside
-it, or why step 4 keeps retrying. An MES is the same. It&rsquo;s so good at recording the
-process that it&rsquo;s tempting to mistake the process record for a model of the plant.</p>
+it, or why step 4 keeps retrying.</p>
+<p>An MES is the same, and the everyday version of it is sitting in a glovebox. A car&rsquo;s
+service book is a genuine record: every service stamped, dated and signed, in order, and
+exactly what you want when a fault turns out to be systemic rather than a one-off. It also
+has nothing to say about why the pads keep wearing early, and the ABS computer from
+<a href="/blog/unified-namespace">Part 1</a> &mdash; the one that reads all four wheels at
+once and broke the tidy tree &mdash; appears nowhere in it. The book is a faithful account of
+what was done to the car, kept by people who never had to explain the car. An MES is so good
+at recording the process that it&rsquo;s tempting to mistake the process record for a model
+of the plant.</p>
 <p>It isn&rsquo;t. Here&rsquo;s where that cracks.</p>
 <hr />
 <h2 id="the-example">The specific example: the work order on Line 2</h2>
-<p>Same Tuesday, same defect on Line 2&rsquo;s filler. The historian sent us here for the
-batch, and the MES delivers on exactly that:</p>
+<p>Same Tuesday, same defect on Line 2&rsquo;s filler. The question that stalled at every
+layer of the signal stack lands here, and the MES delivers on exactly that:</p>
 <p><strong>&ldquo;Which batch ran at 14:03, and where did the lot go?&rdquo;</strong> #4471,
 filled on Line 2, operator Priya, released to packaging at 14:40, into shipment S-201.
 Clean, instant, auditable. This is the MES&rsquo;s home turf, and it&rsquo;s genuinely the
-thing the historian couldn&rsquo;t do.</p>
+thing none of the first three could do.</p>
 <p>Then the investigation keeps going, and the MES hits a wall the shape of its own
 schema:</p>
 <ul>
@@ -211,8 +297,8 @@ recipe edit that drove it lives in the control system; the MES records the
 <em>outcome</em> of the step, never the physics beneath it.</li>
 <li><strong>&ldquo;Was the glycol skid involved?&rdquo;</strong> The skid isn&rsquo;t a
 step in any routing, so it isn&rsquo;t in the MES model at all. Off-schema, invisible
-&mdash; the same shared resource the UNS&rsquo;s tree couldn&rsquo;t place and the
-historian kept as an unrelated pen.</li>
+&mdash; the same shared resource the UNS&rsquo;s tree couldn&rsquo;t place, the historian
+kept as an unrelated pen, and SCADA saw as just another independent tag.</li>
 <li><strong>&ldquo;Has this failure mode hit other lines, or the 2&nbsp;L SKU?&rdquo;</strong>
 This MES instance knows its own orders on its own site. The cross-line relationships and
 the other plant&rsquo;s identical filler live in other databases, behind other logins. Two
@@ -250,10 +336,10 @@ in a field nobody queries, or on paper, or in her head.</li>
 <rect class="dg-chip" x="430" y="251" width="182" height="30" rx="15" />
 <text class="dg-sub" x="521" y="270" text-anchor="middle">tribal knowledge &mdash; a code</text>
 </svg>
-<figcaption>The MES answers the question the historian punted to it &mdash; perfect account of the batch and where it went. The other four need the physics, the cause, the asset graph, and the human act behind the disposition: none of which a workflow engine over a fixed routing was built to hold.</figcaption>
+<figcaption>The MES answers the question the signal stack never could &mdash; perfect account of the batch and where it went. The other four need the physics, the cause, the asset graph, and the human act behind the disposition: none of which a workflow engine over a fixed routing was built to hold.</figcaption>
 </figure>
-<p>The MES answered the question the historian handed it, and then ran out of road at the
-edge of its own routing. It knows <em>what happened to every order.</em> It has no idea
+<p>The MES answered the question the signal layers never could, and then ran out of road at
+the edge of its own routing. It knows <em>what happened to every order.</em> It has no idea
 <em>why any of it happened.</em> It&rsquo;s a perfect account of the process, attached to
 nothing around the process.</p>
 <hr />
@@ -299,7 +385,8 @@ dropped: batch to lot to shipment, in a clean chain. But every edge that doesn&r
 along the process is still gone. The filler and the glycol skid share one physical loop; to
 the MES they share nothing, because the loop isn&rsquo;t a step. It keeps the edges it was
 told to model and drops the ones the plant actually has &mdash; the same graph the
-UNS&rsquo;s tree couldn&rsquo;t hold and the historian didn&rsquo;t either.</li>
+UNS&rsquo;s tree couldn&rsquo;t hold, the historian didn&rsquo;t keep, and SCADA never
+saw.</li>
 <li><strong>The event, but not the cause.</strong> It records that #4471 went on hold and
 was released. Not the pressure excursion that triggered it, not the recipe change that
 caused <em>that</em>, not what the operator understood in the moment. The symptom is a
@@ -315,7 +402,7 @@ carry. A state machine can tell you a unit went on hold. It takes a model to tel
 holds keep happening.</p>
 <hr />
 <h2 id="the-hard-parts">What it costs to run one</h2>
-<p>None of this is free, and of the three systems in this series the MES has the worst
+<p>None of this is free, and of the four systems in this series the MES has the worst
 reputation for a reason. Standing one up runs into walls that are, by now, familiar.</p>
 <ul>
 <li><strong>The process model is the actual project.</strong> &ldquo;Put in an MES&rdquo;

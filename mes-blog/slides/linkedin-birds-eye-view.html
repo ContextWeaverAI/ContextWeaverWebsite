@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>The MES: your bird's eye view of the factory · ContextWeaver</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --background: oklch(0.975 0.004 80);
+    --foreground: oklch(0.2 0.005 60);
+    --muted-foreground: oklch(0.48 0.008 60);
+    --card: oklch(0.995 0.002 80);
+    --muted: oklch(0.93 0.006 80);
+    --orange: oklch(0.62 0.21 35);
+    --border: oklch(0.86 0.006 80);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1080px; overflow: hidden; }
+  body {
+    font-family: "Outfit", system-ui, sans-serif;
+    color: var(--foreground);
+    background:
+      radial-gradient(120% 90% at 50% 6%, color-mix(in oklch, var(--orange) 6%, transparent), transparent 55%),
+      repeating-linear-gradient(0deg, color-mix(in oklch, var(--foreground) 3.5%, transparent) 0 1px, transparent 1px 72px),
+      repeating-linear-gradient(90deg, color-mix(in oklch, var(--foreground) 3.5%, transparent) 0 1px, transparent 1px 72px),
+      var(--background);
+    padding: 78px 84px;
+    display: flex;
+    flex-direction: column;
+  }
+  .kicker {
+    font-size: 22px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 24px;
+  }
+  h1 {
+    font-size: 82px; line-height: 1.03; font-weight: 800; letter-spacing: -0.025em;
+    max-width: 880px;
+  }
+  h1 .dim { color: var(--muted-foreground); font-weight: 700; }
+  .sub {
+    font-size: 26px; line-height: 1.5; color: var(--muted-foreground); font-weight: 500;
+    margin-top: 26px; max-width: 830px;
+  }
+  .sub b { color: var(--foreground); font-weight: 600; }
+  .grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 52px;
+  }
+  .cell {
+    background: var(--card); border: 1.5px solid var(--border);
+    border-radius: 22px; padding: 32px 32px 34px;
+    box-shadow: 0 24px 60px -46px rgba(0,0,0,.5);
+    display: flex; align-items: flex-start; gap: 18px;
+  }
+  .tick {
+    flex: none; width: 34px; height: 34px; border-radius: 999px;
+    background: var(--orange); margin-top: 4px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tick svg { width: 19px; height: 19px; }
+  .q {
+    font-size: 25px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 7px;
+  }
+  .a { font-size: 24px; line-height: 1.42; font-weight: 500; color: var(--foreground); }
+  .why {
+    margin-top: 24px; display: flex; align-items: center; gap: 18px;
+    border: 1.5px dashed color-mix(in oklch, var(--muted-foreground) 42%, transparent);
+    border-radius: 22px; padding: 30px 32px;
+    background: color-mix(in oklch, var(--muted) 45%, transparent);
+  }
+  .why .qm {
+    flex: none; width: 34px; height: 34px; border-radius: 999px;
+    border: 2px solid color-mix(in oklch, var(--muted-foreground) 55%, transparent);
+    color: var(--muted-foreground); font-size: 21px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .why .t { font-size: 23px; font-weight: 500; color: var(--muted-foreground); line-height: 1.4; }
+  .why .t b { font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-foreground); }
+  .footer {
+    margin-top: auto; display: flex; align-items: center; justify-content: space-between;
+    padding-top: 40px;
+  }
+  .brand { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+  .brand .cw { color: var(--orange); }
+  .series { font-size: 21px; font-weight: 500; color: var(--muted-foreground); }
+</style>
+</head>
+<body>
+  <div class="kicker">Deconstructing the Smart Factory · Part 4</div>
+  <h1>Your bird's eye view<br /><span class="dim">of the factory.</span></h1>
+  <div class="sub">The MES is the first system on the floor that knows <b>things</b> instead of readings. And it does not just write them down. It <b>enforces</b> them.</div>
+
+  <div class="grid">
+    <div class="cell">
+      <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,13 10,19 20,6" /></svg></div>
+      <div><div class="q">What</div><div class="a">Which order, which batch, what went into it</div></div>
+    </div>
+    <div class="cell">
+      <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,13 10,19 20,6" /></svg></div>
+      <div><div class="q">Where</div><div class="a">Which line it ran on, where it shipped</div></div>
+    </div>
+    <div class="cell">
+      <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,13 10,19 20,6" /></svg></div>
+      <div><div class="q">How</div><div class="a">Every step, in the order it happened</div></div>
+    </div>
+    <div class="cell">
+      <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,13 10,19 20,6" /></svg></div>
+      <div><div class="q">Who</div><div class="a">Who ran it, who signed it off</div></div>
+    </div>
+  </div>
+
+  <div class="why">
+    <div class="qm">?</div>
+    <div class="t"><b>Why</b> &nbsp;is the one it leaves to another system.</div>
+  </div>
+
+  <div class="footer">
+    <div class="brand"><span class="cw">Context</span>Weaver</div>
+    <div class="series">The MES, honestly · contextweaver.info/blog/mes</div>
+  </div>
+</body>
+</html>

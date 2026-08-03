@@ -19,6 +19,7 @@ and one honest limit. Stakes escalate as you go down toward the metal:
 | 2 | Historian | **remembers** the number | append-only time-series log | perfect recall, zero comprehension — **a stored number is not an answer** | the **dashcam / black box**: records everything, understands nothing |
 | 3 | SCADA | **acts on** the number | mutable key-value tag table (overwritten every scan) | **reflexes, not judgment** — the only layer with a hand on the plant | the **brakes / ABS** themselves: sense, react dozens of times a second, no idea why you're braking |
 | 4 | MES | **records the work** the number was serving | workflow engine + event-sourced log | **a record of the plan isn't a model of the plant** — a closed world bounded by its own routing | the **service book** in the glovebox: every service stamped, dated and signed, and no idea why the pads keep wearing early |
+| 5 | Business systems (ERP, CRM, CMMS, PLM, QMS) | **run the business** around the line | CRUD apps over per-service schemas — **bounded contexts**, i.e. a distributed monolith | **five faithful records, no model of the whole** — the plant is a **T**: a manufacturing *trunk* (Parts 1–4) rising to the MES, a *crossbar* where MES + the business systems sit at one level, and nothing reading across it | the car's **many ECUs with no CAN bus**: each subsystem (engine, ABS, transmission) a perfect model of itself, none of them knows *the car* |
 
 **The escalation is the payoff line of Part 3:** moving or storing a misunderstood number is
 inert; *acting* on one moves steel. Don't frame the historian or UNS as "getting a number
@@ -76,10 +77,12 @@ That is now the series' everyday vocabulary. **Reuse and extend it; don't invent
 per post.** The strongest Part-3 move is a *callback*: the ABS computer that broke the UNS tree
 in Part 1 is the archetype of SCADA in Part 3 (senses, reacts, no idea why). Part 4 extends the
 same car to its **service book** — a faithful, stamped record of what was done, kept by people
-who never had to explain the car, and with no entry anywhere for that same ABS computer. Prefer
-cars / brakes / dashcam / service book over shop-floor jargon (valves, setpoints) when writing
-for a broad audience — the plant example (below) stays for the concrete spine; the car is for
-intuition.
+who never had to explain the car, and with no entry anywhere for that same ABS computer. Part 5
+widens the lens to the whole car's **electronics**: dozens of ECUs (engine, ABS, transmission),
+each a perfect model of its own subsystem and none of them the car — which is why a car needs a
+**CAN bus** (and a plant needs a context layer). Prefer cars / brakes / dashcam / service book /
+ECUs over shop-floor jargon (valves, setpoints) when writing for a broad audience — the plant
+example (below) stays for the concrete spine; the car is for intuition.
 
 ## The frozen running example (identical facts in every part)
 

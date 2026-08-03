@@ -35,6 +35,20 @@ const SMART_FACTORY_SERIES = {
 
 export const posts: BlogPost[] = [
   {
+    slug: "business-systems",
+    title: "The Business Systems, Honestly",
+    subtitle: "What ERP, CRM, CMMS, PLM, and QMS each hold, and the software patterns underneath them",
+    dek: "Strip the vocabulary away and ERP, CRM, CMMS, PLM, and QMS are five systems of record, each a faithful model of its own slice and none a model of the plant. A technologist's read on why five perfect databases still can't answer one question.",
+    category: "Architecture",
+    date: "2026-08-02",
+    dateLabel: "Aug 2, 2026",
+    readingTime: "10 min read",
+    wordCount: "Concept · ~2,300 words",
+    charts: "8 diagrams",
+    author: "Ishan Bhanuka, CTO",
+    series: { ...SMART_FACTORY_SERIES, part: 5 },
+  },
+  {
     slug: "mes",
     title: "The MES, Honestly",
     subtitle: "What it tracks, what it can't, and the software patterns underneath it",

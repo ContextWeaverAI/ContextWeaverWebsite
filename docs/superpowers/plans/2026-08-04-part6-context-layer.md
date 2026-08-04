@@ -24,10 +24,10 @@ and the series canon (`app/blog/series-canon-smart-factory.md`). **Every task in
   finale (beat 6) and the closing blockquote**, never earlier.
 - **No car / CAN-bus analogy anywhere in this part.** (Reason: a bus is transport = Part 1's UNS;
   it would contradict the "model, not a bus" thesis.)
-- **No em dashes in any drafted copy** — this is a repo-wide working convention. Use commas, periods,
-  or parentheses. (Note: the *rendered* prose in Parts 1–5 does use en/em rules typographically via
-  `&mdash;`; match whatever the founder's shipped Part 5 prose actually does — check it — but do not
-  introduce literal `—` characters into the markdown mirror beyond that established pattern.)
+- **Match Part 5's punctuation house style.** The website blog prose *does* use em dashes as a
+  stylistic device (rendered via `&mdash;` in `article-html.ts`, literal `—` in the markdown mirror);
+  Part 5 is full of them. Follow that. (The "no em dash" rule belongs to the separate brain/outreach
+  repo, not here — do not apply it to this article.)
 - **Frozen example facts, unchanged:** Line 2's filler; a Tuesday; `PT_004` = **4.2 bar**, alarm
   limit **4.0 bar**; **batch #4471**, **500 ml** SKU; **resin lot RL-88**; operator **Priya**; the
   shared **glycol skid** = asset **GLY-SKID-02**; shipment **S-201**.

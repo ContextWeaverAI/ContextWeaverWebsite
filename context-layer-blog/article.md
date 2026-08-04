@@ -1,6 +1,6 @@
 # The Context Layer, Finally
 
-## The layer that reads across every system, and why connecting three of them is where intelligence starts
+## Two systems unlock a superpower. Three unlock intelligence.
 
 *Deconstructing the Smart Factory · Part 6 — the finale. The model none of the five systems were, and what it unlocks when a question can finally walk the whole plant.*
 
@@ -72,7 +72,7 @@ It's an **asset-centric semantic model**: the filler, the skid, the line, the ba
 
 [Diagram D4: five IDs resolved to one]
 
-None of this is magic, and it's worth saying plainly, because the series has been sober the whole way and shouldn't stop now. The hard part isn't the traversal — the traversal is easy once the graph exists. The hard part is building the graph honestly: **entity resolution** (proving the ERP asset, the CMMS equipment, the PLM part, the MES resource, and the historian tag really are the one filler, and not guessing wrong) and **governance** (who's allowed to see and assert what). The layer is only ever as trustworthy as its resolution and its quality scores. Get those wrong and you've built a confident graph that walks to the wrong answer — which is worse than five honest islands.
+None of this is free, and it's worth saying plainly, because the series has been sober the whole way and shouldn't stop now. The hard part isn't the traversal — the traversal is easy once the graph exists. The work is in building the graph well: **entity resolution** (establishing that the ERP asset, the CMMS equipment, the PLM part, the MES resource, and the historian tag really are the one filler) and **governance** (who's allowed to see and assert what). That's where the engineering goes, and it's what earns the model the trust to reason on.
 
 And it stays inside the boundary the series drew in [Part 3](/blog/scada). The context layer reads across the plant, reasons over it, and recommends. It does not actuate. **SCADA still owns the write** to the machines — the layer can tell you the skid is drifting toward #4471's excursion and that S-201 is at risk, and it can put that in front of the operator, but the hand on the plant stays exactly where Part 3 left it. A model that reasons is not a model that reaches for the valve.
 

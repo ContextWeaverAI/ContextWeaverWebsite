@@ -1,5 +1,9 @@
 # Series canon — "Deconstructing the Smart Factory"
 
+**Status: COMPLETE — 6 parts published (Part 6, "The Manufacturing Context Layer", is the finale).**
+Any future writing (LinkedIn adaptations, a follow-on "how it's built" arc) still must not contradict
+the throughline below.
+
 **Read this before drafting any new part, and update it the moment a part ships.**
 It exists because the series makes *cumulative* arguments: each part leans on claims
 the earlier parts established. Contradict one and the whole thing stops being trustworthy.
@@ -20,10 +24,29 @@ and one honest limit. Stakes escalate as you go down toward the metal:
 | 3 | SCADA | **acts on** the number | mutable key-value tag table (overwritten every scan) | **reflexes, not judgment** — the only layer with a hand on the plant | the **brakes / ABS** themselves: sense, react dozens of times a second, no idea why you're braking |
 | 4 | MES | **records the work** the number was serving | workflow engine + event-sourced log | **a record of the plan isn't a model of the plant** — a closed world bounded by its own routing | the **service book** in the glovebox: every service stamped, dated and signed, and no idea why the pads keep wearing early |
 | 5 | Business systems (ERP, CRM, CMMS, PLM, QMS) | **run the business** around the line | CRUD apps over per-service schemas — **bounded contexts**, i.e. a distributed monolith | **five faithful records, no model of the whole** — the plant is a **T**: a manufacturing *trunk* (Parts 1–4) rising to the MES, a *crossbar* where MES + the business systems sit at one level, and nothing reading across it | the car's **many ECUs with no CAN bus**: each subsystem (engine, ABS, transmission) a perfect model of itself, none of them knows *the car* |
+| 6 (finale) | The context layer | **reasons across** the number | one shared model / graph over all the systems (entity resolution + agent grounding), each system connected once (N spokes, not N² connectors) | connect any two systems for a **superpower**, three for **intelligence** — the model none of the five were; the crossbar finally wired, and the verdict flips from "still not a model" to "here, finally, is the model" | **none — deliberately dropped** (see note below): the car's shared connector is the **CAN bus**, and a bus is *transport* = Part 1's UNS, so a CAN-bus callback would argue the opposite of Part 6's "a model, not a bus" thesis |
 
 **The escalation is the payoff line of Part 3:** moving or storing a misunderstood number is
 inert; *acting* on one moves steel. Don't frame the historian or UNS as "getting a number
 wrong" — they don't; they handle it faithfully and still can't explain it. Only the stakes change.
+
+**Part 6 is the finale, and it resolves rather than continues.** Parts 1–5 each named a system and
+its honest limit; every verdict was "faithful, still not a model." Part 6 installs the missing
+piece — the context layer, one shared model laid across the top of the T — and flips that verdict:
+*here, finally, is the model.* It deliberately inverts the shared 7-beat structure (the usual
+"what it costs / where it stops" beat becomes "what it unlocks"), and it is the **only part that
+names ContextWeaver in the body** (in its "What it's made of" finale section + closing
+blockquote — everywhere else in the series ContextWeaver appears only in the final bridge). The
+article title itself is the product name, **The Manufacturing Context Layer** (a break from the
+"The X, Honestly" cadence of Parts 1–5, chosen deliberately over "The Context Layer, Finally"). Its
+spine is combinatorial: **two systems joined through the model = a superpower** (a fixed join that
+answers one pre-wireable question); **three = intelligence** (the agent walks a *choice* of paths
+nobody pre-wired — "superpowers are joins you wired; intelligence is traversal you didn't have to").
+Two frozen-fact walks anchor it: the two-system examples are **Historian+CMMS** (condition-based
+maintenance) and **QMS+PLM** (design-quality loop); the three-system payoff is
+**Historian → MES → ERP** (`PT_004` = 4.2 bar → batch #4471 → shipment S-201 at risk). Part 6 keeps
+the standing rule that **SCADA owns the write** — the layer reasons and recommends, it does not
+actuate.
 
 **Part 4 turns the axis rather than continuing the descent.** Parts 1–3 walk one *signal* down
 toward the metal, and SCADA is the floor of that descent — the MES sits *above* SCADA, so Part 4
@@ -83,6 +106,17 @@ each a perfect model of its own subsystem and none of them the car — which is 
 **CAN bus** (and a plant needs a context layer). Prefer cars / brakes / dashcam / service book /
 ECUs over shop-floor jargon (valves, setpoints) when writing for a broad audience — the plant
 example (below) stays for the concrete spine; the car is for intuition.
+
+**Exception — Part 6 deliberately drops the car analogy, and a future edit must not "restore" it.**
+The register runs Parts 1–5 and *stops there on purpose*. Part 5 already spent the strongest car
+image (ECUs with no CAN bus); more importantly, the car's shared connector — the **CAN bus** — is
+*transport*, which is exactly what Part 1 established the UNS to be ("a message broker is transport,
+not a system of record"). Part 6's whole thesis is that the context layer is a **model, not a bus**,
+so reaching for a CAN-bus callback would both repeat Part 5 and argue the opposite of the thesis.
+Part 6 therefore carries **no everyday analogy** — the concrete `#4471` walk does the intuition work
+alone. (If a lay register is ever wanted there, the only non-contradicting shape is model-shaped, not
+wiring-shaped: e.g. "five aerial photos of one town vs. one map in a single coordinate system." Do
+not use a bus, a wire, or a network.)
 
 ## The frozen running example (identical facts in every part)
 

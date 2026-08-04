@@ -138,6 +138,7 @@ is the place all of them meet, so none of them has to meet each other.</p>
 </g>
 <rect class="dg-plane" x="450" y="188" width="120" height="52" rx="14" />
 <rect x="454" y="192" width="112" height="44" rx="11" fill="url(#dgDots)" opacity="0.9" />
+<rect x="470" y="198" width="80" height="32" rx="9" fill="var(--card)" opacity="0.78" />
 <g class="dg-dot"><circle cx="510" cy="187" r="3" /><circle cx="540" cy="200" r="3" /><circle cx="526" cy="228" r="3" /><circle cx="494" cy="228" r="3" /><circle cx="480" cy="200" r="3" /></g>
 <text class="dg-label-sm" x="510" y="211" text-anchor="middle" style="fill:var(--orange);font-weight:800">context</text>
 <text class="dg-label-sm" x="510" y="226" text-anchor="middle" style="fill:var(--orange);font-weight:800">layer</text>
@@ -278,18 +279,18 @@ height of the T, in a single traversal.</p>
 <path d="M208 148 H232" style="stroke:var(--orange);stroke-width:3.4;fill:none;stroke-linecap:round" marker-end="url(#dgArrow)" />
 <path d="M422 148 H446" style="stroke:var(--orange);stroke-width:3.4;fill:none;stroke-linecap:round" marker-end="url(#dgArrow)" />
 <g class="dg-dot"><circle cx="208" cy="148" r="3.6" /><circle cx="422" cy="148" r="3.6" /></g>
-<rect class="dg-chip" x="40" y="120" width="152" height="56" rx="10" filter="url(#dgSoft)" />
-<text class="dg-mono" x="116" y="145" text-anchor="middle">PT_004 = 4.2 bar</text>
-<text class="dg-sub" x="116" y="164" text-anchor="middle">over 4.0 alarm, Line&nbsp;2 filler</text>
-<rect class="dg-chip" x="254" y="120" width="152" height="56" rx="10" filter="url(#dgSoft)" />
-<text class="dg-mono" x="330" y="145" text-anchor="middle">batch #4471</text>
-<text class="dg-sub" x="330" y="164" text-anchor="middle">500&nbsp;ml SKU, lot RL-88</text>
-<rect class="dg-chip" x="468" y="120" width="152" height="56" rx="10" filter="url(#dgGlow)" />
-<text class="dg-mono" x="544" y="141" text-anchor="middle">order &middot; shipment</text>
-<text class="dg-mono" x="544" y="158" text-anchor="middle" style="fill:var(--orange)">S-201 at risk</text>
-<text class="dg-role" x="116" y="202" text-anchor="middle">a signal, alone inert</text>
-<text class="dg-role" x="330" y="202" text-anchor="middle">now it has a job</text>
-<text class="dg-role" x="544" y="202" text-anchor="middle">a customer at stake</text>
+<rect class="dg-chip" x="40" y="118" width="152" height="62" rx="10" filter="url(#dgSoft)" />
+<text class="dg-mono" x="116" y="143" text-anchor="middle">PT_004 = 4.2 bar</text>
+<text class="dg-sub" x="116" y="166" text-anchor="middle">over 4.0 alarm, Line&nbsp;2 filler</text>
+<rect class="dg-chip" x="254" y="118" width="152" height="62" rx="10" filter="url(#dgSoft)" />
+<text class="dg-mono" x="330" y="143" text-anchor="middle">batch #4471</text>
+<text class="dg-sub" x="330" y="166" text-anchor="middle">500&nbsp;ml SKU, lot RL-88</text>
+<rect class="dg-chip" x="468" y="118" width="152" height="62" rx="10" filter="url(#dgGlow)" />
+<text class="dg-mono" x="544" y="142" text-anchor="middle">order &middot; shipment</text>
+<text class="dg-mono" x="544" y="161" text-anchor="middle" style="fill:var(--orange)">S-201 at risk</text>
+<text class="dg-role" x="116" y="206" text-anchor="middle">a signal, alone inert</text>
+<text class="dg-role" x="330" y="206" text-anchor="middle">now it has a job</text>
+<text class="dg-role" x="544" y="206" text-anchor="middle">a customer at stake</text>
 </svg>
 <figcaption>One question, walked end to end: a pressure reading in the historian (signal) resolves to the batch the MES was running (work), and that batch to the order and <span style="color:var(--orange);font-weight:700">shipment S-201</span> the ERP shows at risk (business). Signal to customer along a single highlighted path &mdash; a route nobody pre-wired.</figcaption>
 </figure>
@@ -392,6 +393,7 @@ of the model.</li>
 <g><rect class="dg-node-card" x="20" y="100" width="150" height="62" rx="10" /><text class="dg-label-sm" x="95" y="124" text-anchor="middle" style="fill:var(--orange);font-weight:800">PLM</text><text class="dg-sub" x="95" y="144" text-anchor="middle">part</text></g>
 <rect class="dg-node-active" x="238" y="180" width="164" height="62" rx="14" />
 <rect x="242" y="184" width="156" height="54" rx="11" fill="url(#dgDots)" opacity="0.85" />
+<rect x="252" y="190" width="136" height="42" rx="9" fill="var(--card)" opacity="0.78" />
 <text class="dg-sub" x="320" y="205" text-anchor="middle">one shared identity</text>
 <text class="dg-label-sm" x="320" y="227" text-anchor="middle" style="fill:var(--orange);font-weight:800;font-size:15px">the filler</text>
 </svg>

@@ -20,7 +20,13 @@ Go back to the T. The trunk is wired top to bottom — SCADA, namespace, histori
 
 That word matters, because the fear Part 5 named was integration hell: the N-squared spaghetti of pairwise connectors, every system wired to every other, the [forever-project](/blog/unified-namespace) that ages badly. A context layer is not more of that. Each system connects to the model a single time — N spokes into one hub, not N² connectors between pairs. Add a seventh system and you add one spoke, not six new bridges. The model is the place all of them meet, so none of them has to meet each other.
 
-What the model actually holds is the three things that fell through every earlier part. **Identity:** the ERP fixed-asset, the CMMS equipment record, the PLM part, the MES resource, and the historian tag are declared to be one real thing — the filler — instead of five strangers that happen to describe the same steel. Each system keeps its own local ID; the model just knows they all point at one filler. **Edges:** the relationships that were homeless in Part 5 because they spanned two systems and belonged to neither — skid to filler, filler to batch, batch to recipe, recipe to order — now live in the model as first-class connections, owned by the layer rather than by either system on the ends. **Meaning:** with identity and edges in place, a question stops being a five-way scavenger hunt and becomes a walk across one graph. The symptom in QMS, the cause in PLM, the asset in the CMMS, the stakes in ERP — one-fifth of the answer in each — finally sit in a single structure a question can traverse.
+[Diagram: connect once]
+
+What the model actually holds is the three things that fell through every earlier part.
+
+- **Identity:** the ERP fixed-asset, the CMMS equipment record, the PLM part, the MES resource, and the historian tag are declared to be one real thing — the filler — instead of five strangers that happen to describe the same steel. Each system keeps its own local ID; the model just knows they all point at one filler.
+- **Edges:** the relationships that were homeless in Part 5 because they spanned two systems and belonged to neither — skid to filler, filler to batch, batch to recipe, recipe to order — now live in the model as first-class connections, owned by the layer rather than by either system on the ends.
+- **Meaning:** with identity and edges in place, a question stops being a five-way scavenger hunt and becomes a walk across one graph. The symptom in QMS, the cause in PLM, the asset in the CMMS, the stakes in ERP — one-fifth of the answer in each — finally sit in a single structure a question can traverse.
 
 It's worth being precise about what this is and isn't. It is not a warehouse that copies everyone's data into a sixth database and lets it drift out of date by morning; the systems of record stay the systems of record. It is a model that resolves each system's local identity to one shared one, records how the real things connect, and reads from the sources live. The systems keep doing their jobs. The layer does the one job none of them was ever built for: holding the plant.
 
@@ -56,11 +62,11 @@ Here is why three is the threshold, and it's the point the whole series has been
 
 ## The reframe: intelligence, not integration
 
-This is the line between the two, and it's sharper than it looks. Point-to-point integration moves records between two systems and then stops — it builds one bridge for one purpose, and the next question that needs a different bridge waits for someone to build it. That's the estate Part 5 described: five islands wired at the seams, a permanent 70%-done project, every new join a new ticket.
+Point-to-point integration builds one bridge for one question and then stops; the next question waits for someone to build the next bridge. A context layer builds the graph **once** — resolve the identities, lay down the edges, and every path a future question might need already exists, because paths are just walks over connected things nobody had to anticipate.
 
-A context layer builds the graph **once**. It resolves the identities, lays down the edges, and from then on every path a future question might need already exists — not because anyone anticipated the question, but because the model connected the things, and paths are just walks over connected things. You don't wire the route from pressure to customer. You wire the filler to the historian, the filler to the MES, the batch to the order — each once — and the route from pressure to customer falls out for free, along with a thousand routes you never named.
+That's the whole distinction in one sentence: **superpowers are joins you wired; intelligence is traversal you didn't have to.**
 
-That's the whole distinction in one sentence: **superpowers are joins you wired; intelligence is traversal you didn't have to.** The first you can plan for; the second is the payoff of having modelled the plant instead of merely connecting it. It's the difference between a report you commissioned and an answer to a question you hadn't thought to ask yet.
+[Diagram: integration vs intelligence]
 
 ---
 
@@ -68,7 +74,11 @@ That's the whole distinction in one sentence: **superpowers are joins you wired;
 
 Everything up to here is a pattern — a context layer, lowercase, the way a message bus or a data warehouse is a pattern. This is where we name the thing we build. **ContextWeaver** builds one, and it's called the **Manufacturing Context Layer**. Everything above is what it does; here is what it's made of.
 
-It's an **asset-centric semantic model**: the filler, the skid, the line, the batch, and the order are real entities with real relationships, not rows scattered across five schemas. It does **unit and time normalization**, so a pressure in bar from the historian and a timestamp from the MES and a cost in an ERP ledger line up on one clock and one set of units instead of five. It carries **document and tribal-knowledge memory** — the SOP, the ECO, the note Priya left at shift change — as part of the model, not as attachments nobody can query. It does **per-tag quality scoring**, so the layer knows which readings to trust and which are drifting sensors. And it treats **business entities as first-class**: the order, the customer, the shipment are objects in the graph, so a walk that starts at a sensor can end at S-201 without falling off the edge of the model.
+- **Asset-centric semantic model:** the filler, the skid, the line, the batch, and the order are real entities with real relationships, not rows scattered across five schemas.
+- **Unit and time normalization:** a pressure in bar from the historian and a timestamp from the MES and a cost in an ERP ledger line up on one clock and one set of units instead of five.
+- **Document and tribal-knowledge memory:** the SOP, the ECO, the note Priya left at shift change — carried as part of the model, not as attachments nobody can query.
+- **Per-tag quality scoring:** the layer knows which readings to trust and which are drifting sensors.
+- **Business entities as first-class:** the order, the customer, the shipment are objects in the graph, so a walk that starts at a sensor can end at S-201 without falling off the edge of the model.
 
 [Diagram D4: five IDs resolved to one]
 

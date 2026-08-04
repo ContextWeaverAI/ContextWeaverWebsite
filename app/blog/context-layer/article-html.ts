@@ -62,18 +62,53 @@ of pairwise connectors, every system wired to every other, the
 that. Each system connects to the model a single time &mdash; N spokes into one hub, not N&sup2;
 connectors between pairs. Add a seventh system and you add one spoke, not six new bridges. The model
 is the place all of them meet, so none of them has to meet each other.</p>
-<p>What the model actually holds is the three things that fell through every earlier part.
-<strong>Identity:</strong> the ERP fixed-asset, the CMMS equipment record, the PLM part, the MES
+<figure class="diagram">
+<svg viewBox="0 0 660 380" role="img" aria-labelledby="dgc-title">
+<title id="dgc-title">Five systems wired to every other on the left versus five systems each spoked once into a central context layer on the right</title>
+<line x1="330" y1="52" x2="330" y2="360" stroke="color-mix(in oklch,var(--foreground) 18%,transparent)" stroke-width="1" stroke-dasharray="3 5" />
+<text class="dg-panel-title" x="165" y="34" text-anchor="middle">N&sup2; connectors</text>
+<g class="dg-spoke" style="opacity:.75">
+<line x1="165" y1="90" x2="279" y2="163" /><line x1="165" y1="90" x2="235" y2="300" /><line x1="165" y1="90" x2="95" y2="300" /><line x1="165" y1="90" x2="51" y2="163" />
+<line x1="279" y1="163" x2="235" y2="300" /><line x1="279" y1="163" x2="95" y2="300" /><line x1="279" y1="163" x2="51" y2="163" />
+<line x1="235" y1="300" x2="95" y2="300" /><line x1="235" y1="300" x2="51" y2="163" /><line x1="95" y1="300" x2="51" y2="163" />
+</g>
+<rect class="dg-box" x="129" y="72" width="72" height="36" rx="8" /><text class="dg-label-sm" x="165" y="95" text-anchor="middle">ERP</text>
+<rect class="dg-box" x="243" y="145" width="72" height="36" rx="8" /><text class="dg-label-sm" x="279" y="168" text-anchor="middle">MES</text>
+<rect class="dg-box" x="199" y="282" width="72" height="36" rx="8" /><text class="dg-label-sm" x="235" y="305" text-anchor="middle">CMMS</text>
+<rect class="dg-box" x="59" y="282" width="72" height="36" rx="8" /><text class="dg-label-sm" x="95" y="305" text-anchor="middle">PLM</text>
+<rect class="dg-box" x="15" y="145" width="72" height="36" rx="8" /><text class="dg-label-sm" x="51" y="168" text-anchor="middle">QMS</text>
+<text class="dg-sub" x="165" y="352" text-anchor="middle">5 systems = 10 pairs. 7 = 21.</text>
+<text class="dg-panel-title" x="495" y="34" text-anchor="middle">N spokes</text>
+<g class="dg-o-spoke">
+<line x1="495" y1="108" x2="495" y2="176" /><line x1="577" y1="181" x2="527" y2="196" /><line x1="551" y1="282" x2="513" y2="222" /><line x1="439" y1="282" x2="477" y2="222" /><line x1="413" y1="181" x2="463" y2="196" />
+</g>
+<rect class="dg-box" x="459" y="72" width="72" height="36" rx="8" /><text class="dg-label-sm" x="495" y="95" text-anchor="middle">ERP</text>
+<rect class="dg-box" x="573" y="145" width="72" height="36" rx="8" /><text class="dg-label-sm" x="609" y="168" text-anchor="middle">MES</text>
+<rect class="dg-box" x="529" y="282" width="72" height="36" rx="8" /><text class="dg-label-sm" x="565" y="305" text-anchor="middle">CMMS</text>
+<rect class="dg-box" x="389" y="282" width="72" height="36" rx="8" /><text class="dg-label-sm" x="425" y="305" text-anchor="middle">PLM</text>
+<rect class="dg-box" x="345" y="145" width="72" height="36" rx="8" /><text class="dg-label-sm" x="381" y="168" text-anchor="middle">QMS</text>
+<rect class="dg-box-accent" x="450" y="178" width="90" height="44" rx="11" />
+<text class="dg-label-sm" x="495" y="204" text-anchor="middle" style="fill:var(--orange);font-weight:800">context</text>
+<text class="dg-label-sm" x="495" y="218" text-anchor="middle" style="fill:var(--orange);font-weight:800">layer</text>
+<text class="dg-sub" x="495" y="352" text-anchor="middle">5 systems = 5 spokes. 7 = 7.</text>
+</svg>
+<figcaption>Connect each system once. On the left, every pair needs its own connector &mdash; the N&sup2; spaghetti that grows to 10 links at five systems and 21 at seven. On the right, each system runs a single spoke into the <span style="color:var(--orange);font-weight:700">context layer</span>. Add a seventh system and you add one spoke, not six new bridges.</figcaption>
+</figure>
+<p>What the model actually holds is the three things that fell through every earlier part.</p>
+<ul>
+<li><strong>Identity:</strong> the ERP fixed-asset, the CMMS equipment record, the PLM part, the MES
 resource, and the historian tag are declared to be one real thing &mdash; the filler &mdash; instead
 of five strangers that happen to describe the same steel. Each system keeps its own local ID; the
-model just knows they all point at one filler. <strong>Edges:</strong> the relationships that were
-homeless in Part&nbsp;5 because they spanned two systems and belonged to neither &mdash; skid to
-filler, filler to batch, batch to recipe, recipe to order &mdash; now live in the model as
-first-class connections, owned by the layer rather than by either system on the ends.
-<strong>Meaning:</strong> with identity and edges in place, a question stops being a five-way
+model just knows they all point at one filler.</li>
+<li><strong>Edges:</strong> the relationships that were homeless in Part&nbsp;5 because they spanned
+two systems and belonged to neither &mdash; skid to filler, filler to batch, batch to recipe, recipe
+to order &mdash; now live in the model as first-class connections, owned by the layer rather than by
+either system on the ends.</li>
+<li><strong>Meaning:</strong> with identity and edges in place, a question stops being a five-way
 scavenger hunt and becomes a walk across one graph. The symptom in QMS, the cause in PLM, the asset
 in the CMMS, the stakes in ERP &mdash; one-fifth of the answer in each &mdash; finally sit in a single
-structure a question can traverse.</p>
+structure a question can traverse.</li>
+</ul>
 <p>It&rsquo;s worth being precise about what this is and isn&rsquo;t. It is not a warehouse that
 copies everyone&rsquo;s data into a sixth database and lets it drift out of date by morning; the
 systems of record stay the systems of record. It is a model that resolves each system&rsquo;s local
@@ -215,37 +250,65 @@ Two systems answer a question you already knew to ask. Three let something ask a
 didn&rsquo;t.</p>
 <hr />
 <h2 id="the-reframe">The reframe: intelligence, not integration</h2>
-<p>This is the line between the two, and it&rsquo;s sharper than it looks. Point-to-point integration
-moves records between two systems and then stops &mdash; it builds one bridge for one purpose, and the
-next question that needs a different bridge waits for someone to build it. That&rsquo;s the estate
-Part&nbsp;5 described: five islands wired at the seams, a permanent 70%-done project, every new join a
-new ticket.</p>
-<p>A context layer builds the graph <strong>once</strong>. It resolves the identities, lays down the
-edges, and from then on every path a future question might need already exists &mdash; not because
-anyone anticipated the question, but because the model connected the things, and paths are just walks
-over connected things. You don&rsquo;t wire the route from pressure to customer. You wire the filler to
-the historian, the filler to the MES, the batch to the order &mdash; each once &mdash; and the route
-from pressure to customer falls out for free, along with a thousand routes you never named.</p>
+<p>Point-to-point integration builds one bridge for one question and then stops; the next question
+waits for someone to build the next bridge. A context layer builds the graph <strong>once</strong>
+&mdash; resolve the identities, lay down the edges, and every path a future question might need already
+exists, because paths are just walks over connected things nobody had to anticipate.</p>
 <p>That&rsquo;s the whole distinction in one sentence: <strong>superpowers are joins you wired;
-intelligence is traversal you didn&rsquo;t have to.</strong> The first you can plan for; the second is
-the payoff of having modelled the plant instead of merely connecting it. It&rsquo;s the difference
-between a report you commissioned and an answer to a question you hadn&rsquo;t thought to ask yet.</p>
+intelligence is traversal you didn&rsquo;t have to.</strong></p>
+<figure class="diagram">
+<svg viewBox="0 0 660 360" role="img" aria-labelledby="dgr-title">
+<title id="dgr-title">One bridge between two systems that dead-ends on the left versus one question fanning out across a shared model on the right</title>
+<line x1="330" y1="56" x2="330" y2="344" stroke="color-mix(in oklch,var(--foreground) 18%,transparent)" stroke-width="1" stroke-dasharray="3 5" />
+<text class="dg-panel-title" x="165" y="34" text-anchor="middle">Point-to-point integration</text>
+<rect class="dg-box" x="40" y="150" width="104" height="52" rx="9" /><text class="dg-label-sm" x="92" y="181" text-anchor="middle">System A</text>
+<rect class="dg-box" x="200" y="150" width="104" height="52" rx="9" /><text class="dg-label-sm" x="252" y="181" text-anchor="middle">System B</text>
+<path class="dg-edge" d="M144 176 H190" />
+<polygon class="dg-oarrow" points="190,170 190,182 200,176" />
+<text class="dg-accent-text" x="172" y="140" text-anchor="middle">one bridge</text>
+<path class="dg-open" d="M252 202 V270" />
+<text class="dg-open-q" x="252" y="292" text-anchor="middle">?</text>
+<text class="dg-sub" x="252" y="316" text-anchor="middle">next question waits</text>
+<text class="dg-sub" x="252" y="332" text-anchor="middle">one bridge, one purpose</text>
+<text class="dg-panel-title" x="495" y="34" text-anchor="middle">A context layer</text>
+<rect class="dg-box-accent" x="452" y="176" width="86" height="46" rx="11" />
+<text class="dg-label-sm" x="495" y="199" text-anchor="middle" style="fill:var(--orange);font-weight:800">shared</text>
+<text class="dg-label-sm" x="495" y="214" text-anchor="middle" style="fill:var(--orange);font-weight:800">model</text>
+<rect class="dg-box" x="360" y="90" width="78" height="40" rx="8" /><text class="dg-label-sm" x="399" y="115" text-anchor="middle">ERP</text>
+<rect class="dg-box" x="552" y="90" width="78" height="40" rx="8" /><text class="dg-label-sm" x="591" y="115" text-anchor="middle">MES</text>
+<rect class="dg-box" x="356" y="270" width="78" height="40" rx="8" /><text class="dg-label-sm" x="395" y="295" text-anchor="middle">CMMS</text>
+<rect class="dg-box" x="556" y="270" width="78" height="40" rx="8" /><text class="dg-label-sm" x="595" y="295" text-anchor="middle">QMS</text>
+<g class="dg-spoke">
+<line x1="411" y1="130" x2="470" y2="176" /><line x1="579" y1="130" x2="520" y2="176" /><line x1="407" y1="270" x2="470" y2="222" /><line x1="583" y1="270" x2="520" y2="222" />
+</g>
+<g class="dg-path">
+<path d="M488 316 C 450 250 410 180 410 130" /><path d="M495 315 V222" /><path d="M502 316 C 560 250 583 180 583 130" />
+</g>
+<circle cx="495" cy="330" r="15" fill="color-mix(in oklch,var(--orange) 15%,var(--card))" stroke="var(--orange)" stroke-width="2" />
+<text class="dg-accent-text" x="495" y="335" text-anchor="middle" style="font-size:14px">Q</text>
+</svg>
+<figcaption>Integration builds one bridge for one question, and it dead-ends &mdash; one bridge, one purpose, the next question waiting. A context layer builds the graph once: every system spokes into one <span style="color:var(--orange);font-weight:700">shared model</span>, and a single <span style="color:var(--orange);font-weight:700">question</span> fans out along many paths that already exist.</figcaption>
+</figure>
 <hr />
 <h2 id="manufacturing-context-layer">The Manufacturing Context Layer</h2>
 <p>Everything up to here is a pattern &mdash; a context layer, lowercase, the way a message bus or a
 data warehouse is a pattern. This is where we name the thing we build. <strong>ContextWeaver</strong>
 builds one, and it&rsquo;s called the <strong>Manufacturing Context Layer</strong>. Everything above is
 what it does; here is what it&rsquo;s made of.</p>
-<p>It&rsquo;s an <strong>asset-centric semantic model</strong>: the filler, the skid, the line, the
-batch, and the order are real entities with real relationships, not rows scattered across five
-schemas. It does <strong>unit and time normalization</strong>, so a pressure in bar from the historian
-and a timestamp from the MES and a cost in an ERP ledger line up on one clock and one set of units
-instead of five. It carries <strong>document and tribal-knowledge memory</strong> &mdash; the SOP, the
-ECO, the note Priya left at shift change &mdash; as part of the model, not as attachments nobody can
-query. It does <strong>per-tag quality scoring</strong>, so the layer knows which readings to trust
-and which are drifting sensors. And it treats <strong>business entities as first-class</strong>: the
-order, the customer, the shipment are objects in the graph, so a walk that starts at a sensor can end
-at S-201 without falling off the edge of the model.</p>
+<ul>
+<li><strong>Asset-centric semantic model:</strong> the filler, the skid, the line, the batch, and the
+order are real entities with real relationships, not rows scattered across five schemas.</li>
+<li><strong>Unit and time normalization:</strong> a pressure in bar from the historian and a timestamp
+from the MES and a cost in an ERP ledger line up on one clock and one set of units instead of
+five.</li>
+<li><strong>Document and tribal-knowledge memory:</strong> the SOP, the ECO, the note Priya left at
+shift change &mdash; carried as part of the model, not as attachments nobody can query.</li>
+<li><strong>Per-tag quality scoring:</strong> the layer knows which readings to trust and which are
+drifting sensors.</li>
+<li><strong>Business entities as first-class:</strong> the order, the customer, the shipment are
+objects in the graph, so a walk that starts at a sensor can end at S-201 without falling off the edge
+of the model.</li>
+</ul>
 <figure class="diagram">
 <svg viewBox="0 0 640 400" role="img" aria-labelledby="dgt4-title">
 <title id="dgt4-title">Five local IDs from five systems resolve into one shared entity, the filler</title>

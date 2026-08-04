@@ -31,7 +31,57 @@ export const articleHtml = `<style>
 .blog-prose .dg-chip{fill:color-mix(in oklch,var(--orange) 15%,var(--card));stroke:var(--orange);stroke-width:1.8;}
 .blog-prose .dg-path{stroke:var(--orange);stroke-width:3;fill:none;}
 .blog-prose .dg-role{fill:var(--orange);font-size:11px;font-weight:700;}
+.blog-prose .dg-stat{fill:var(--muted-foreground);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
+.blog-prose .dg-hair{stroke:color-mix(in oklch,var(--foreground) 20%,transparent);stroke-width:1;fill:none;}
+.blog-prose .dg-hair-spoke{stroke:color-mix(in oklch,var(--foreground) 38%,transparent);stroke-width:1.25;fill:none;}
+.blog-prose .dg-o-hair{stroke:var(--orange);stroke-width:1.5;fill:none;}
+.blog-prose .dg-node-card{fill:url(#dgCardGrad);stroke:color-mix(in oklch,var(--foreground) 22%,transparent);stroke-width:1;filter:url(#dgSoft);}
+.blog-prose .dg-node-active{fill:url(#dgCardGrad);stroke:var(--orange);stroke-width:1.6;filter:url(#dgGlow);}
+.blog-prose .dg-plane{fill:url(#dgPlaneGrad);stroke:color-mix(in oklch,var(--orange) 55%,transparent);stroke-width:1.25;filter:url(#dgPlaneGlow);}
+.blog-prose .dg-dot{fill:var(--orange);}
+.blog-prose .dg-dot-halo{fill:color-mix(in oklch,var(--orange) 20%,transparent);}
+.blog-prose .dg-node-dot{fill:color-mix(in oklch,var(--foreground) 40%,transparent);}
+.blog-prose .dg-livepath{stroke:var(--orange);stroke-width:3.2;fill:none;stroke-linecap:round;filter:url(#dgGlow);}
 </style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="dgCardGrad" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" style="stop-color:var(--card)" />
+<stop offset="1" style="stop-color:color-mix(in oklch,var(--muted) 55%,var(--card))" />
+</linearGradient>
+<linearGradient id="dgPlaneGrad" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" style="stop-color:color-mix(in oklch,var(--orange) 8%,var(--card))" />
+<stop offset="1" style="stop-color:color-mix(in oklch,var(--orange) 18%,var(--card))" />
+</linearGradient>
+<linearGradient id="dgBlueGrad" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" style="stop-color:color-mix(in oklch,#3a7ca5 10%,var(--card))" />
+<stop offset="1" style="stop-color:color-mix(in oklch,#3a7ca5 22%,var(--card))" />
+</linearGradient>
+<linearGradient id="dgSpokeGrad" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" style="stop-color:color-mix(in oklch,var(--orange) 30%,transparent)" />
+<stop offset="1" style="stop-color:var(--orange)" />
+</linearGradient>
+<pattern id="dgDots" width="14" height="14" patternUnits="userSpaceOnUse">
+<circle cx="2" cy="2" r="1" style="fill:color-mix(in oklch,var(--orange) 32%,transparent)" />
+</pattern>
+<filter id="dgSoft" x="-40%" y="-40%" width="180%" height="200%">
+<feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.16" />
+</filter>
+<filter id="dgGlow" x="-80%" y="-80%" width="260%" height="260%">
+<feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="var(--orange)" flood-opacity="0.5" />
+</filter>
+<filter id="dgPlaneGlow" x="-30%" y="-160%" width="160%" height="420%">
+<feGaussianBlur in="SourceAlpha" stdDeviation="9" result="b" />
+<feFlood flood-color="var(--orange)" flood-opacity="0.34" result="c" />
+<feComposite in="c" in2="b" operator="in" result="g" />
+<feMerge><feMergeNode in="g" /><feMergeNode in="SourceGraphic" /></feMerge>
+</filter>
+<marker id="dgArrow" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+<path d="M1 1 L10 6 L1 11 L4 6 Z" style="fill:var(--orange)" />
+</marker>
+<marker id="dgArrowHair" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+<path d="M1 1.5 L10 6 L1 10.5 L4 6 Z" style="fill:color-mix(in oklch,var(--foreground) 45%,transparent)" />
+</marker>
+</defs></svg>
 <p>The analyst had five logins and an afternoon. By the end of it she had the whole story of last
 Tuesday &mdash; the skid that drifted in the CMMS, the recipe change in PLM, the hold in QMS, the
 order and the resin lot in ERP, the waiting customer in CRM. Every piece was true, and she was the
@@ -63,34 +113,40 @@ that. Each system connects to the model a single time &mdash; N spokes into one 
 connectors between pairs. Add a seventh system and you add one spoke, not six new bridges. The model
 is the place all of them meet, so none of them has to meet each other.</p>
 <figure class="diagram">
-<svg viewBox="0 0 660 380" role="img" aria-labelledby="dgc-title">
+<svg viewBox="0 0 680 400" role="img" aria-labelledby="dgc-title">
 <title id="dgc-title">Five systems wired to every other on the left versus five systems each spoked once into a central context layer on the right</title>
-<line x1="330" y1="52" x2="330" y2="360" stroke="color-mix(in oklch,var(--foreground) 18%,transparent)" stroke-width="1" stroke-dasharray="3 5" />
-<text class="dg-panel-title" x="165" y="34" text-anchor="middle">N&sup2; connectors</text>
-<g class="dg-spoke" style="opacity:.75">
-<line x1="165" y1="90" x2="279" y2="163" /><line x1="165" y1="90" x2="235" y2="300" /><line x1="165" y1="90" x2="95" y2="300" /><line x1="165" y1="90" x2="51" y2="163" />
-<line x1="279" y1="163" x2="235" y2="300" /><line x1="279" y1="163" x2="95" y2="300" /><line x1="279" y1="163" x2="51" y2="163" />
-<line x1="235" y1="300" x2="95" y2="300" /><line x1="235" y1="300" x2="51" y2="163" /><line x1="95" y1="300" x2="51" y2="163" />
+<line x1="340" y1="60" x2="340" y2="374" class="dg-hair" stroke-dasharray="2 6" />
+<text class="dg-panel-title" x="170" y="36" text-anchor="middle">N&sup2; connectors</text>
+<g class="dg-hair-spoke">
+<line x1="170" y1="96" x2="284" y2="169" /><line x1="170" y1="96" x2="240" y2="306" /><line x1="170" y1="96" x2="100" y2="306" /><line x1="170" y1="96" x2="56" y2="169" />
+<line x1="284" y1="169" x2="240" y2="306" /><line x1="284" y1="169" x2="100" y2="306" /><line x1="284" y1="169" x2="56" y2="169" />
+<line x1="240" y1="306" x2="100" y2="306" /><line x1="240" y1="306" x2="56" y2="169" /><line x1="100" y1="306" x2="56" y2="169" />
 </g>
-<rect class="dg-box" x="129" y="72" width="72" height="36" rx="8" /><text class="dg-label-sm" x="165" y="95" text-anchor="middle">ERP</text>
-<rect class="dg-box" x="243" y="145" width="72" height="36" rx="8" /><text class="dg-label-sm" x="279" y="168" text-anchor="middle">MES</text>
-<rect class="dg-box" x="199" y="282" width="72" height="36" rx="8" /><text class="dg-label-sm" x="235" y="305" text-anchor="middle">CMMS</text>
-<rect class="dg-box" x="59" y="282" width="72" height="36" rx="8" /><text class="dg-label-sm" x="95" y="305" text-anchor="middle">PLM</text>
-<rect class="dg-box" x="15" y="145" width="72" height="36" rx="8" /><text class="dg-label-sm" x="51" y="168" text-anchor="middle">QMS</text>
-<text class="dg-sub" x="165" y="352" text-anchor="middle">5 systems = 10 pairs. 7 = 21.</text>
-<text class="dg-panel-title" x="495" y="34" text-anchor="middle">N spokes</text>
-<g class="dg-o-spoke">
-<line x1="495" y1="108" x2="495" y2="176" /><line x1="577" y1="181" x2="527" y2="196" /><line x1="551" y1="282" x2="513" y2="222" /><line x1="439" y1="282" x2="477" y2="222" /><line x1="413" y1="181" x2="463" y2="196" />
+<g><rect class="dg-node-card" x="134" y="78" width="72" height="36" rx="9" /><text class="dg-label-sm" x="170" y="101" text-anchor="middle">ERP</text></g>
+<g><rect class="dg-node-card" x="248" y="151" width="72" height="36" rx="9" /><text class="dg-label-sm" x="284" y="174" text-anchor="middle">MES</text></g>
+<g><rect class="dg-node-card" x="204" y="288" width="72" height="36" rx="9" /><text class="dg-label-sm" x="240" y="311" text-anchor="middle">CMMS</text></g>
+<g><rect class="dg-node-card" x="64" y="288" width="72" height="36" rx="9" /><text class="dg-label-sm" x="100" y="311" text-anchor="middle">PLM</text></g>
+<g><rect class="dg-node-card" x="20" y="151" width="72" height="36" rx="9" /><text class="dg-label-sm" x="56" y="174" text-anchor="middle">QMS</text></g>
+<text class="dg-stat" x="170" y="360" text-anchor="middle">5 systems = 10 pairs &middot; 7 = 21</text>
+<text class="dg-panel-title" x="510" y="36" text-anchor="middle">N spokes</text>
+<g class="dg-hair-spoke" style="opacity:.5">
+<line x1="510" y1="205" x2="600" y2="252" /><line x1="510" y1="205" x2="420" y2="252" /><line x1="510" y1="205" x2="620" y2="196" /><line x1="510" y1="205" x2="400" y2="196" /><line x1="510" y1="205" x2="562" y2="300" /><line x1="510" y1="205" x2="458" y2="300" />
 </g>
-<rect class="dg-box" x="459" y="72" width="72" height="36" rx="8" /><text class="dg-label-sm" x="495" y="95" text-anchor="middle">ERP</text>
-<rect class="dg-box" x="573" y="145" width="72" height="36" rx="8" /><text class="dg-label-sm" x="609" y="168" text-anchor="middle">MES</text>
-<rect class="dg-box" x="529" y="282" width="72" height="36" rx="8" /><text class="dg-label-sm" x="565" y="305" text-anchor="middle">CMMS</text>
-<rect class="dg-box" x="389" y="282" width="72" height="36" rx="8" /><text class="dg-label-sm" x="425" y="305" text-anchor="middle">PLM</text>
-<rect class="dg-box" x="345" y="145" width="72" height="36" rx="8" /><text class="dg-label-sm" x="381" y="168" text-anchor="middle">QMS</text>
-<rect class="dg-box-accent" x="450" y="178" width="90" height="44" rx="11" />
-<text class="dg-label-sm" x="495" y="204" text-anchor="middle" style="fill:var(--orange);font-weight:800">context</text>
-<text class="dg-label-sm" x="495" y="218" text-anchor="middle" style="fill:var(--orange);font-weight:800">layer</text>
-<text class="dg-sub" x="495" y="352" text-anchor="middle">5 systems = 5 spokes. 7 = 7.</text>
+<g fill="none"><circle cx="600" cy="252" r="3" class="dg-node-dot" /><circle cx="420" cy="252" r="3" class="dg-node-dot" /><circle cx="620" cy="196" r="3" class="dg-node-dot" /><circle cx="400" cy="196" r="3" class="dg-node-dot" /><circle cx="562" cy="300" r="3" class="dg-node-dot" /><circle cx="458" cy="300" r="3" class="dg-node-dot" /></g>
+<g class="dg-o-hair">
+<line x1="510" y1="114" x2="510" y2="187" /><line x1="592" y1="187" x2="540" y2="200" /><line x1="566" y1="288" x2="526" y2="228" /><line x1="454" y1="288" x2="494" y2="228" /><line x1="428" y1="187" x2="480" y2="200" />
+</g>
+<rect class="dg-plane" x="450" y="188" width="120" height="52" rx="14" />
+<rect x="454" y="192" width="112" height="44" rx="11" fill="url(#dgDots)" opacity="0.9" />
+<g class="dg-dot"><circle cx="510" cy="187" r="3" /><circle cx="540" cy="200" r="3" /><circle cx="526" cy="228" r="3" /><circle cx="494" cy="228" r="3" /><circle cx="480" cy="200" r="3" /></g>
+<text class="dg-label-sm" x="510" y="211" text-anchor="middle" style="fill:var(--orange);font-weight:800">context</text>
+<text class="dg-label-sm" x="510" y="226" text-anchor="middle" style="fill:var(--orange);font-weight:800">layer</text>
+<g><rect class="dg-node-card" x="474" y="78" width="72" height="36" rx="9" /><text class="dg-label-sm" x="510" y="101" text-anchor="middle">ERP</text></g>
+<g><rect class="dg-node-card" x="588" y="151" width="72" height="36" rx="9" /><text class="dg-label-sm" x="624" y="174" text-anchor="middle">MES</text></g>
+<g><rect class="dg-node-card" x="544" y="288" width="72" height="36" rx="9" /><text class="dg-label-sm" x="580" y="311" text-anchor="middle">CMMS</text></g>
+<g><rect class="dg-node-card" x="404" y="288" width="72" height="36" rx="9" /><text class="dg-label-sm" x="440" y="311" text-anchor="middle">PLM</text></g>
+<g><rect class="dg-node-card" x="360" y="151" width="72" height="36" rx="9" /><text class="dg-label-sm" x="396" y="174" text-anchor="middle">QMS</text></g>
+<text class="dg-stat" x="510" y="360" text-anchor="middle">5 systems = 5 spokes &middot; 7 = 7</text>
 </svg>
 <figcaption>Connect each system once. On the left, every pair needs its own connector &mdash; the N&sup2; spaghetti that grows to 10 links at five systems and 21 at seven. On the right, each system runs a single spoke into the <span style="color:var(--orange);font-weight:700">context layer</span>. Add a seventh system and you add one spoke, not six new bridges.</figcaption>
 </figure>
@@ -116,31 +172,33 @@ identity to one shared one, records how the real things connect, and reads from 
 systems keep doing their jobs. The layer does the one job none of them was ever built for: holding the
 plant.</p>
 <figure class="diagram">
-<svg viewBox="0 0 660 430" role="img" aria-labelledby="dgt1-title">
+<svg viewBox="0 0 660 440" role="img" aria-labelledby="dgt1-title">
 <title id="dgt1-title">The context layer wired across the crossbar of the T and down the trunk, each system a spoke into it</title>
 <text class="dg-title" x="330" y="30" text-anchor="middle">The crossbar, finally wired</text>
-<rect class="dg-layer-band" x="24" y="48" width="612" height="40" rx="12" />
-<text class="dg-accent-text" x="330" y="73" text-anchor="middle" style="font-size:13px;letter-spacing:.04em">CONTEXT LAYER &mdash; one model across the whole T</text>
-<rect class="dg-box" x="24" y="128" width="92" height="52" rx="9" /><text class="dg-label-sm" x="70" y="159" text-anchor="middle" style="fill:var(--orange);font-weight:800">ERP</text>
-<rect class="dg-box" x="128" y="128" width="92" height="52" rx="9" /><text class="dg-label-sm" x="174" y="159" text-anchor="middle" style="fill:var(--orange);font-weight:800">CRM</text>
-<rect class="dg-box-accent" x="232" y="128" width="92" height="52" rx="9" /><text class="dg-label-sm" x="278" y="154" text-anchor="middle" style="fill:var(--orange);font-weight:800">MES</text><text class="dg-sub" x="278" y="171" text-anchor="middle" style="font-size:10.5px">top of trunk</text>
-<rect class="dg-box" x="336" y="128" width="92" height="52" rx="9" /><text class="dg-label-sm" x="382" y="159" text-anchor="middle" style="fill:var(--orange);font-weight:800">CMMS</text>
-<rect class="dg-box" x="440" y="128" width="92" height="52" rx="9" /><text class="dg-label-sm" x="486" y="159" text-anchor="middle" style="fill:var(--orange);font-weight:800">PLM</text>
-<rect class="dg-box" x="544" y="128" width="92" height="52" rx="9" /><text class="dg-label-sm" x="590" y="159" text-anchor="middle" style="fill:var(--orange);font-weight:800">QMS</text>
-<g class="dg-o-spoke">
-<path d="M70 128 V88" /><path d="M174 128 V88" /><path d="M278 128 V88" /><path d="M382 128 V88" /><path d="M486 128 V88" /><path d="M590 128 V88" />
+<rect class="dg-plane" x="24" y="50" width="612" height="46" rx="14" />
+<rect x="30" y="56" width="600" height="34" rx="10" fill="url(#dgDots)" opacity="0.85" />
+<text class="dg-accent-text" x="330" y="78" text-anchor="middle" style="font-size:13px;letter-spacing:.06em;font-weight:800">CONTEXT LAYER &mdash; one model across the whole T</text>
+<g class="dg-o-hair" style="stroke-width:1.6">
+<path d="M70 132 V96" /><path d="M174 132 V96" /><path d="M278 132 V96" /><path d="M382 132 V96" /><path d="M486 132 V96" /><path d="M590 132 V96" />
 </g>
-<g class="dg-oarrow">
-<polygon points="65,96 75,96 70,88" /><polygon points="169,96 179,96 174,88" /><polygon points="273,96 283,96 278,88" /><polygon points="377,96 387,96 382,88" /><polygon points="481,96 491,96 486,88" /><polygon points="585,96 595,96 590,88" />
+<g class="dg-dot"><circle cx="70" cy="96" r="3.4" /><circle cx="174" cy="96" r="3.4" /><circle cx="278" cy="96" r="3.4" /><circle cx="382" cy="96" r="3.4" /><circle cx="486" cy="96" r="3.4" /><circle cx="590" cy="96" r="3.4" /></g>
+<g><rect class="dg-node-card" x="24" y="132" width="92" height="52" rx="10" /><text class="dg-label-sm" x="70" y="163" text-anchor="middle" style="fill:var(--orange);font-weight:800">ERP</text></g>
+<g><rect class="dg-node-card" x="128" y="132" width="92" height="52" rx="10" /><text class="dg-label-sm" x="174" y="163" text-anchor="middle" style="fill:var(--orange);font-weight:800">CRM</text></g>
+<g><rect class="dg-node-active" x="232" y="132" width="92" height="52" rx="10" /><text class="dg-label-sm" x="278" y="158" text-anchor="middle" style="fill:var(--orange);font-weight:800">MES</text><text class="dg-sub" x="278" y="175" text-anchor="middle" style="font-size:10.5px">top of trunk</text></g>
+<g><rect class="dg-node-card" x="336" y="132" width="92" height="52" rx="10" /><text class="dg-label-sm" x="382" y="163" text-anchor="middle" style="fill:var(--orange);font-weight:800">CMMS</text></g>
+<g><rect class="dg-node-card" x="440" y="132" width="92" height="52" rx="10" /><text class="dg-label-sm" x="486" y="163" text-anchor="middle" style="fill:var(--orange);font-weight:800">PLM</text></g>
+<g><rect class="dg-node-card" x="544" y="132" width="92" height="52" rx="10" /><text class="dg-label-sm" x="590" y="163" text-anchor="middle" style="fill:var(--orange);font-weight:800">QMS</text></g>
+<path d="M278 410 V184" style="stroke:url(#dgBlueGrad);stroke-width:6;fill:none;stroke-linecap:round" />
+<g fill="url(#dgBlueGrad)" stroke="#3a7ca5" stroke-width="1.4" filter="url(#dgSoft)">
+<rect x="204" y="236" width="148" height="44" rx="11" /><rect x="204" y="296" width="148" height="44" rx="11" /><rect x="204" y="356" width="148" height="44" rx="11" />
 </g>
-<path class="dg-blue-spine" d="M278 400 V180" />
-<rect class="dg-blue-box" x="204" y="230" width="148" height="44" rx="10" /><text class="dg-blue-text" x="278" y="257" text-anchor="middle">Historian</text>
-<rect class="dg-blue-box" x="204" y="290" width="148" height="44" rx="10" /><text class="dg-blue-text" x="278" y="317" text-anchor="middle">Unified Namespace</text>
-<rect class="dg-blue-box" x="204" y="350" width="148" height="44" rx="10" /><text class="dg-blue-text" x="278" y="377" text-anchor="middle">SCADA</text>
-<path class="dg-o-spoke" d="M352 252 C 420 252 430 120 430 88" />
-<polygon class="dg-oarrow" points="425,96 435,96 430,88" />
-<text class="dg-panel-blue" x="392" y="300" text-anchor="start">Manufacturing</text>
-<text class="dg-panel-blue" x="392" y="316" text-anchor="start">trunk reads in too</text>
+<text class="dg-blue-text" x="278" y="263" text-anchor="middle">Historian</text>
+<text class="dg-blue-text" x="278" y="323" text-anchor="middle">Unified Namespace</text>
+<text class="dg-blue-text" x="278" y="383" text-anchor="middle">SCADA</text>
+<path class="dg-o-hair" style="stroke-width:1.6" d="M352 258 C 424 258 430 128 430 100" marker-end="url(#dgArrow)" />
+<circle class="dg-dot" cx="430" cy="96" r="3.4" />
+<text class="dg-panel-blue" x="392" y="306" text-anchor="start">Manufacturing</text>
+<text class="dg-panel-blue" x="392" y="322" text-anchor="start">trunk reads in too</text>
 </svg>
 <figcaption>The empty orange arc from Part&nbsp;5 is finally filled. One <span style="color:var(--orange);font-weight:700">context layer</span> lies across the top of the T; every business system on the crossbar and the whole <span style="color:#2f6b8f;font-weight:700">manufacturing trunk</span> connects into it &mdash; each a single spoke, not a web of pairwise connectors. The crossbar is finally wired.</figcaption>
 </figure>
@@ -167,21 +225,22 @@ it.</p>
 <svg viewBox="0 0 660 400" role="img" aria-labelledby="dgt2-title">
 <title id="dgt2-title">Two solid labeled edges name two superpowers; several dashed question-mark edges stay open</title>
 <text class="dg-title" x="330" y="30" text-anchor="middle">The superpower matrix</text>
-<path class="dg-edge" d="M96 168 L96 288" />
-<path class="dg-edge" d="M300 96 L440 96" />
 <path class="dg-open" d="M120 152 L228 108" />
 <path class="dg-open" d="M540 168 L500 288" />
 <path class="dg-open" d="M172 320 L488 172" />
-<rect class="dg-box" x="36" y="128" width="120" height="52" rx="9" /><text class="dg-label-sm" x="96" y="150" text-anchor="middle" style="fill:var(--orange);font-weight:800">Historian</text><text class="dg-sub" x="96" y="168" text-anchor="middle">pressure trend</text>
-<rect class="dg-box" x="36" y="288" width="120" height="52" rx="9" /><text class="dg-label-sm" x="96" y="310" text-anchor="middle" style="fill:var(--orange);font-weight:800">CMMS</text><text class="dg-sub" x="96" y="328" text-anchor="middle">skid schedule</text>
-<rect class="dg-box" x="222" y="72" width="120" height="52" rx="9" /><text class="dg-label-sm" x="282" y="94" text-anchor="middle" style="fill:var(--orange);font-weight:800">QMS</text><text class="dg-sub" x="282" y="112" text-anchor="middle">deviation</text>
-<rect class="dg-box" x="422" y="72" width="120" height="52" rx="9" /><text class="dg-label-sm" x="482" y="94" text-anchor="middle" style="fill:var(--orange);font-weight:800">PLM</text><text class="dg-sub" x="482" y="112" text-anchor="middle">change order</text>
-<rect class="dg-box" x="504" y="128" width="120" height="52" rx="9" /><text class="dg-label-sm" x="564" y="150" text-anchor="middle" style="fill:var(--orange);font-weight:800">MES</text><text class="dg-sub" x="564" y="168" text-anchor="middle">the work</text>
-<rect class="dg-box" x="444" y="288" width="120" height="52" rx="9" /><text class="dg-label-sm" x="504" y="310" text-anchor="middle" style="fill:var(--orange);font-weight:800">ERP</text><text class="dg-sub" x="504" y="328" text-anchor="middle">order &amp; cost</text>
-<rect class="dg-edge-label-bg" x="8" y="208" width="176" height="42" rx="6" />
+<path d="M96 180 L96 288" style="stroke:var(--orange);stroke-width:3.4;fill:none;stroke-linecap:round" />
+<path d="M342 96 L422 96" style="stroke:var(--orange);stroke-width:3.4;fill:none;stroke-linecap:round" />
+<g class="dg-dot"><circle cx="96" cy="180" r="3.6" /><circle cx="96" cy="288" r="3.6" /><circle cx="342" cy="96" r="3.6" /><circle cx="422" cy="96" r="3.6" /></g>
+<g><rect class="dg-node-active" x="36" y="128" width="120" height="52" rx="10" /><text class="dg-label-sm" x="96" y="150" text-anchor="middle" style="fill:var(--orange);font-weight:800">Historian</text><text class="dg-sub" x="96" y="168" text-anchor="middle">pressure trend</text></g>
+<g><rect class="dg-node-active" x="36" y="288" width="120" height="52" rx="10" /><text class="dg-label-sm" x="96" y="310" text-anchor="middle" style="fill:var(--orange);font-weight:800">CMMS</text><text class="dg-sub" x="96" y="328" text-anchor="middle">skid schedule</text></g>
+<g><rect class="dg-node-active" x="222" y="72" width="120" height="52" rx="10" /><text class="dg-label-sm" x="282" y="94" text-anchor="middle" style="fill:var(--orange);font-weight:800">QMS</text><text class="dg-sub" x="282" y="112" text-anchor="middle">deviation</text></g>
+<g><rect class="dg-node-active" x="422" y="72" width="120" height="52" rx="10" /><text class="dg-label-sm" x="482" y="94" text-anchor="middle" style="fill:var(--orange);font-weight:800">PLM</text><text class="dg-sub" x="482" y="112" text-anchor="middle">change order</text></g>
+<g><rect class="dg-node-card" x="504" y="128" width="120" height="52" rx="10" /><text class="dg-label-sm" x="564" y="150" text-anchor="middle" style="fill:var(--orange);font-weight:800">MES</text><text class="dg-sub" x="564" y="168" text-anchor="middle">the work</text></g>
+<g><rect class="dg-node-card" x="444" y="288" width="120" height="52" rx="10" /><text class="dg-label-sm" x="504" y="310" text-anchor="middle" style="fill:var(--orange);font-weight:800">ERP</text><text class="dg-sub" x="504" y="328" text-anchor="middle">order &amp; cost</text></g>
+<rect class="dg-edge-label-bg" x="8" y="208" width="176" height="42" rx="8" filter="url(#dgSoft)" />
 <text class="dg-edge-label" x="96" y="226" text-anchor="middle">condition-based</text>
 <text class="dg-edge-label" x="96" y="243" text-anchor="middle">maintenance</text>
-<rect class="dg-edge-label-bg" x="298" y="42" width="144" height="26" rx="6" />
+<rect class="dg-edge-label-bg" x="298" y="42" width="144" height="26" rx="8" filter="url(#dgSoft)" />
 <text class="dg-edge-label" x="370" y="60" text-anchor="middle">design-quality loop</text>
 <text class="dg-open-q" x="168" y="132" text-anchor="middle">?</text>
 <text class="dg-open-q" x="530" y="232" text-anchor="middle">?</text>
@@ -210,28 +269,27 @@ height of the T, in a single traversal.</p>
 <svg viewBox="0 0 660 300" role="img" aria-labelledby="dgt3-title">
 <title id="dgt3-title">One highlighted path walks a pressure reading through the work to a customer shipment at risk</title>
 <text class="dg-title" x="330" y="28" text-anchor="middle">One question, walked across three systems</text>
-<rect class="dg-card" x="24" y="70" width="184" height="150" rx="12" />
-<rect class="dg-card" x="238" y="70" width="184" height="150" rx="12" />
-<rect class="dg-card" x="452" y="70" width="184" height="150" rx="12" />
-<text class="dg-panel-title" x="116" y="92" text-anchor="middle">HISTORIAN &middot; SIGNAL</text>
-<text class="dg-panel-title" x="330" y="92" text-anchor="middle">MES &middot; WORK</text>
-<text class="dg-panel-title" x="544" y="92" text-anchor="middle">ERP &middot; BUSINESS</text>
-<rect class="dg-chip" x="40" y="120" width="152" height="56" rx="9" />
+<g class="dg-node-card"><rect x="24" y="70" width="184" height="150" rx="14" /></g>
+<g class="dg-node-card"><rect x="238" y="70" width="184" height="150" rx="14" /></g>
+<g class="dg-node-card"><rect x="452" y="70" width="184" height="150" rx="14" /></g>
+<text class="dg-panel-title" x="116" y="94" text-anchor="middle">HISTORIAN &middot; SIGNAL</text>
+<text class="dg-panel-title" x="330" y="94" text-anchor="middle">MES &middot; WORK</text>
+<text class="dg-panel-title" x="544" y="94" text-anchor="middle">ERP &middot; BUSINESS</text>
+<path d="M208 148 H232" style="stroke:var(--orange);stroke-width:3.4;fill:none;stroke-linecap:round" marker-end="url(#dgArrow)" />
+<path d="M422 148 H446" style="stroke:var(--orange);stroke-width:3.4;fill:none;stroke-linecap:round" marker-end="url(#dgArrow)" />
+<g class="dg-dot"><circle cx="208" cy="148" r="3.6" /><circle cx="422" cy="148" r="3.6" /></g>
+<rect class="dg-chip" x="40" y="120" width="152" height="56" rx="10" filter="url(#dgSoft)" />
 <text class="dg-mono" x="116" y="145" text-anchor="middle">PT_004 = 4.2 bar</text>
 <text class="dg-sub" x="116" y="164" text-anchor="middle">over 4.0 alarm, Line&nbsp;2 filler</text>
-<rect class="dg-chip" x="254" y="120" width="152" height="56" rx="9" />
+<rect class="dg-chip" x="254" y="120" width="152" height="56" rx="10" filter="url(#dgSoft)" />
 <text class="dg-mono" x="330" y="145" text-anchor="middle">batch #4471</text>
 <text class="dg-sub" x="330" y="164" text-anchor="middle">500&nbsp;ml SKU, lot RL-88</text>
-<rect class="dg-chip" x="468" y="120" width="152" height="56" rx="9" />
+<rect class="dg-chip" x="468" y="120" width="152" height="56" rx="10" filter="url(#dgGlow)" />
 <text class="dg-mono" x="544" y="141" text-anchor="middle">order &middot; shipment</text>
 <text class="dg-mono" x="544" y="158" text-anchor="middle" style="fill:var(--orange)">S-201 at risk</text>
-<path class="dg-path" d="M192 148 H236" />
-<polygon class="dg-oarrow" points="236,142 236,154 246,148" />
-<path class="dg-path" d="M406 148 H450" />
-<polygon class="dg-oarrow" points="450,142 450,154 460,148" />
-<text class="dg-role" x="116" y="200" text-anchor="middle">a signal, alone inert</text>
-<text class="dg-role" x="330" y="200" text-anchor="middle">now it has a job</text>
-<text class="dg-role" x="544" y="200" text-anchor="middle">a customer at stake</text>
+<text class="dg-role" x="116" y="202" text-anchor="middle">a signal, alone inert</text>
+<text class="dg-role" x="330" y="202" text-anchor="middle">now it has a job</text>
+<text class="dg-role" x="544" y="202" text-anchor="middle">a customer at stake</text>
 </svg>
 <figcaption>One question, walked end to end: a pressure reading in the historian (signal) resolves to the batch the MES was running (work), and that batch to the order and <span style="color:var(--orange);font-weight:700">shipment S-201</span> the ERP shows at risk (business). Signal to customer along a single highlighted path &mdash; a route nobody pre-wired.</figcaption>
 </figure>
@@ -257,35 +315,41 @@ exists, because paths are just walks over connected things nobody had to anticip
 <p>That&rsquo;s the whole distinction in one sentence: <strong>superpowers are joins you wired;
 intelligence is traversal you didn&rsquo;t have to.</strong></p>
 <figure class="diagram">
-<svg viewBox="0 0 660 360" role="img" aria-labelledby="dgr-title">
+<svg viewBox="0 0 680 380" role="img" aria-labelledby="dgr-title">
 <title id="dgr-title">One bridge between two systems that dead-ends on the left versus one question fanning out across a shared model on the right</title>
-<line x1="330" y1="56" x2="330" y2="344" stroke="color-mix(in oklch,var(--foreground) 18%,transparent)" stroke-width="1" stroke-dasharray="3 5" />
-<text class="dg-panel-title" x="165" y="34" text-anchor="middle">Point-to-point integration</text>
-<rect class="dg-box" x="40" y="150" width="104" height="52" rx="9" /><text class="dg-label-sm" x="92" y="181" text-anchor="middle">System A</text>
-<rect class="dg-box" x="200" y="150" width="104" height="52" rx="9" /><text class="dg-label-sm" x="252" y="181" text-anchor="middle">System B</text>
-<path class="dg-edge" d="M144 176 H190" />
-<polygon class="dg-oarrow" points="190,170 190,182 200,176" />
-<text class="dg-accent-text" x="172" y="140" text-anchor="middle">one bridge</text>
-<path class="dg-open" d="M252 202 V270" />
-<text class="dg-open-q" x="252" y="292" text-anchor="middle">?</text>
-<text class="dg-sub" x="252" y="316" text-anchor="middle">next question waits</text>
-<text class="dg-sub" x="252" y="332" text-anchor="middle">one bridge, one purpose</text>
-<text class="dg-panel-title" x="495" y="34" text-anchor="middle">A context layer</text>
-<rect class="dg-box-accent" x="452" y="176" width="86" height="46" rx="11" />
-<text class="dg-label-sm" x="495" y="199" text-anchor="middle" style="fill:var(--orange);font-weight:800">shared</text>
-<text class="dg-label-sm" x="495" y="214" text-anchor="middle" style="fill:var(--orange);font-weight:800">model</text>
-<rect class="dg-box" x="360" y="90" width="78" height="40" rx="8" /><text class="dg-label-sm" x="399" y="115" text-anchor="middle">ERP</text>
-<rect class="dg-box" x="552" y="90" width="78" height="40" rx="8" /><text class="dg-label-sm" x="591" y="115" text-anchor="middle">MES</text>
-<rect class="dg-box" x="356" y="270" width="78" height="40" rx="8" /><text class="dg-label-sm" x="395" y="295" text-anchor="middle">CMMS</text>
-<rect class="dg-box" x="556" y="270" width="78" height="40" rx="8" /><text class="dg-label-sm" x="595" y="295" text-anchor="middle">QMS</text>
-<g class="dg-spoke">
-<line x1="411" y1="130" x2="470" y2="176" /><line x1="579" y1="130" x2="520" y2="176" /><line x1="407" y1="270" x2="470" y2="222" /><line x1="583" y1="270" x2="520" y2="222" />
+<line x1="340" y1="56" x2="340" y2="352" class="dg-hair" stroke-dasharray="2 6" />
+<text class="dg-panel-title" x="170" y="34" text-anchor="middle">Point-to-point integration</text>
+<g><rect class="dg-node-card" x="40" y="150" width="104" height="52" rx="10" /><text class="dg-label-sm" x="92" y="181" text-anchor="middle">System A</text></g>
+<g><rect class="dg-node-card" x="204" y="150" width="104" height="52" rx="10" /><text class="dg-label-sm" x="256" y="181" text-anchor="middle">System B</text></g>
+<path d="M146 176 H198" style="stroke:var(--orange);stroke-width:3.4;fill:none;stroke-linecap:round" marker-end="url(#dgArrow)" />
+<circle class="dg-dot" cx="144" cy="176" r="3.6" />
+<text class="dg-accent-text" x="175" y="138" text-anchor="middle">one bridge</text>
+<path class="dg-open" d="M256 202 V272" />
+<text class="dg-open-q" x="256" y="294" text-anchor="middle">?</text>
+<text class="dg-stat" x="170" y="322" text-anchor="middle">next question waits</text>
+<text class="dg-sub" x="170" y="340" text-anchor="middle">one bridge, one purpose</text>
+<text class="dg-panel-title" x="510" y="34" text-anchor="middle">A context layer</text>
+<g class="dg-hair-spoke" style="opacity:.45">
+<line x1="510" y1="199" x2="620" y2="150" /><line x1="510" y1="199" x2="400" y2="150" /><line x1="510" y1="199" x2="628" y2="250" /><line x1="510" y1="199" x2="392" y2="250" />
 </g>
-<g class="dg-path">
-<path d="M488 316 C 450 250 410 180 410 130" /><path d="M495 315 V222" /><path d="M502 316 C 560 250 583 180 583 130" />
+<g fill="none"><circle cx="620" cy="150" r="3" class="dg-node-dot" /><circle cx="400" cy="150" r="3" class="dg-node-dot" /><circle cx="628" cy="250" r="3" class="dg-node-dot" /><circle cx="392" cy="250" r="3" class="dg-node-dot" /></g>
+<g class="dg-hair-spoke">
+<line x1="426" y1="130" x2="484" y2="178" /><line x1="594" y1="130" x2="536" y2="178" /><line x1="422" y1="270" x2="485" y2="220" /><line x1="598" y1="270" x2="536" y2="220" />
 </g>
-<circle cx="495" cy="330" r="15" fill="color-mix(in oklch,var(--orange) 15%,var(--card))" stroke="var(--orange)" stroke-width="2" />
-<text class="dg-accent-text" x="495" y="335" text-anchor="middle" style="font-size:14px">Q</text>
+<g><rect class="dg-node-card" x="375" y="90" width="78" height="40" rx="9" /><text class="dg-label-sm" x="414" y="115" text-anchor="middle">ERP</text></g>
+<g><rect class="dg-node-card" x="567" y="90" width="78" height="40" rx="9" /><text class="dg-label-sm" x="606" y="115" text-anchor="middle">MES</text></g>
+<g><rect class="dg-node-card" x="371" y="270" width="78" height="40" rx="9" /><text class="dg-label-sm" x="410" y="295" text-anchor="middle">CMMS</text></g>
+<g><rect class="dg-node-card" x="571" y="270" width="78" height="40" rx="9" /><text class="dg-label-sm" x="610" y="295" text-anchor="middle">QMS</text></g>
+<rect class="dg-plane" x="452" y="174" width="116" height="50" rx="14" />
+<rect x="456" y="178" width="108" height="42" rx="11" fill="url(#dgDots)" opacity="0.9" />
+<text class="dg-label-sm" x="510" y="196" text-anchor="middle" style="fill:var(--orange);font-weight:800">shared</text>
+<text class="dg-label-sm" x="510" y="211" text-anchor="middle" style="fill:var(--orange);font-weight:800">model</text>
+<g class="dg-livepath" style="stroke-width:2.6">
+<path d="M503 336 C 465 260 425 175 421 133" /><path d="M510 335 V226" /><path d="M517 336 C 575 260 590 175 599 133" />
+</g>
+<g class="dg-dot"><circle cx="421" cy="130" r="3.4" /><circle cx="510" cy="224" r="3.4" /><circle cx="599" cy="130" r="3.4" /></g>
+<circle cx="510" cy="344" r="16" fill="url(#dgPlaneGrad)" stroke="var(--orange)" stroke-width="1.8" filter="url(#dgGlow)" />
+<text class="dg-accent-text" x="510" y="349" text-anchor="middle" style="font-size:14px;font-weight:800">Q</text>
 </svg>
 <figcaption>Integration builds one bridge for one question, and it dead-ends &mdash; one bridge, one purpose, the next question waiting. A context layer builds the graph once: every system spokes into one <span style="color:var(--orange);font-weight:700">shared model</span>, and a single <span style="color:var(--orange);font-weight:700">question</span> fans out along many paths that already exist.</figcaption>
 </figure>
@@ -313,36 +377,21 @@ of the model.</li>
 <svg viewBox="0 0 640 400" role="img" aria-labelledby="dgt4-title">
 <title id="dgt4-title">Five local IDs from five systems resolve into one shared entity, the filler</title>
 <text class="dg-title" x="320" y="24" text-anchor="middle">Five local IDs, resolved to one</text>
-<g class="dg-o-spoke" style="stroke-width:1.8">
-<line x1="320" y1="90" x2="320" y2="168" />
-<line x1="545" y1="160" x2="392" y2="192" />
-<line x1="495" y1="298" x2="388" y2="232" />
-<line x1="145" y1="298" x2="252" y2="232" />
-<line x1="95" y1="160" x2="248" y2="192" />
+<g class="dg-o-hair" style="stroke-width:1.7">
+<line x1="320" y1="92" x2="320" y2="172" marker-end="url(#dgArrow)" />
+<line x1="547" y1="162" x2="398" y2="194" marker-end="url(#dgArrow)" />
+<line x1="497" y1="296" x2="392" y2="230" marker-end="url(#dgArrow)" />
+<line x1="143" y1="296" x2="248" y2="230" marker-end="url(#dgArrow)" />
+<line x1="93" y1="162" x2="242" y2="194" marker-end="url(#dgArrow)" />
 </g>
-<g class="dg-oarrow">
-<polygon points="314,166 326,166 320,176" />
-<polygon points="386,182 396,190 384,196" />
-<polygon points="382,224 392,232 380,238" />
-<polygon points="258,224 248,232 260,238" />
-<polygon points="254,182 244,190 256,196" />
-</g>
-<rect class="dg-box" x="245" y="28" width="150" height="62" rx="9" />
-<text class="dg-label-sm" x="320" y="52" text-anchor="middle" style="fill:var(--orange);font-weight:800">ERP</text>
-<text class="dg-sub" x="320" y="72" text-anchor="middle">fixed-asset ID</text>
-<rect class="dg-box" x="470" y="100" width="150" height="62" rx="9" />
-<text class="dg-label-sm" x="545" y="124" text-anchor="middle" style="fill:var(--orange);font-weight:800">CMMS</text>
-<text class="dg-sub" x="545" y="144" text-anchor="middle">equipment record</text>
-<rect class="dg-box" x="420" y="298" width="150" height="62" rx="9" />
-<text class="dg-label-sm" x="495" y="322" text-anchor="middle" style="fill:var(--orange);font-weight:800">MES</text>
-<text class="dg-sub" x="495" y="342" text-anchor="middle">resource</text>
-<rect class="dg-box" x="70" y="298" width="150" height="62" rx="9" />
-<text class="dg-label-sm" x="145" y="322" text-anchor="middle" style="fill:var(--orange);font-weight:800">Historian</text>
-<text class="dg-sub" x="145" y="342" text-anchor="middle">tag</text>
-<rect class="dg-box" x="20" y="100" width="150" height="62" rx="9" />
-<text class="dg-label-sm" x="95" y="124" text-anchor="middle" style="fill:var(--orange);font-weight:800">PLM</text>
-<text class="dg-sub" x="95" y="144" text-anchor="middle">part</text>
-<rect class="dg-box-accent" x="240" y="180" width="160" height="60" rx="12" />
+<g class="dg-dot"><circle cx="320" cy="90" r="3.4" /><circle cx="547" cy="162" r="3.4" /><circle cx="497" cy="296" r="3.4" /><circle cx="143" cy="296" r="3.4" /><circle cx="93" cy="162" r="3.4" /></g>
+<g><rect class="dg-node-card" x="245" y="28" width="150" height="62" rx="10" /><text class="dg-label-sm" x="320" y="52" text-anchor="middle" style="fill:var(--orange);font-weight:800">ERP</text><text class="dg-sub" x="320" y="72" text-anchor="middle">fixed-asset ID</text></g>
+<g><rect class="dg-node-card" x="470" y="100" width="150" height="62" rx="10" /><text class="dg-label-sm" x="545" y="124" text-anchor="middle" style="fill:var(--orange);font-weight:800">CMMS</text><text class="dg-sub" x="545" y="144" text-anchor="middle">equipment record</text></g>
+<g><rect class="dg-node-card" x="420" y="298" width="150" height="62" rx="10" /><text class="dg-label-sm" x="495" y="322" text-anchor="middle" style="fill:var(--orange);font-weight:800">MES</text><text class="dg-sub" x="495" y="342" text-anchor="middle">resource</text></g>
+<g><rect class="dg-node-card" x="70" y="298" width="150" height="62" rx="10" /><text class="dg-label-sm" x="145" y="322" text-anchor="middle" style="fill:var(--orange);font-weight:800">Historian</text><text class="dg-sub" x="145" y="342" text-anchor="middle">tag</text></g>
+<g><rect class="dg-node-card" x="20" y="100" width="150" height="62" rx="10" /><text class="dg-label-sm" x="95" y="124" text-anchor="middle" style="fill:var(--orange);font-weight:800">PLM</text><text class="dg-sub" x="95" y="144" text-anchor="middle">part</text></g>
+<rect class="dg-node-active" x="238" y="180" width="164" height="62" rx="14" />
+<rect x="242" y="184" width="156" height="54" rx="11" fill="url(#dgDots)" opacity="0.85" />
 <text class="dg-sub" x="320" y="205" text-anchor="middle">one shared identity</text>
 <text class="dg-label-sm" x="320" y="227" text-anchor="middle" style="fill:var(--orange);font-weight:800;font-size:15px">the filler</text>
 </svg>

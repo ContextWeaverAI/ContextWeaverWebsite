@@ -36,15 +36,15 @@ const SMART_FACTORY_SERIES = {
 export const posts: BlogPost[] = [
   {
     slug: "context-layer",
-    title: "The Context Layer, Finally",
+    title: "The Manufacturing Context Layer",
     subtitle: "Two systems unlock a superpower. Three unlock intelligence.",
     dek: "Five systems of record, no system of the plant. This is the missing one: a single shared model where connecting any two systems unlocks a superpower, and connecting three turns lookups into reasoning no single system could do.",
     category: "Architecture",
     date: "2026-08-04",
     dateLabel: "Aug 4, 2026",
     readingTime: "10 min read",
-    wordCount: "Concept · ~2,300 words",
-    charts: "4 diagrams",
+    wordCount: "Concept · ~2,400 words",
+    charts: "6 diagrams",
     author: "Ishan Bhanuka, CTO",
     series: { ...SMART_FACTORY_SERIES, part: 6 },
   },

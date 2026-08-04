@@ -1,4 +1,4 @@
-# The Context Layer, Finally
+# The Manufacturing Context Layer
 
 ## Two systems unlock a superpower. Three unlock intelligence.
 
@@ -70,7 +70,7 @@ That's the whole distinction in one sentence: **superpowers are joins you wired;
 
 ---
 
-## The Manufacturing Context Layer
+## What it's made of
 
 Everything up to here is a pattern — a context layer, lowercase, the way a message bus or a data warehouse is a pattern. This is where we name the thing we build. **ContextWeaver** builds one, and it's called the **Manufacturing Context Layer**. Everything above is what it does; here is what it's made of.
 

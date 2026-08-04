@@ -355,7 +355,7 @@ intelligence is traversal you didn&rsquo;t have to.</strong></p>
 <figcaption>Integration builds one bridge for one question, and it dead-ends &mdash; one bridge, one purpose, the next question waiting. A context layer builds the graph once: every system spokes into one <span style="color:var(--orange);font-weight:700">shared model</span>, and a single <span style="color:var(--orange);font-weight:700">question</span> fans out along many paths that already exist.</figcaption>
 </figure>
 <hr />
-<h2 id="manufacturing-context-layer">The Manufacturing Context Layer</h2>
+<h2 id="what-its-made-of">What it&rsquo;s made of</h2>
 <p>Everything up to here is a pattern &mdash; a context layer, lowercase, the way a message bus or a
 data warehouse is a pattern. This is where we name the thing we build. <strong>ContextWeaver</strong>
 builds one, and it&rsquo;s called the <strong>Manufacturing Context Layer</strong>. Everything above is

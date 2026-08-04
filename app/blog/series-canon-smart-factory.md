@@ -1,6 +1,6 @@
 # Series canon — "Deconstructing the Smart Factory"
 
-**Status: COMPLETE — 6 parts published (Part 6, "The Context Layer, Finally", is the finale).**
+**Status: COMPLETE — 6 parts published (Part 6, "The Manufacturing Context Layer", is the finale).**
 Any future writing (LinkedIn adaptations, a follow-on "how it's built" arc) still must not contradict
 the throughline below.
 
@@ -35,8 +35,10 @@ its honest limit; every verdict was "faithful, still not a model." Part 6 instal
 piece — the context layer, one shared model laid across the top of the T — and flips that verdict:
 *here, finally, is the model.* It deliberately inverts the shared 7-beat structure (the usual
 "what it costs / where it stops" beat becomes "what it unlocks"), and it is the **only part that
-names ContextWeaver in the body** (in its "Manufacturing Context Layer" section + closing
-blockquote — everywhere else in the series ContextWeaver appears only in the final bridge). Its
+names ContextWeaver in the body** (in its "What it's made of" finale section + closing
+blockquote — everywhere else in the series ContextWeaver appears only in the final bridge). The
+article title itself is the product name, **The Manufacturing Context Layer** (a break from the
+"The X, Honestly" cadence of Parts 1–5, chosen deliberately over "The Context Layer, Finally"). Its
 spine is combinatorial: **two systems joined through the model = a superpower** (a fixed join that
 answers one pre-wireable question); **three = intelligence** (the agent walks a *choice* of paths
 nobody pre-wired — "superpowers are joins you wired; intelligence is traversal you didn't have to").

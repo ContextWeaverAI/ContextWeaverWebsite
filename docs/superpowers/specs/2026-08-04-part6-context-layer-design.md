@@ -96,9 +96,9 @@ The core argument, in the author's framing:
   handed to the reader). Says "we showed two; there are dozens" in one image.
 - **D3 — the three-system walk (centerpiece).** `PT_004` → `#4471` → `S-201`, the agent's path
   highlighted across signal → work → business.
-- **D4 (optional) — entity-resolution bookend.** Part 5's "five IDs, zero shared identity" diagram,
-  now *resolved* into one node — a direct visual callback closing the series. Include if it earns
-  its place; otherwise ship three.
+- **D4 — entity-resolution bookend.** Part 5's "five IDs, zero shared identity" diagram, now
+  *resolved* into one node — a direct visual callback closing the series. **In by default**; pull it
+  only if it turns out not to fit the final layout. (So ~4 diagrams, not 3.)
 
 All diagrams: hand-authored themed inline SVG with a `<style>` block **inside** `article-html.ts`
 (never in `globals.css` — lightningcss mangles `color-mix()`). Semantic classes referencing

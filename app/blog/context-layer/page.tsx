@@ -24,8 +24,8 @@ export const metadata: Metadata = {
     "ISA-95",
     "smart factory",
   ],
-  authors: [{ name: "Ishan Bhanuka" }],
-  alternates: { canonical: `${SITE_URL}${PATH}` },
+  authors: [{ name: post.author }],
+  alternates: { canonical: PATH },
   openGraph: {
     type: "article",
     url: `${SITE_URL}${PATH}`,

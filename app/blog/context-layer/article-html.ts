@@ -279,10 +279,9 @@ at S-201 without falling off the edge of the model.</p>
 <rect class="dg-box" x="20" y="100" width="150" height="62" rx="9" />
 <text class="dg-label-sm" x="95" y="124" text-anchor="middle" style="fill:var(--orange);font-weight:800">PLM</text>
 <text class="dg-sub" x="95" y="144" text-anchor="middle">part</text>
-<rect class="dg-box-accent" x="240" y="176" width="160" height="72" rx="12" />
-<text class="dg-sub" x="320" y="200" text-anchor="middle">one shared identity</text>
-<text class="dg-label-sm" x="320" y="222" text-anchor="middle" style="fill:var(--orange);font-weight:800;font-size:15px">the filler</text>
-<text class="dg-mono" x="320" y="240" text-anchor="middle" style="fill:var(--orange)">GLY-SKID-02</text>
+<rect class="dg-box-accent" x="240" y="180" width="160" height="60" rx="12" />
+<text class="dg-sub" x="320" y="205" text-anchor="middle">one shared identity</text>
+<text class="dg-label-sm" x="320" y="227" text-anchor="middle" style="fill:var(--orange);font-weight:800;font-size:15px">the filler</text>
 </svg>
 <figcaption>The five local IDs Part&nbsp;5 left as five strangers &mdash; ERP fixed-asset, CMMS equipment record, PLM part, MES resource, historian tag &mdash; now resolve into one entity: <span style="color:var(--orange);font-weight:700">the filler</span>. The shared identity Part&nbsp;5 said was homeless, now held.</figcaption>
 </figure>

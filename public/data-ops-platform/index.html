@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ContextWeaver · Living Data Canvas</title>
+<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<style>
+  :root{
+    --page:#F4F4F0; --ink:#1A1A14; --orange:#C8491F; --orange-soft:#E8825C;
+    --body:#514E48; --muted:#928E86; --card:#FCFBF8; --border:#DEDAD0;
+    --green:#3E7C4F; --amber:#C88A1F; --wire:#C9C3B6;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:"SF Mono",ui-monospace,"Roboto Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#e9e8e2;color:var(--ink);
+    font-family:var(--sans);-webkit-font-smoothing:antialiased;}
+
+  /* ---- fixed top bar ---- */
+  .topbar{position:fixed;top:0;left:0;right:0;height:52px;z-index:50;
+    display:flex;align-items:center;gap:16px;padding:0 20px;
+    background:rgba(244,244,240,.86);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);}
+  .brand{font-weight:700;letter-spacing:.2px;font-size:15px;}
+  .brand .dot{color:var(--orange);}
+  .legend{margin-left:auto;display:flex;gap:14px;font-size:12px;color:var(--muted);}
+  .legend b{color:var(--body);font-weight:600;}
+  .hint{font-size:12px;color:var(--muted);border:1px dashed var(--border);
+    border-radius:20px;padding:4px 12px;}
+
+  /* ---- scroll stage ---- */
+  .stage{position:relative;padding:52px 0 40px;overflow:auto;}
+  .canvas{position:relative;width:1560px;height:1360px;margin:20px auto;}
+
+  svg.wires{position:absolute;inset:0;width:1560px;height:1360px;overflow:visible;
+    pointer-events:none;z-index:1;}
+  svg.wires path.wire{fill:none;stroke:var(--wire);stroke-width:2;
+    stroke-linecap:round;opacity:.9;}
+  svg.wires path.xlink{fill:none;stroke:var(--orange-soft);stroke-width:1.4;
+    stroke-dasharray:4 5;opacity:0;}
+
+  .dom{position:absolute;inset:0;width:1560px;height:1360px;z-index:2;}
+
+  /* pulse dots travelling along wires */
+  .pulse{position:absolute;top:0;left:0;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;
+    border-radius:50%;background:var(--orange);z-index:3;pointer-events:none;
+    box-shadow:0 0 9px 2px rgba(200,73,31,.55);
+    animation:flow linear infinite;}
+  @keyframes flow{from{offset-distance:0%;opacity:0}
+    8%{opacity:1} 92%{opacity:1} to{offset-distance:100%;opacity:0}}
+
+  /* ---- numbered steps + hover tip ---- */
+  .step{position:absolute;z-index:7;display:flex;align-items:center;gap:9px;cursor:default;}
+  .num{width:23px;height:23px;flex:none;border-radius:50%;background:var(--ink);color:#fff;
+    font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;
+    transition:background .18s;}
+  .step:hover .num, .govbar:hover .num, .dbhd:hover .num{background:var(--orange);}
+  .lbl{font-size:12px;font-weight:700;letter-spacing:1.4px;color:var(--muted);
+    text-transform:uppercase;}
+  .tip{position:absolute;top:30px;left:0;width:236px;background:var(--ink);color:#F4F4F0;
+    font-size:11.5px;font-weight:400;letter-spacing:0;text-transform:none;line-height:1.55;
+    padding:10px 12px;border-radius:9px;opacity:0;transform:translateY(-4px);
+    pointer-events:none;transition:.16s;box-shadow:0 10px 28px rgba(0,0,0,.28);z-index:30;}
+  .step:hover .tip, .govbar:hover .tip, .dbhd:hover .tip{opacity:1;transform:translateY(0);}
+
+  /* ---- data layer box (one container around all tables) ---- */
+  .databox{position:absolute;left:360px;top:150px;width:1150px;height:440px;
+    border:1.5px solid var(--border);border-radius:16px;
+    background:rgba(252,251,248,.5);z-index:1;pointer-events:none;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.5), 0 1px 12px rgba(26,26,20,.04);}
+  .dbhd{position:absolute;top:12px;left:18px;display:flex;align-items:center;gap:9px;
+    font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+    color:var(--muted);pointer-events:auto;cursor:default;}
+  .dbhd small{font-weight:500;text-transform:none;letter-spacing:0;color:var(--muted);}
+
+  /* ---- generic node card ---- */
+  .node{position:absolute;background:var(--card);border:1px solid var(--border);
+    border-radius:10px;box-shadow:0 2px 10px rgba(26,26,20,.06);z-index:2;
+    transition:opacity .5s ease, transform .5s ease;}
+  .node.enter{opacity:0;transform:translateY(10px) scale(.96);}
+  .node .hd{display:flex;align-items:center;gap:7px;padding:8px 11px;
+    border-bottom:1px solid var(--border);font-size:12.5px;font-weight:700;}
+  .node .hd .mono{font-family:var(--mono);color:var(--body);}
+  .node .tag{margin-left:auto;font-size:10px;font-weight:600;color:var(--muted);
+    background:#F0EEE7;border-radius:5px;padding:2px 6px;letter-spacing:.3px;}
+
+  /* ---- connectors panel ---- */
+  .connectors{left:60px;top:260px;width:212px;padding:6px;}
+  .connectors .title{padding:6px 8px 8px;font-weight:700;font-size:13px;
+    display:flex;align-items:center;gap:7px;}
+  .conn{display:flex;align-items:center;gap:9px;padding:9px 8px;border-radius:8px;
+    cursor:pointer;user-select:none;transition:background .15s;}
+  .conn:hover{background:#F0EEE7;}
+  .conn .sw{width:34px;height:19px;border-radius:20px;background:#D8D3C8;
+    position:relative;transition:background .25s;flex:none;}
+  .conn .sw::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;
+    border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);
+    transition:transform .25s;}
+  .conn.on .sw{background:var(--orange);}
+  .conn.on .sw::after{transform:translateX(15px);}
+  .conn .nm{font-size:13px;font-weight:600;}
+  .conn .src{font-size:10.5px;color:var(--muted);margin-left:auto;}
+  .conn.on .nm{color:var(--ink);}
+  .conn:not(.on) .nm{color:var(--muted);}
+
+  /* ---- table card (display only, not clickable) ---- */
+  .tbl{width:220px;}
+  .grid{padding:6px 8px 9px;}
+  .grid .cols{display:flex;gap:5px;margin-bottom:5px;flex-wrap:wrap;}
+  .chip{font-size:10.5px;font-family:var(--mono);color:var(--body);
+    background:#F0EEE7;border-radius:5px;padding:2px 7px;white-space:nowrap;
+    transition:opacity .5s, transform .5s;}
+  .chip.ghost{opacity:0;transform:scale(.8);}
+  .chip.newcol{background:#FBE7DE;color:var(--orange);}
+  .grid table{width:100%;border-collapse:collapse;font-size:11px;}
+  .grid td{padding:2.5px 4px;color:var(--body);border-top:1px solid #EFEDE6;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70px;}
+  .grid td.st-run{color:var(--green);font-weight:600;}
+  .grid td.st-idle{color:var(--amber);font-weight:600;}
+
+  /* ---- governance bar spanning + guarding the data box ---- */
+  .govbar{left:360px;top:632px;width:1150px;height:52px;display:flex;align-items:center;
+    gap:14px;padding:0 16px;cursor:pointer;z-index:4;}
+  .govbar:hover{box-shadow:0 4px 16px rgba(26,26,20,.12);}
+  .govbar .glabel{font-weight:700;font-size:13px;white-space:nowrap;display:flex;
+    align-items:center;gap:7px;}
+  .govbar .glabel small{font-weight:500;color:var(--muted);}
+  .govbar .roles{display:flex;gap:6px;}
+  .rolechip{font-size:11px;font-weight:600;border:1px solid var(--border);
+    border-radius:6px;padding:3px 9px;cursor:pointer;color:var(--body);background:#fff;}
+  .rolechip.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .govbar .gsum{margin-left:auto;font-size:11.5px;color:var(--body);white-space:nowrap;}
+  .govbar .gsum .no{color:var(--orange);font-weight:700;}
+  .govbar .gsum .ok{color:var(--green);font-weight:700;}
+
+  /* ---- agent ---- */
+  .agent{width:188px;cursor:pointer;}
+  .agent .body{padding:9px 11px;display:flex;align-items:center;gap:10px;}
+  .orb{width:26px;height:26px;border-radius:50%;flex:none;position:relative;
+    background:radial-gradient(circle at 35% 35%,var(--orange-soft),var(--orange));
+    animation:hum 2.2s ease-in-out infinite;}
+  .orb::after{content:"";position:absolute;inset:-6px;border-radius:50%;
+    border:2px solid var(--orange);opacity:.4;animation:ring 2.2s ease-out infinite;}
+  @keyframes hum{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(200,73,31,.4)}
+    50%{transform:scale(1.12);box-shadow:0 0 14px 3px rgba(200,73,31,.35)}}
+  @keyframes ring{0%{transform:scale(.7);opacity:.5}100%{transform:scale(1.5);opacity:0}}
+  .agent .meta{font-size:11px;line-height:1.4;}
+  .agent .meta b{font-size:12px;}
+  .agent .meta span{color:var(--muted);}
+
+  /* ---- dashboards ---- */
+  .dash{width:250px;}
+  .dash .body{padding:10px 12px 12px;}
+  .bars{display:flex;align-items:flex-end;gap:7px;height:74px;margin-top:4px;}
+  .bars .bar{flex:1;background:linear-gradient(180deg,var(--orange-soft),var(--orange));
+    border-radius:4px 4px 0 0;height:20%;animation:grow 3.4s ease-in-out infinite alternate;}
+  @keyframes grow{from{height:22%}to{height:92%}}
+  .pareto{display:flex;align-items:flex-end;gap:7px;height:74px;margin-top:4px;}
+  .pareto .bar{flex:1;background:#B9B3A6;border-radius:4px 4px 0 0;
+    animation:pgrow 3s ease-in-out infinite alternate;}
+  .pareto .bar:nth-child(1){background:var(--orange);}
+  @keyframes pgrow{from{transform:scaleY(.9);transform-origin:bottom}
+    to{transform:scaleY(1);transform-origin:bottom}}
+  .kpi{font-size:26px;font-weight:800;letter-spacing:-.5px;}
+  .kpi small{font-size:12px;color:var(--muted);font-weight:600;}
+  .spark{display:flex;align-items:flex-end;gap:3px;height:34px;margin-top:6px;}
+  .spark i{width:6px;background:var(--green);border-radius:2px;opacity:.85;
+    animation:grow 2.6s ease-in-out infinite alternate;}
+
+  /* add-analysis card */
+  .addcard{width:250px;border:1.6px dashed var(--orange-soft);background:#FCF7F4;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;
+    height:60px;color:var(--orange);font-weight:700;font-size:13.5px;
+    transition:background .2s, transform .15s;}
+  .addcard:hover{background:#FBEFE8;transform:translateY(-1px);}
+  .addcard .plus{width:22px;height:22px;border-radius:50%;background:var(--orange);
+    color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;
+    line-height:1;}
+
+  /* ---- popover (governance policy + agent thought) ---- */
+  .pop{position:fixed;z-index:80;background:var(--card);border:1px solid var(--border);
+    border-radius:12px;box-shadow:0 12px 40px rgba(26,26,20,.22);
+    padding:0;min-width:240px;max-width:340px;opacity:0;transform:translateY(8px);
+    transition:opacity .18s, transform .18s;pointer-events:none;}
+  .pop.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+  .pop .ph{display:flex;align-items:center;gap:8px;padding:11px 14px;
+    border-bottom:1px solid var(--border);font-weight:700;font-size:13px;}
+  .pop .ph .x{margin-left:auto;cursor:pointer;color:var(--muted);font-size:16px;
+    line-height:1;padding:2px 4px;}
+  .pop .pc{padding:12px 14px 14px;font-size:12.5px;color:var(--body);line-height:1.6;}
+  .pop .k{font-family:var(--mono);color:var(--muted);}
+  .pop .ok{color:var(--green);font-weight:700;}
+  .pop .no{color:var(--orange);font-weight:700;letter-spacing:1px;}
+  .thought{font-style:italic;color:var(--body);}
+  .thought .r{color:var(--orange);font-style:normal;font-weight:700;font-family:var(--mono);}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">ContextWeaver<span class="dot"> · </span><span>Living Data Canvas</span></div>
+    <div class="legend">
+      <span><b id="cCount">3</b> connectors</span>
+      <span><b id="tCount">3</b> tables</span>
+      <span><b id="aCount">2</b> agents humming</span>
+      <span><b id="dCount">2</b> dashboards</span>
+    </div>
+    <div class="hint">toggle connectors · drag any card · hover the steps · click 🔒 &amp; agents</div>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="canvas" id="canvas">
+      <svg class="wires" id="wires" viewBox="0 0 1560 1360"></svg>
+      <div class="dom" id="dom"></div>
+    </div>
+  </div>
+
+  <div class="pop" id="pop">
+    <div class="ph"><span id="popTitle">title</span><span class="x" id="popX">×</span></div>
+    <div class="pc" id="popBody"></div>
+  </div>
+
+<script>
+"use strict";
+const dom = document.getElementById('dom');
+const wires = document.getElementById('wires');
+const rc = rough.svg(wires);
+
+/* ---------------- data model ---------------- */
+const TABLES = {
+  machines:{title:'machines', x:430, y:222, cols:['Machine','Line','Status'],
+    breath:['Temp °C','Uptime'],
+    rows:[['CNC-01','A',['Running','st-run']],['PRESS-02','A',['Idle','st-idle']],
+          ['WELD-03','B',['Running','st-run']]]},
+  downtime:{title:'downtime', x:830, y:378, cols:['Machine','Reason','Mins'],
+    breath:['Shift','Code'],
+    rows:[['PRESS-02','Changeover','42'],['WELD-03','No material','18']]},
+  orders:{title:'orders', x:1236, y:222, cols:['Order','Qty','Due','Value'], mask:'Value',
+    breath:['Line','Priority'],
+    rows:[['SO-4471','1200','Aug 18','₹4.2L'],['SO-4472','800','Aug 20','₹2.8L']]},
+  quality_checks:{title:'quality_checks', x:430, y:438, cols:['Part','Check','Result'],
+    breath:['Inspector'],
+    rows:[['CNC-01','Bore Ø','Pass'],['WELD-03','Weld pen.','Rework']]},
+  shift_notes:{title:'shift_notes', x:1236, y:438, cols:['Time','Author','Note'],
+    breath:['Tag'],
+    rows:[['06:40','Ravi','Coolant low L-A'],['09:15','Meena','PRESS-02 slow']]},
+};
+const CONNECTORS = [
+  {id:'scada', nm:'SCADA', src:'OPC-UA', on:true,  table:'machines'},
+  {id:'mes',   nm:'MES',   src:'API',    on:true,  table:'downtime'},
+  {id:'sap',   nm:'SAP',   src:'ERP',    on:true,  table:'orders'},
+  {id:'excel', nm:'Excel', src:'.xlsx',  on:false, table:'quality_checks'},
+  {id:'whatsapp', nm:'WhatsApp', src:'chat', on:false, table:'shift_notes'},
+];
+const AGENTS = {
+  oee:   {x:560, y:762, name:'OEE Agent',      reads:'machines · downtime', writes:'OEE dashboard'},
+  pareto:{x:1050, y:762, name:'Downtime Agent', reads:'downtime',           writes:'Pareto dashboard'},
+};
+let ROLE = 'Operator';
+const ROLES = {
+  Operator:{machines:'ok', downtime:'ok', orders:'mask', quality_checks:'ok', shift_notes:'ok'},
+  Manager: {machines:'ok', downtime:'ok', orders:'ok',   quality_checks:'ok', shift_notes:'ok'},
+  Auditor: {machines:'ok', downtime:'ok', orders:'ok',   quality_checks:'mask', shift_notes:'mask'},
+};
+let DASH = [
+  {id:'d_oee',    x:470, y:960, kind:'oee',    title:'OEE %',           agent:'oee'},
+  {id:'d_pareto', x:850, y:960, kind:'pareto', title:'Downtime Pareto', agent:'pareto'},
+];
+const ADD_SLOTS = [{x:1230,y:960},{x:470,y:1150},{x:850,y:1150},{x:1230,y:1150}];
+const EXTRA_ANALYSES = [
+  {kind:'kpi',  title:'Throughput / hr', agent:'oee'},
+  {kind:'spark',title:'Scrap rate trend', agent:'pareto'},
+  {kind:'kpi',  title:'On-time delivery', agent:'oee'},
+  {kind:'spark',title:'Energy / unit', agent:'pareto'},
+];
+let addPtr = 0;
+
+const STEP_TIPS = {
+  1:'Live connectors to your plant systems (SCADA, MES, SAP, Excel, WhatsApp). Toggle one and its data streams into the layer.',
+  2:'Every source lands as clean, linked tables. Columns grow and cross-links draw themselves as new data arrives.',
+  3:'One access policy guards the whole data layer. It decides who sees what, and masks sensitive fields before anything reads them.',
+  4:'On-prem AI agents read the governed data and do the work. Nothing leaves the plant.',
+  5:'Agents turn context into live dashboards. Spin up a new analysis in one click.',
+};
+
+/* ---------------- helpers ---------------- */
+function el(tag, cls, html){const e=document.createElement(tag); if(cls)e.className=cls;
+  if(html!=null)e.innerHTML=html; return e;}
+function anchorR(n){return {x:n.offsetLeft+n.offsetWidth, y:n.offsetTop+n.offsetHeight/2};}
+function anchorL(n){return {x:n.offsetLeft, y:n.offsetTop+n.offsetHeight/2};}
+function anchorT(n){return {x:n.offsetLeft+n.offsetWidth/2, y:n.offsetTop};}
+function anchorB(n){return {x:n.offsetLeft+n.offsetWidth/2, y:n.offsetTop+n.offsetHeight};}
+
+function pathD(a,b){
+  const dx=b.x-a.x, dy=b.y-a.y;
+  if(Math.abs(dx)>=Math.abs(dy)){
+    const h=Math.max(50, Math.abs(dx)*0.45);
+    return `M${a.x},${a.y} C${a.x+h},${a.y} ${b.x-h},${b.y} ${b.x},${b.y}`;
+  }else{
+    const v=Math.max(50,Math.abs(dy)*0.45);
+    return `M${a.x},${a.y} C${a.x},${a.y+v} ${b.x},${b.y-v} ${b.x},${b.y}`;
+  }
+}
+
+/* ---------------- drag (canvas-style) ---------------- */
+let dragSwallow=false;
+function makeDraggable(node){
+  node.style.cursor='grab';
+  node.addEventListener('pointerdown',e=>{
+    if(e.button!==0) return;
+    if(e.target.closest('.rolechip, .conn')) return; // let interactive controls get their click
+    const sx=e.clientX, sy=e.clientY, ox=node.offsetLeft, oy=node.offsetTop;
+    let moved=false, raf=0;
+    node.setPointerCapture(e.pointerId);
+    node.style.zIndex=25;
+    const mv=ev=>{
+      const dx=ev.clientX-sx, dy=ev.clientY-sy;
+      if(!moved && Math.abs(dx)+Math.abs(dy)<4) return;
+      moved=true; node.style.cursor='grabbing';
+      node.style.left=(ox+dx)+'px'; node.style.top=(oy+dy)+'px';
+      if(!raf) raf=requestAnimationFrame(()=>{raf=0; drawWires(); sketch();});
+    };
+    const up=()=>{
+      node.releasePointerCapture(e.pointerId);
+      node.removeEventListener('pointermove',mv);
+      node.removeEventListener('pointerup',up);
+      node.style.cursor='grab'; node.style.zIndex='';
+      if(moved){ dragSwallow=true; setTimeout(()=>dragSwallow=false,0); drawWires(); sketch(); }
+    };
+    node.addEventListener('pointermove',mv);
+    node.addEventListener('pointerup',up);
+  });
+}
+
+/* ---------------- build nodes ---------------- */
+const nodeEls = {};
+
+function buildConnectors(){
+  const p = el('div','node connectors'); p.id='n_connectors';
+  p.appendChild(el('div','title','⛓ Connectors'));
+  CONNECTORS.forEach(c=>{
+    const row = el('div','conn'+(c.on?' on':''));
+    row.dataset.id=c.id;
+    row.innerHTML = `<div class="sw"></div><div class="nm">${c.nm}</div><div class="src">${c.src}</div>`;
+    row.onclick = ()=>toggleConnector(c.id);
+    p.appendChild(row);
+  });
+  dom.appendChild(p); nodeEls['connectors']=p; makeDraggable(p);
+}
+
+function tableCard(key){
+  const t = TABLES[key];
+  const n = el('div','node tbl'); n.id='n_'+key; n.style.left=t.x+'px'; n.style.top=t.y+'px';
+  n.innerHTML = `<div class="hd"><span class="mono">▦ ${t.title}</span>
+    <span class="tag">${t.rows.length} rows</span></div>`;
+  const g = el('div','grid');
+  const cols = el('div','cols');
+  t.cols.forEach(c=>cols.appendChild(el('span','chip',c)));
+  g.appendChild(cols);
+  const tb = el('table');
+  t.rows.forEach(r=>{
+    const tr=el('tr');
+    r.forEach(cell=>{
+      const td=el('td');
+      if(Array.isArray(cell)){ td.className=cell[1]; td.textContent=cell[0]; }
+      else td.textContent=cell;
+      tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+  g.appendChild(tb); n.appendChild(g);
+  makeDraggable(n);
+  return n;
+}
+
+/* ---------------- data box (container) ---------------- */
+function buildDataBox(){
+  const box=el('div','databox'); box.id='databox';
+  box.innerHTML=`<div class="dbhd"><span class="num">2</span> Data Layer
+    <small>· unified, linked tables</small>
+    <span class="tip">${STEP_TIPS[2]}</span></div>`;
+  dom.appendChild(box); nodeEls['databox']=box;
+}
+
+/* ---------------- governance bar (spans + guards the box) ---------------- */
+function buildGovernance(){
+  const n=el('div','node govbar'); n.id='n_gov';
+  n.innerHTML=`<span class="num">3</span>
+    <div class="glabel">🔒 Governance <small>access policy</small></div>
+    <div class="roles"></div>
+    <div class="gsum"></div>
+    <span class="tip">${STEP_TIPS[3]}</span>`;
+  const roles=n.querySelector('.roles');
+  Object.keys(ROLES).forEach(r=>{
+    const c=el('div','rolechip'+(r===ROLE?' active':''),r);
+    c.onclick=(e)=>{e.stopPropagation(); ROLE=r; refreshGovernance(); applyMasks();};
+    roles.appendChild(c);
+  });
+  n.onclick=()=>openPolicy(n);
+  dom.appendChild(n); nodeEls['gov']=n; makeDraggable(n);
+  refreshGovernance();
+}
+function refreshGovernance(){
+  const g=nodeEls['gov'];
+  g.querySelectorAll('.rolechip').forEach(c=>c.classList.toggle('active', c.textContent===ROLE));
+  const masked = Object.entries(ROLES[ROLE]).filter(([k,v])=>v==='mask' && isTableVisible(k))
+    .map(([k])=> TABLES[k].mask ? `${k}·${TABLES[k].mask}` : k);
+  g.querySelector('.gsum').innerHTML = masked.length
+    ? `<b>${ROLE}</b> → <span class="no">masked:</span> ${masked.join(', ')}`
+    : `<b>${ROLE}</b> → <span class="ok">full access</span>`;
+}
+function applyMasks(){
+  Object.keys(TABLES).forEach(key=>{
+    const t=TABLES[key], n=nodeEls['tbl_'+key]; if(!n) return;
+    const masked = ROLES[ROLE][key]==='mask';
+    n.querySelectorAll('.grid tr').forEach(tr=>{
+      [...tr.children].forEach((td,i)=>{
+        const hit = masked && (t.mask ? t.cols[i]===t.mask : true);
+        if(hit){ if(!td.dataset.real) td.dataset.real=td.textContent;
+          td.textContent='••••'; td.style.filter='blur(.3px)'; td.style.color='var(--muted)';}
+        else if(td.dataset.real){ td.textContent=td.dataset.real; delete td.dataset.real;
+          td.style.filter=''; td.style.color='';}
+      });
+    });
+  });
+}
+
+function agentCard(key){
+  const a=AGENTS[key];
+  const n=el('div','node agent'); n.id='n_ag_'+key; n.style.left=a.x+'px'; n.style.top=a.y+'px';
+  n.innerHTML=`<div class="hd"><span class="mono">◐ agent</span><span class="tag">on-prem</span></div>
+    <div class="body"><div class="orb"></div>
+    <div class="meta"><b>${a.name}</b><br><span>humming…</span></div></div>`;
+  n.onclick=()=>openThought(key,n);
+  makeDraggable(n);
+  return n;
+}
+
+function dashCard(d){
+  const n=el('div','node dash'); n.id='n_'+d.id; n.style.left=d.x+'px'; n.style.top=d.y+'px';
+  let inner='';
+  if(d.kind==='oee') inner=`<div class="kpi">78<small>%</small></div>
+    <div class="bars">${'<div class="bar"></div>'.repeat(6)}</div>`;
+  else if(d.kind==='pareto') inner=`<div class="pareto">${
+      [90,64,40,28,16].map((h,i)=>`<div class="bar" style="height:${h}%;animation-delay:${i*.2}s"></div>`).join('')}</div>`;
+  else if(d.kind==='kpi') inner=`<div class="kpi">${(Math.floor(20+Math.abs(Math.sin(d.x))*80))}<small>/hr</small></div>
+    <div class="spark">${[4,7,5,9,6,8,7].map((h,i)=>`<i style="height:${h*3}px;animation-delay:${i*.18}s"></i>`).join('')}</div>`;
+  else inner=`<div class="spark">${[5,8,6,9,7,10,8,6].map((h,i)=>`<i style="height:${h*3}px;animation-delay:${i*.15}s"></i>`).join('')}</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px">live · updating</div>`;
+  n.innerHTML=`<div class="hd"><span>📊 ${d.title}</span><span class="tag">${AGENTS[d.agent].name.split(' ')[0]}</span></div>
+    <div class="body">${inner}</div>`;
+  makeDraggable(n);
+  return n;
+}
+
+let addCardEl;
+function buildAddCard(){
+  addCardEl=el('div','node addcard','<span class="plus">+</span> add analysis');
+  positionAddCard();
+  addCardEl.onclick=addAnalysis;
+  dom.appendChild(addCardEl); nodeEls['add']=addCardEl; makeDraggable(addCardEl);
+}
+function positionAddCard(){
+  const slot = ADD_SLOTS[Math.min(addPtr, ADD_SLOTS.length-1)];
+  addCardEl.style.left=slot.x+'px'; addCardEl.style.top=slot.y+'px';
+  addCardEl.style.display = addPtr>=ADD_SLOTS.length ? 'none':'flex';
+}
+
+/* ---------------- numbered step badges (1,4,5; 2 & 3 live on box/bar) ---------------- */
+function stepBadge(num,label,x,y){
+  const s=el('div','step');
+  s.innerHTML=`<span class="num">${num}</span><span class="lbl">${label}</span>
+    <span class="tip">${STEP_TIPS[num]}</span>`;
+  s.style.left=x+'px'; s.style.top=y+'px';
+  dom.appendChild(s);
+}
+function buildSteps(){
+  stepBadge(1,'Connectors',60,224);
+  stepBadge(4,'Agents',470,720);
+  stepBadge(5,'Dashboards',470,916);
+}
+
+/* ---------------- table visibility (connector-driven) ---------------- */
+function isTableVisible(key){
+  const c = CONNECTORS.find(c=>c.table===key);
+  return c ? c.on : true;
+}
+function renderTables(){
+  Object.keys(TABLES).forEach(key=>{
+    const want=isTableVisible(key);
+    const have=!!nodeEls['tbl_'+key];
+    if(want && !have){
+      const n=tableCard(key); n.classList.add('enter'); dom.appendChild(n);
+      nodeEls['tbl_'+key]=n; requestAnimationFrame(()=>requestAnimationFrame(()=>n.classList.remove('enter')));
+    } else if(!want && have){
+      const n=nodeEls['tbl_'+key]; n.classList.add('enter');
+      setTimeout(()=>{n.remove();},480); delete nodeEls['tbl_'+key];
+    }
+  });
+}
+
+/* ---------------- wires ---------------- */
+function clearWires(){[...wires.querySelectorAll('.wire,.xlink')].forEach(w=>w.remove());
+  [...dom.querySelectorAll('.pulse')].forEach(p=>p.remove());}
+
+function addWire(a,b,cls,dur,delay){
+  const d=pathD(a,b);
+  const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+  p.setAttribute('d',d); p.setAttribute('class',cls||'wire'); wires.appendChild(p);
+  if(cls==='xlink'){ animateXlink(p); return p; }
+  const dot=el('div','pulse'); dot.style.offsetPath=`path('${d}')`;
+  dot.style.animationDuration=(dur||3.2)+'s'; dot.style.animationDelay=(delay||0)+'s';
+  dom.appendChild(dot);
+  return p;
+}
+function animateXlink(p){
+  const len=p.getTotalLength(); p.style.strokeDasharray=len; p.style.strokeDashoffset=len;
+  p.style.transition='none';
+  requestAnimationFrame(()=>{ p.style.transition='stroke-dashoffset 1.1s ease, opacity .6s';
+    p.style.strokeDashoffset=0; p.style.opacity=.7; });
+}
+
+function drawWires(){
+  clearWires();
+  const conn = nodeEls['connectors'];
+  const connRows = [...conn.querySelectorAll('.conn')];
+  // connectors -> tables (into the data box)
+  CONNECTORS.forEach((c,i)=>{
+    if(!c.on) return; const t=nodeEls['tbl_'+c.table]; if(!t) return;
+    const row=connRows[i];
+    const a={x:conn.offsetLeft+conn.offsetWidth, y:conn.offsetTop+row.offsetTop+row.offsetHeight/2};
+    addWire(a, anchorL(t), 'wire', 2.6, i*0.25);
+  });
+  // data box (bottom) -> governance gate (all data funnels through the policy layer)
+  const box=nodeEls['databox'], gv=nodeEls['gov'];
+  [0.34,0.66].forEach((f,i)=>{
+    const x=box.offsetLeft+box.offsetWidth*f;
+    addWire({x, y:box.offsetTop+box.offsetHeight}, {x, y:gv.offsetTop}, 'wire', 2.4, 0.4+i*0.2);
+  });
+  // governance gate -> agents (only governed data reaches the agents)
+  Object.keys(AGENTS).forEach((key,i)=>{
+    const ag=nodeEls['ag_'+key];
+    const x=ag.offsetLeft+ag.offsetWidth/2;
+    addWire({x, y:gv.offsetTop+gv.offsetHeight}, anchorT(ag), 'wire', 2.8, 0.9+i*0.22);
+  });
+  // agents -> dashboards
+  DASH.forEach((d,i)=>{
+    const ag=nodeEls['ag_'+d.agent]; const dn=nodeEls[d.id]; if(!ag||!dn) return;
+    addWire(anchorB(ag), anchorL(dn), 'wire', 3.0, 1.0+i*0.22);
+  });
+  drawXlinks();
+}
+function drawXlinks(){
+  const pairs=[['machines','downtime'],['downtime','orders']];
+  pairs.forEach(([x,y])=>{
+    const a=nodeEls['tbl_'+x], b=nodeEls['tbl_'+y]; if(!a||!b) return;
+    addWire(anchorB(a), anchorT(b), 'xlink');
+  });
+}
+
+/* ---------------- connector toggle ---------------- */
+function toggleConnector(id){
+  if(dragSwallow) return;
+  const c=CONNECTORS.find(c=>c.id===id); c.on=!c.on;
+  const row=[...nodeEls['connectors'].querySelectorAll('.conn')].find(r=>r.dataset.id===id);
+  row.classList.toggle('on', c.on);
+  renderTables();
+  setTimeout(()=>{ drawWires(); applyMasks(); refreshGovernance(); sketch(); updateCounts(); }, c.on?60:200);
+}
+
+/* ---------------- add analysis ---------------- */
+function addAnalysis(){
+  if(dragSwallow) return;
+  if(addPtr>=EXTRA_ANALYSES.length) return;
+  const spec=EXTRA_ANALYSES[addPtr];
+  const slot=ADD_SLOTS[addPtr];
+  const d={id:'d_extra'+addPtr, x:slot.x, y:slot.y, kind:spec.kind, title:spec.title, agent:spec.agent};
+  DASH.push(d);
+  const n=dashCard(d); n.classList.add('enter'); dom.appendChild(n); nodeEls[d.id]=n;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>n.classList.remove('enter')));
+  addPtr++;
+  positionAddCard();
+  setTimeout(()=>{ drawWires(); sketch(); updateCounts(); },120);
+}
+
+/* ---------------- popovers (governance + agent) ---------------- */
+const pop=document.getElementById('pop');
+const popTitle=document.getElementById('popTitle');
+const popBody=document.getElementById('popBody');
+document.getElementById('popX').onclick=hidePop;
+function showPop(anchorEl,title,html){
+  popTitle.textContent=title; popBody.innerHTML=html;
+  pop.className='pop show';
+  const r=anchorEl.getBoundingClientRect();
+  let left=r.right+12, top=r.top;
+  if(left+340>window.innerWidth) left=r.left-352;
+  if(left<10) left=10;
+  top=Math.max(62, Math.min(top, window.innerHeight-260));
+  pop.style.left=left+'px'; pop.style.top=top+'px';
+}
+function hidePop(){pop.className='pop';}
+document.addEventListener('click',(e)=>{
+  if(!pop.contains(e.target) && !e.target.closest('.node')) hidePop();
+});
+
+function openPolicy(node){
+  if(dragSwallow) return;
+  const rows=Object.entries(ROLES).map(([role,map])=>{
+    const cells=Object.entries(map).filter(([k])=>isTableVisible(k)).map(([k,v])=>
+      `<span class="k">${k}</span> ${v==='ok'?'<span class="ok">✓</span>':'<span class="no">masked</span>'}`).join(' &nbsp; ');
+    return `<div style="margin-bottom:9px"><b>${role}</b><br><span style="font-size:11.5px">${cells}</span></div>`;
+  }).join('');
+  showPop(node,'🔒 Access policy',
+    `<div style="margin-bottom:9px;color:var(--muted);font-size:11.5px">Row-level policy enforced before any agent reads a byte. Pick a role on the bar to see masking live.</div>${rows}`);
+}
+function openThought(key,node){
+  if(dragSwallow) return;
+  const a=AGENTS[key];
+  showPop(node,'◐ '+a.name,
+    `<div class="thought">reads <span class="r">${a.reads}</span><br>
+     writes <span class="r">${a.writes}</span><br>
+     honors <span class="r">governance policy</span> for role <b>${ROLE}</b></div>
+     <div style="margin-top:10px;font-size:11.5px;color:var(--muted)">
+     status: <span style="color:var(--green);font-weight:700">● humming</span> · runs on-prem · no data leaves the plant</div>`);
+}
+
+/* ---------------- sketch accents (rough.js) ---------------- */
+let sketchG=null;
+function sketch(){
+  if(sketchG) sketchG.remove();
+  sketchG=document.createElementNS('http://www.w3.org/2000/svg','g');
+  sketchG.setAttribute('class','sketch'); wires.appendChild(sketchG);
+  const gv=nodeEls['gov'];
+  const L=gv.offsetLeft, T=gv.offsetTop, W=gv.offsetWidth;
+  // governance "gate": hand-drawn bracket across the top of the bar, ticks reaching up
+  // to the data layer above — everything funnels through governance
+  const br=rc.line(L+8, T-6, L+W-8, T-6, {stroke:'var(--orange)',strokeWidth:2,roughness:2.4});
+  br.setAttribute('opacity','.55'); sketchG.appendChild(br);
+  [[L+8],[L+W-8]].forEach(([cx])=>{
+    const tick=rc.line(cx, T-6, cx, T-24, {stroke:'var(--orange)',strokeWidth:2,roughness:2.2});
+    tick.setAttribute('opacity','.5'); sketchG.appendChild(tick);
+  });
+  // marker rings around each humming agent
+  Object.keys(AGENTS).forEach(key=>{
+    const n=nodeEls['ag_'+key]; if(!n) return;
+    const c=rc.ellipse(n.offsetLeft+n.offsetWidth/2, n.offsetTop+n.offsetHeight/2,
+      n.offsetWidth+22, n.offsetHeight+18, {stroke:'#E8825C',strokeWidth:1.4,roughness:2.4});
+    c.setAttribute('opacity','.5'); sketchG.appendChild(c);
+  });
+}
+
+/* ---------------- column breathe loop ---------------- */
+function breatheLoop(){
+  Object.keys(TABLES).forEach(key=>{
+    const n=nodeEls['tbl_'+key]; if(!n) return;
+    const t=TABLES[key]; if(!(t.breath&&t.breath.length)) return;
+    const cols=n.querySelector('.cols');
+    const chip=el('span','chip newcol ghost', t.breath[Math.floor(Date.now()/4300)%t.breath.length]);
+    cols.appendChild(chip);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>chip.classList.remove('ghost')));
+    setTimeout(()=>{chip.classList.add('ghost'); setTimeout(()=>chip.remove(),600);}, 2600);
+  });
+}
+
+/* ---------------- counts ---------------- */
+function updateCounts(){
+  document.getElementById('cCount').textContent=CONNECTORS.filter(c=>c.on).length;
+  document.getElementById('tCount').textContent=Object.keys(TABLES).filter(isTableVisible).length;
+  document.getElementById('aCount').textContent=Object.keys(AGENTS).length;
+  document.getElementById('dCount').textContent=DASH.length;
+}
+
+/* ---------------- init ---------------- */
+function init(){
+  buildDataBox();
+  buildConnectors();
+  renderTables();
+  buildGovernance();
+  Object.keys(AGENTS).forEach(key=>{const n=agentCard(key); dom.appendChild(n); nodeEls['ag_'+key]=n;});
+  DASH.forEach(d=>{const n=dashCard(d); dom.appendChild(n); nodeEls[d.id]=n;});
+  buildAddCard();
+  buildSteps();
+  requestAnimationFrame(()=>{ drawWires(); sketch(); applyMasks(); updateCounts();
+    setInterval(breatheLoop, 4300); breatheLoop();
+    setInterval(drawXlinks, 6000);
+  });
+}
+window.addEventListener('load', init);
+window.addEventListener('resize', ()=>{ if(pop.className.indexOf('show')>-1) hidePop(); });
+</script>
+</body>
+</html>

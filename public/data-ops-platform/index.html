@@ -629,16 +629,6 @@ function sketch(){
   if(sketchG) sketchG.remove();
   sketchG=document.createElementNS('http://www.w3.org/2000/svg','g');
   sketchG.setAttribute('class','sketch'); wires.appendChild(sketchG);
-  const gv=nodeEls['gov'];
-  const L=gv.offsetLeft, T=gv.offsetTop, W=gv.offsetWidth;
-  // governance "gate": hand-drawn bracket across the top of the bar, ticks reaching up
-  // to the data layer above — everything funnels through governance
-  const br=rc.line(L+8, T-6, L+W-8, T-6, {stroke:'var(--orange)',strokeWidth:2,roughness:2.4});
-  br.setAttribute('opacity','.55'); sketchG.appendChild(br);
-  [[L+8],[L+W-8]].forEach(([cx])=>{
-    const tick=rc.line(cx, T-6, cx, T-24, {stroke:'var(--orange)',strokeWidth:2,roughness:2.2});
-    tick.setAttribute('opacity','.5'); sketchG.appendChild(tick);
-  });
   // marker rings around each humming agent
   Object.keys(AGENTS).forEach(key=>{
     const n=nodeEls['ag_'+key]; if(!n) return;

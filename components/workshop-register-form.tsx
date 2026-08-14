@@ -16,7 +16,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog"
 
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xlgqdrnw"
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/meajznwa"
 
 type Status = "idle" | "submitting" | "success" | "error"
 

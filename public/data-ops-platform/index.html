@@ -4,7 +4,15 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ContextWeaver · Living Data Canvas</title>
-<script src="https://cdn.jsdelivr.net/npm/roughjs@4.6.6/bundled/rough.min.js"></script>
+<script>/* Rough.js 4.6.6 (MIT) inlined so this page is fully self-contained */
+/**
+ * Skipped minification because the original files appears to be already minified.
+ * Original file: /npm/roughjs@4.6.6/bundled/rough.js
+ *
+ * Do NOT use SRI with dynamically generated files! More information: https://www.jsdelivr.com/using-sri-with-dynamic-files
+ */
+var rough=function(){"use strict";function t(t,e,s){if(t&&t.length){const[n,o]=e,a=Math.PI/180*s,h=Math.cos(a),r=Math.sin(a);for(const e of t){const[t,s]=e;e[0]=(t-n)*h-(s-o)*r+n,e[1]=(t-n)*r+(s-o)*h+o}}}function e(t,e){return t[0]===e[0]&&t[1]===e[1]}function s(s,n,o,a=1){const h=o,r=Math.max(n,.1),i=s[0]&&s[0][0]&&"number"==typeof s[0][0]?[s]:s,c=[0,0];if(h)for(const e of i)t(e,c,h);const l=function(t,s,n){const o=[];for(const s of t){const t=[...s];e(t[0],t[t.length-1])||t.push([t[0][0],t[0][1]]),t.length>2&&o.push(t)}const a=[];s=Math.max(s,.1);const h=[];for(const t of o)for(let e=0;e<t.length-1;e++){const s=t[e],n=t[e+1];if(s[1]!==n[1]){const t=Math.min(s[1],n[1]);h.push({ymin:t,ymax:Math.max(s[1],n[1]),x:t===s[1]?s[0]:n[0],islope:(n[0]-s[0])/(n[1]-s[1])})}}if(h.sort(((t,e)=>t.ymin<e.ymin?-1:t.ymin>e.ymin?1:t.x<e.x?-1:t.x>e.x?1:t.ymax===e.ymax?0:(t.ymax-e.ymax)/Math.abs(t.ymax-e.ymax))),!h.length)return a;let r=[],i=h[0].ymin,c=0;for(;r.length||h.length;){if(h.length){let t=-1;for(let e=0;e<h.length&&!(h[e].ymin>i);e++)t=e;h.splice(0,t+1).forEach((t=>{r.push({s:i,edge:t})}))}if(r=r.filter((t=>!(t.edge.ymax<=i))),r.sort(((t,e)=>t.edge.x===e.edge.x?0:(t.edge.x-e.edge.x)/Math.abs(t.edge.x-e.edge.x))),(1!==n||c%s==0)&&r.length>1)for(let t=0;t<r.length;t+=2){const e=t+1;if(e>=r.length)break;const s=r[t].edge,n=r[e].edge;a.push([[Math.round(s.x),i],[Math.round(n.x),i]])}i+=n,r.forEach((t=>{t.edge.x=t.edge.x+n*t.edge.islope})),c++}return a}(i,r,a);if(h){for(const e of i)t(e,c,-h);!function(e,s,n){const o=[];e.forEach((t=>o.push(...t))),t(o,s,n)}(l,c,-h)}return l}function n(t,e){var n;const o=e.hachureAngle+90;let a=e.hachureGap;a<0&&(a=4*e.strokeWidth),a=Math.round(Math.max(a,.1));let h=1;return e.roughness>=1&&((null===(n=e.randomizer)||void 0===n?void 0:n.next())||Math.random())>.7&&(h=a),s(t,a,o,h||1)}class o{constructor(t){this.helper=t}fillPolygons(t,e){return this._fillPolygons(t,e)}_fillPolygons(t,e){const s=n(t,e);return{type:"fillSketch",ops:this.renderLines(s,e)}}renderLines(t,e){const s=[];for(const n of t)s.push(...this.helper.doubleLineOps(n[0][0],n[0][1],n[1][0],n[1][1],e));return s}}function a(t){const e=t[0],s=t[1];return Math.sqrt(Math.pow(e[0]-s[0],2)+Math.pow(e[1]-s[1],2))}class h extends o{fillPolygons(t,e){let s=e.hachureGap;s<0&&(s=4*e.strokeWidth),s=Math.max(s,.1);const o=n(t,Object.assign({},e,{hachureGap:s})),h=Math.PI/180*e.hachureAngle,r=[],i=.5*s*Math.cos(h),c=.5*s*Math.sin(h);for(const[t,e]of o)a([t,e])&&r.push([[t[0]-i,t[1]+c],[...e]],[[t[0]+i,t[1]-c],[...e]]);return{type:"fillSketch",ops:this.renderLines(r,e)}}}class r extends o{fillPolygons(t,e){const s=this._fillPolygons(t,e),n=Object.assign({},e,{hachureAngle:e.hachureAngle+90}),o=this._fillPolygons(t,n);return s.ops=s.ops.concat(o.ops),s}}class i{constructor(t){this.helper=t}fillPolygons(t,e){const s=n(t,e=Object.assign({},e,{hachureAngle:0}));return this.dotsOnLines(s,e)}dotsOnLines(t,e){const s=[];let n=e.hachureGap;n<0&&(n=4*e.strokeWidth),n=Math.max(n,.1);let o=e.fillWeight;o<0&&(o=e.strokeWidth/2);const h=n/4;for(const r of t){const t=a(r),i=t/n,c=Math.ceil(i)-1,l=t-c*n,u=(r[0][0]+r[1][0])/2-n/4,p=Math.min(r[0][1],r[1][1]);for(let t=0;t<c;t++){const a=p+l+t*n,r=u-h+2*Math.random()*h,i=a-h+2*Math.random()*h,c=this.helper.ellipse(r,i,o,o,e);s.push(...c.ops)}}return{type:"fillSketch",ops:s}}}class c{constructor(t){this.helper=t}fillPolygons(t,e){const s=n(t,e);return{type:"fillSketch",ops:this.dashedLine(s,e)}}dashedLine(t,e){const s=e.dashOffset<0?e.hachureGap<0?4*e.strokeWidth:e.hachureGap:e.dashOffset,n=e.dashGap<0?e.hachureGap<0?4*e.strokeWidth:e.hachureGap:e.dashGap,o=[];return t.forEach((t=>{const h=a(t),r=Math.floor(h/(s+n)),i=(h+n-r*(s+n))/2;let c=t[0],l=t[1];c[0]>l[0]&&(c=t[1],l=t[0]);const u=Math.atan((l[1]-c[1])/(l[0]-c[0]));for(let t=0;t<r;t++){const a=t*(s+n),h=a+s,r=[c[0]+a*Math.cos(u)+i*Math.cos(u),c[1]+a*Math.sin(u)+i*Math.sin(u)],l=[c[0]+h*Math.cos(u)+i*Math.cos(u),c[1]+h*Math.sin(u)+i*Math.sin(u)];o.push(...this.helper.doubleLineOps(r[0],r[1],l[0],l[1],e))}})),o}}class l{constructor(t){this.helper=t}fillPolygons(t,e){const s=e.hachureGap<0?4*e.strokeWidth:e.hachureGap,o=e.zigzagOffset<0?s:e.zigzagOffset,a=n(t,e=Object.assign({},e,{hachureGap:s+o}));return{type:"fillSketch",ops:this.zigzagLines(a,o,e)}}zigzagLines(t,e,s){const n=[];return t.forEach((t=>{const o=a(t),h=Math.round(o/(2*e));let r=t[0],i=t[1];r[0]>i[0]&&(r=t[1],i=t[0]);const c=Math.atan((i[1]-r[1])/(i[0]-r[0]));for(let t=0;t<h;t++){const o=2*t*e,a=2*(t+1)*e,h=Math.sqrt(2*Math.pow(e,2)),i=[r[0]+o*Math.cos(c),r[1]+o*Math.sin(c)],l=[r[0]+a*Math.cos(c),r[1]+a*Math.sin(c)],u=[i[0]+h*Math.cos(c+Math.PI/4),i[1]+h*Math.sin(c+Math.PI/4)];n.push(...this.helper.doubleLineOps(i[0],i[1],u[0],u[1],s),...this.helper.doubleLineOps(u[0],u[1],l[0],l[1],s))}})),n}}const u={};class p{constructor(t){this.seed=t}next(){return this.seed?(2**31-1&(this.seed=Math.imul(48271,this.seed)))/2**31:Math.random()}}const f=0,d=1,g=2,M={A:7,a:7,C:6,c:6,H:1,h:1,L:2,l:2,M:2,m:2,Q:4,q:4,S:4,s:4,T:2,t:2,V:1,v:1,Z:0,z:0};function k(t,e){return t.type===e}function b(t){const e=[],s=function(t){const e=new Array;for(;""!==t;)if(t.match(/^([ \t\r\n,]+)/))t=t.substr(RegExp.$1.length);else if(t.match(/^([aAcChHlLmMqQsStTvVzZ])/))e[e.length]={type:f,text:RegExp.$1},t=t.substr(RegExp.$1.length);else{if(!t.match(/^(([-+]?[0-9]+(\.[0-9]*)?|[-+]?\.[0-9]+)([eE][-+]?[0-9]+)?)/))return[];e[e.length]={type:d,text:`${parseFloat(RegExp.$1)}`},t=t.substr(RegExp.$1.length)}return e[e.length]={type:g,text:""},e}(t);let n="BOD",o=0,a=s[o];for(;!k(a,g);){let h=0;const r=[];if("BOD"===n){if("M"!==a.text&&"m"!==a.text)return b("M0,0"+t);o++,h=M[a.text],n=a.text}else k(a,d)?h=M[n]:(o++,h=M[a.text],n=a.text);if(!(o+h<s.length))throw new Error("Path data ended short");for(let t=o;t<o+h;t++){const e=s[t];if(!k(e,d))throw new Error("Param not a number: "+n+","+e.text);r[r.length]=+e.text}if("number"!=typeof M[n])throw new Error("Bad segment: "+n);{const t={key:n,data:r};e.push(t),o+=h,a=s[o],"M"===n&&(n="L"),"m"===n&&(n="l")}}return e}function y(t){let e=0,s=0,n=0,o=0;const a=[];for(const{key:h,data:r}of t)switch(h){case"M":a.push({key:"M",data:[...r]}),[e,s]=r,[n,o]=r;break;case"m":e+=r[0],s+=r[1],a.push({key:"M",data:[e,s]}),n=e,o=s;break;case"L":a.push({key:"L",data:[...r]}),[e,s]=r;break;case"l":e+=r[0],s+=r[1],a.push({key:"L",data:[e,s]});break;case"C":a.push({key:"C",data:[...r]}),e=r[4],s=r[5];break;case"c":{const t=r.map(((t,n)=>n%2?t+s:t+e));a.push({key:"C",data:t}),e=t[4],s=t[5];break}case"Q":a.push({key:"Q",data:[...r]}),e=r[2],s=r[3];break;case"q":{const t=r.map(((t,n)=>n%2?t+s:t+e));a.push({key:"Q",data:t}),e=t[2],s=t[3];break}case"A":a.push({key:"A",data:[...r]}),e=r[5],s=r[6];break;case"a":e+=r[5],s+=r[6],a.push({key:"A",data:[r[0],r[1],r[2],r[3],r[4],e,s]});break;case"H":a.push({key:"H",data:[...r]}),e=r[0];break;case"h":e+=r[0],a.push({key:"H",data:[e]});break;case"V":a.push({key:"V",data:[...r]}),s=r[0];break;case"v":s+=r[0],a.push({key:"V",data:[s]});break;case"S":a.push({key:"S",data:[...r]}),e=r[2],s=r[3];break;case"s":{const t=r.map(((t,n)=>n%2?t+s:t+e));a.push({key:"S",data:t}),e=t[2],s=t[3];break}case"T":a.push({key:"T",data:[...r]}),e=r[0],s=r[1];break;case"t":e+=r[0],s+=r[1],a.push({key:"T",data:[e,s]});break;case"Z":case"z":a.push({key:"Z",data:[]}),e=n,s=o}return a}function m(t){const e=[];let s="",n=0,o=0,a=0,h=0,r=0,i=0;for(const{key:c,data:l}of t){switch(c){case"M":e.push({key:"M",data:[...l]}),[n,o]=l,[a,h]=l;break;case"C":e.push({key:"C",data:[...l]}),n=l[4],o=l[5],r=l[2],i=l[3];break;case"L":e.push({key:"L",data:[...l]}),[n,o]=l;break;case"H":n=l[0],e.push({key:"L",data:[n,o]});break;case"V":o=l[0],e.push({key:"L",data:[n,o]});break;case"S":{let t=0,a=0;"C"===s||"S"===s?(t=n+(n-r),a=o+(o-i)):(t=n,a=o),e.push({key:"C",data:[t,a,...l]}),r=l[0],i=l[1],n=l[2],o=l[3];break}case"T":{const[t,a]=l;let h=0,c=0;"Q"===s||"T"===s?(h=n+(n-r),c=o+(o-i)):(h=n,c=o);const u=n+2*(h-n)/3,p=o+2*(c-o)/3,f=t+2*(h-t)/3,d=a+2*(c-a)/3;e.push({key:"C",data:[u,p,f,d,t,a]}),r=h,i=c,n=t,o=a;break}case"Q":{const[t,s,a,h]=l,c=n+2*(t-n)/3,u=o+2*(s-o)/3,p=a+2*(t-a)/3,f=h+2*(s-h)/3;e.push({key:"C",data:[c,u,p,f,a,h]}),r=t,i=s,n=a,o=h;break}case"A":{const t=Math.abs(l[0]),s=Math.abs(l[1]),a=l[2],h=l[3],r=l[4],i=l[5],c=l[6];if(0===t||0===s)e.push({key:"C",data:[n,o,i,c,i,c]}),n=i,o=c;else if(n!==i||o!==c){x(n,o,i,c,t,s,a,h,r).forEach((function(t){e.push({key:"C",data:t})})),n=i,o=c}break}case"Z":e.push({key:"Z",data:[]}),n=a,o=h}s=c}return e}function w(t,e,s){return[t*Math.cos(s)-e*Math.sin(s),t*Math.sin(s)+e*Math.cos(s)]}function x(t,e,s,n,o,a,h,r,i,c){const l=(u=h,Math.PI*u/180);var u;let p=[],f=0,d=0,g=0,M=0;if(c)[f,d,g,M]=c;else{[t,e]=w(t,e,-l),[s,n]=w(s,n,-l);const h=(t-s)/2,c=(e-n)/2;let u=h*h/(o*o)+c*c/(a*a);u>1&&(u=Math.sqrt(u),o*=u,a*=u);const p=o*o,k=a*a,b=p*k-p*c*c-k*h*h,y=p*c*c+k*h*h,m=(r===i?-1:1)*Math.sqrt(Math.abs(b/y));g=m*o*c/a+(t+s)/2,M=m*-a*h/o+(e+n)/2,f=Math.asin(parseFloat(((e-M)/a).toFixed(9))),d=Math.asin(parseFloat(((n-M)/a).toFixed(9))),t<g&&(f=Math.PI-f),s<g&&(d=Math.PI-d),f<0&&(f=2*Math.PI+f),d<0&&(d=2*Math.PI+d),i&&f>d&&(f-=2*Math.PI),!i&&d>f&&(d-=2*Math.PI)}let k=d-f;if(Math.abs(k)>120*Math.PI/180){const t=d,e=s,r=n;d=i&&d>f?f+120*Math.PI/180*1:f+120*Math.PI/180*-1,p=x(s=g+o*Math.cos(d),n=M+a*Math.sin(d),e,r,o,a,h,0,i,[d,t,g,M])}k=d-f;const b=Math.cos(f),y=Math.sin(f),m=Math.cos(d),P=Math.sin(d),v=Math.tan(k/4),S=4/3*o*v,O=4/3*a*v,L=[t,e],T=[t+S*y,e-O*b],D=[s+S*P,n-O*m],A=[s,n];if(T[0]=2*L[0]-T[0],T[1]=2*L[1]-T[1],c)return[T,D,A].concat(p);{p=[T,D,A].concat(p);const t=[];for(let e=0;e<p.length;e+=3){const s=w(p[e][0],p[e][1],l),n=w(p[e+1][0],p[e+1][1],l),o=w(p[e+2][0],p[e+2][1],l);t.push([s[0],s[1],n[0],n[1],o[0],o[1]])}return t}}const P={randOffset:function(t,e){return G(t,e)},randOffsetWithRange:function(t,e,s){return E(t,e,s)},ellipse:function(t,e,s,n,o){const a=T(s,n,o);return D(t,e,o,a).opset},doubleLineOps:function(t,e,s,n,o){return $(t,e,s,n,o,!0)}};function v(t,e,s,n,o){return{type:"path",ops:$(t,e,s,n,o)}}function S(t,e,s){const n=(t||[]).length;if(n>2){const o=[];for(let e=0;e<n-1;e++)o.push(...$(t[e][0],t[e][1],t[e+1][0],t[e+1][1],s));return e&&o.push(...$(t[n-1][0],t[n-1][1],t[0][0],t[0][1],s)),{type:"path",ops:o}}return 2===n?v(t[0][0],t[0][1],t[1][0],t[1][1],s):{type:"path",ops:[]}}function O(t,e,s,n,o){return function(t,e){return S(t,!0,e)}([[t,e],[t+s,e],[t+s,e+n],[t,e+n]],o)}function L(t,e){if(t.length){const s="number"==typeof t[0][0]?[t]:t,n=j(s[0],1*(1+.2*e.roughness),e),o=e.disableMultiStroke?[]:j(s[0],1.5*(1+.22*e.roughness),z(e));for(let t=1;t<s.length;t++){const a=s[t];if(a.length){const t=j(a,1*(1+.2*e.roughness),e),s=e.disableMultiStroke?[]:j(a,1.5*(1+.22*e.roughness),z(e));for(const e of t)"move"!==e.op&&n.push(e);for(const t of s)"move"!==t.op&&o.push(t)}}return{type:"path",ops:n.concat(o)}}return{type:"path",ops:[]}}function T(t,e,s){const n=Math.sqrt(2*Math.PI*Math.sqrt((Math.pow(t/2,2)+Math.pow(e/2,2))/2)),o=Math.ceil(Math.max(s.curveStepCount,s.curveStepCount/Math.sqrt(200)*n)),a=2*Math.PI/o;let h=Math.abs(t/2),r=Math.abs(e/2);const i=1-s.curveFitting;return h+=G(h*i,s),r+=G(r*i,s),{increment:a,rx:h,ry:r}}function D(t,e,s,n){const[o,a]=F(n.increment,t,e,n.rx,n.ry,1,n.increment*E(.1,E(.4,1,s),s),s);let h=q(o,null,s);if(!s.disableMultiStroke&&0!==s.roughness){const[o]=F(n.increment,t,e,n.rx,n.ry,1.5,0,s),a=q(o,null,s);h=h.concat(a)}return{estimatedPoints:a,opset:{type:"path",ops:h}}}function A(t,e,s,n,o,a,h,r,i){const c=t,l=e;let u=Math.abs(s/2),p=Math.abs(n/2);u+=G(.01*u,i),p+=G(.01*p,i);let f=o,d=a;for(;f<0;)f+=2*Math.PI,d+=2*Math.PI;d-f>2*Math.PI&&(f=0,d=2*Math.PI);const g=2*Math.PI/i.curveStepCount,M=Math.min(g/2,(d-f)/2),k=V(M,c,l,u,p,f,d,1,i);if(!i.disableMultiStroke){const t=V(M,c,l,u,p,f,d,1.5,i);k.push(...t)}return h&&(r?k.push(...$(c,l,c+u*Math.cos(f),l+p*Math.sin(f),i),...$(c,l,c+u*Math.cos(d),l+p*Math.sin(d),i)):k.push({op:"lineTo",data:[c,l]},{op:"lineTo",data:[c+u*Math.cos(f),l+p*Math.sin(f)]})),{type:"path",ops:k}}function _(t,e){const s=m(y(b(t))),n=[];let o=[0,0],a=[0,0];for(const{key:t,data:h}of s)switch(t){case"M":a=[h[0],h[1]],o=[h[0],h[1]];break;case"L":n.push(...$(a[0],a[1],h[0],h[1],e)),a=[h[0],h[1]];break;case"C":{const[t,s,o,r,i,c]=h;n.push(...Z(t,s,o,r,i,c,a,e)),a=[i,c];break}case"Z":n.push(...$(a[0],a[1],o[0],o[1],e)),a=[o[0],o[1]]}return{type:"path",ops:n}}function I(t,e){const s=[];for(const n of t)if(n.length){const t=e.maxRandomnessOffset||0,o=n.length;if(o>2){s.push({op:"move",data:[n[0][0]+G(t,e),n[0][1]+G(t,e)]});for(let a=1;a<o;a++)s.push({op:"lineTo",data:[n[a][0]+G(t,e),n[a][1]+G(t,e)]})}}return{type:"fillPath",ops:s}}function C(t,e){return function(t,e){let s=t.fillStyle||"hachure";if(!u[s])switch(s){case"zigzag":u[s]||(u[s]=new h(e));break;case"cross-hatch":u[s]||(u[s]=new r(e));break;case"dots":u[s]||(u[s]=new i(e));break;case"dashed":u[s]||(u[s]=new c(e));break;case"zigzag-line":u[s]||(u[s]=new l(e));break;default:s="hachure",u[s]||(u[s]=new o(e))}return u[s]}(e,P).fillPolygons(t,e)}function z(t){const e=Object.assign({},t);return e.randomizer=void 0,t.seed&&(e.seed=t.seed+1),e}function W(t){return t.randomizer||(t.randomizer=new p(t.seed||0)),t.randomizer.next()}function E(t,e,s,n=1){return s.roughness*n*(W(s)*(e-t)+t)}function G(t,e,s=1){return E(-t,t,e,s)}function $(t,e,s,n,o,a=!1){const h=a?o.disableMultiStrokeFill:o.disableMultiStroke,r=R(t,e,s,n,o,!0,!1);if(h)return r;const i=R(t,e,s,n,o,!0,!0);return r.concat(i)}function R(t,e,s,n,o,a,h){const r=Math.pow(t-s,2)+Math.pow(e-n,2),i=Math.sqrt(r);let c=1;c=i<200?1:i>500?.4:-.0016668*i+1.233334;let l=o.maxRandomnessOffset||0;l*l*100>r&&(l=i/10);const u=l/2,p=.2+.2*W(o);let f=o.bowing*o.maxRandomnessOffset*(n-e)/200,d=o.bowing*o.maxRandomnessOffset*(t-s)/200;f=G(f,o,c),d=G(d,o,c);const g=[],M=()=>G(u,o,c),k=()=>G(l,o,c),b=o.preserveVertices;return a&&(h?g.push({op:"move",data:[t+(b?0:M()),e+(b?0:M())]}):g.push({op:"move",data:[t+(b?0:G(l,o,c)),e+(b?0:G(l,o,c))]})),h?g.push({op:"bcurveTo",data:[f+t+(s-t)*p+M(),d+e+(n-e)*p+M(),f+t+2*(s-t)*p+M(),d+e+2*(n-e)*p+M(),s+(b?0:M()),n+(b?0:M())]}):g.push({op:"bcurveTo",data:[f+t+(s-t)*p+k(),d+e+(n-e)*p+k(),f+t+2*(s-t)*p+k(),d+e+2*(n-e)*p+k(),s+(b?0:k()),n+(b?0:k())]}),g}function j(t,e,s){if(!t.length)return[];const n=[];n.push([t[0][0]+G(e,s),t[0][1]+G(e,s)]),n.push([t[0][0]+G(e,s),t[0][1]+G(e,s)]);for(let o=1;o<t.length;o++)n.push([t[o][0]+G(e,s),t[o][1]+G(e,s)]),o===t.length-1&&n.push([t[o][0]+G(e,s),t[o][1]+G(e,s)]);return q(n,null,s)}function q(t,e,s){const n=t.length,o=[];if(n>3){const a=[],h=1-s.curveTightness;o.push({op:"move",data:[t[1][0],t[1][1]]});for(let e=1;e+2<n;e++){const s=t[e];a[0]=[s[0],s[1]],a[1]=[s[0]+(h*t[e+1][0]-h*t[e-1][0])/6,s[1]+(h*t[e+1][1]-h*t[e-1][1])/6],a[2]=[t[e+1][0]+(h*t[e][0]-h*t[e+2][0])/6,t[e+1][1]+(h*t[e][1]-h*t[e+2][1])/6],a[3]=[t[e+1][0],t[e+1][1]],o.push({op:"bcurveTo",data:[a[1][0],a[1][1],a[2][0],a[2][1],a[3][0],a[3][1]]})}if(e&&2===e.length){const t=s.maxRandomnessOffset;o.push({op:"lineTo",data:[e[0]+G(t,s),e[1]+G(t,s)]})}}else 3===n?(o.push({op:"move",data:[t[1][0],t[1][1]]}),o.push({op:"bcurveTo",data:[t[1][0],t[1][1],t[2][0],t[2][1],t[2][0],t[2][1]]})):2===n&&o.push(...R(t[0][0],t[0][1],t[1][0],t[1][1],s,!0,!0));return o}function F(t,e,s,n,o,a,h,r){const i=[],c=[];if(0===r.roughness){t/=4,c.push([e+n*Math.cos(-t),s+o*Math.sin(-t)]);for(let a=0;a<=2*Math.PI;a+=t){const t=[e+n*Math.cos(a),s+o*Math.sin(a)];i.push(t),c.push(t)}c.push([e+n*Math.cos(0),s+o*Math.sin(0)]),c.push([e+n*Math.cos(t),s+o*Math.sin(t)])}else{const l=G(.5,r)-Math.PI/2;c.push([G(a,r)+e+.9*n*Math.cos(l-t),G(a,r)+s+.9*o*Math.sin(l-t)]);const u=2*Math.PI+l-.01;for(let h=l;h<u;h+=t){const t=[G(a,r)+e+n*Math.cos(h),G(a,r)+s+o*Math.sin(h)];i.push(t),c.push(t)}c.push([G(a,r)+e+n*Math.cos(l+2*Math.PI+.5*h),G(a,r)+s+o*Math.sin(l+2*Math.PI+.5*h)]),c.push([G(a,r)+e+.98*n*Math.cos(l+h),G(a,r)+s+.98*o*Math.sin(l+h)]),c.push([G(a,r)+e+.9*n*Math.cos(l+.5*h),G(a,r)+s+.9*o*Math.sin(l+.5*h)])}return[c,i]}function V(t,e,s,n,o,a,h,r,i){const c=a+G(.1,i),l=[];l.push([G(r,i)+e+.9*n*Math.cos(c-t),G(r,i)+s+.9*o*Math.sin(c-t)]);for(let a=c;a<=h;a+=t)l.push([G(r,i)+e+n*Math.cos(a),G(r,i)+s+o*Math.sin(a)]);return l.push([e+n*Math.cos(h),s+o*Math.sin(h)]),l.push([e+n*Math.cos(h),s+o*Math.sin(h)]),q(l,null,i)}function Z(t,e,s,n,o,a,h,r){const i=[],c=[r.maxRandomnessOffset||1,(r.maxRandomnessOffset||1)+.3];let l=[0,0];const u=r.disableMultiStroke?1:2,p=r.preserveVertices;for(let f=0;f<u;f++)0===f?i.push({op:"move",data:[h[0],h[1]]}):i.push({op:"move",data:[h[0]+(p?0:G(c[0],r)),h[1]+(p?0:G(c[0],r))]}),l=p?[o,a]:[o+G(c[f],r),a+G(c[f],r)],i.push({op:"bcurveTo",data:[t+G(c[f],r),e+G(c[f],r),s+G(c[f],r),n+G(c[f],r),l[0],l[1]]});return i}function Q(t){return[...t]}function H(t,e=0){const s=t.length;if(s<3)throw new Error("A curve must have at least three points.");const n=[];if(3===s)n.push(Q(t[0]),Q(t[1]),Q(t[2]),Q(t[2]));else{const s=[];s.push(t[0],t[0]);for(let e=1;e<t.length;e++)s.push(t[e]),e===t.length-1&&s.push(t[e]);const o=[],a=1-e;n.push(Q(s[0]));for(let t=1;t+2<s.length;t++){const e=s[t];o[0]=[e[0],e[1]],o[1]=[e[0]+(a*s[t+1][0]-a*s[t-1][0])/6,e[1]+(a*s[t+1][1]-a*s[t-1][1])/6],o[2]=[s[t+1][0]+(a*s[t][0]-a*s[t+2][0])/6,s[t+1][1]+(a*s[t][1]-a*s[t+2][1])/6],o[3]=[s[t+1][0],s[t+1][1]],n.push(o[1],o[2],o[3])}}return n}function N(t,e){return Math.pow(t[0]-e[0],2)+Math.pow(t[1]-e[1],2)}function B(t,e,s){const n=N(e,s);if(0===n)return N(t,e);let o=((t[0]-e[0])*(s[0]-e[0])+(t[1]-e[1])*(s[1]-e[1]))/n;return o=Math.max(0,Math.min(1,o)),N(t,J(e,s,o))}function J(t,e,s){return[t[0]+(e[0]-t[0])*s,t[1]+(e[1]-t[1])*s]}function K(t,e,s,n){const o=n||[];if(function(t,e){const s=t[e+0],n=t[e+1],o=t[e+2],a=t[e+3];let h=3*n[0]-2*s[0]-a[0];h*=h;let r=3*n[1]-2*s[1]-a[1];r*=r;let i=3*o[0]-2*a[0]-s[0];i*=i;let c=3*o[1]-2*a[1]-s[1];return c*=c,h<i&&(h=i),r<c&&(r=c),h+r}(t,e)<s){const s=t[e+0];if(o.length){(a=o[o.length-1],h=s,Math.sqrt(N(a,h)))>1&&o.push(s)}else o.push(s);o.push(t[e+3])}else{const n=.5,a=t[e+0],h=t[e+1],r=t[e+2],i=t[e+3],c=J(a,h,n),l=J(h,r,n),u=J(r,i,n),p=J(c,l,n),f=J(l,u,n),d=J(p,f,n);K([a,c,p,d],0,s,o),K([d,f,u,i],0,s,o)}var a,h;return o}function U(t,e){return X(t,0,t.length,e)}function X(t,e,s,n,o){const a=o||[],h=t[e],r=t[s-1];let i=0,c=1;for(let n=e+1;n<s-1;++n){const e=B(t[n],h,r);e>i&&(i=e,c=n)}return Math.sqrt(i)>n?(X(t,e,c+1,n,a),X(t,c,s,n,a)):(a.length||a.push(h),a.push(r)),a}function Y(t,e=.15,s){const n=[],o=(t.length-1)/3;for(let s=0;s<o;s++){K(t,3*s,e,n)}return s&&s>0?X(n,0,n.length,s):n}const tt="none";class et{constructor(t){this.defaultOptions={maxRandomnessOffset:2,roughness:1,bowing:1,stroke:"#000",strokeWidth:1,curveTightness:0,curveFitting:.95,curveStepCount:9,fillStyle:"hachure",fillWeight:-1,hachureAngle:-41,hachureGap:-1,dashOffset:-1,dashGap:-1,zigzagOffset:-1,seed:0,disableMultiStroke:!1,disableMultiStrokeFill:!1,preserveVertices:!1,fillShapeRoughnessGain:.8},this.config=t||{},this.config.options&&(this.defaultOptions=this._o(this.config.options))}static newSeed(){return Math.floor(Math.random()*2**31)}_o(t){return t?Object.assign({},this.defaultOptions,t):this.defaultOptions}_d(t,e,s){return{shape:t,sets:e||[],options:s||this.defaultOptions}}line(t,e,s,n,o){const a=this._o(o);return this._d("line",[v(t,e,s,n,a)],a)}rectangle(t,e,s,n,o){const a=this._o(o),h=[],r=O(t,e,s,n,a);if(a.fill){const o=[[t,e],[t+s,e],[t+s,e+n],[t,e+n]];"solid"===a.fillStyle?h.push(I([o],a)):h.push(C([o],a))}return a.stroke!==tt&&h.push(r),this._d("rectangle",h,a)}ellipse(t,e,s,n,o){const a=this._o(o),h=[],r=T(s,n,a),i=D(t,e,a,r);if(a.fill)if("solid"===a.fillStyle){const s=D(t,e,a,r).opset;s.type="fillPath",h.push(s)}else h.push(C([i.estimatedPoints],a));return a.stroke!==tt&&h.push(i.opset),this._d("ellipse",h,a)}circle(t,e,s,n){const o=this.ellipse(t,e,s,s,n);return o.shape="circle",o}linearPath(t,e){const s=this._o(e);return this._d("linearPath",[S(t,!1,s)],s)}arc(t,e,s,n,o,a,h=!1,r){const i=this._o(r),c=[],l=A(t,e,s,n,o,a,h,!0,i);if(h&&i.fill)if("solid"===i.fillStyle){const h=Object.assign({},i);h.disableMultiStroke=!0;const r=A(t,e,s,n,o,a,!0,!1,h);r.type="fillPath",c.push(r)}else c.push(function(t,e,s,n,o,a,h){const r=t,i=e;let c=Math.abs(s/2),l=Math.abs(n/2);c+=G(.01*c,h),l+=G(.01*l,h);let u=o,p=a;for(;u<0;)u+=2*Math.PI,p+=2*Math.PI;p-u>2*Math.PI&&(u=0,p=2*Math.PI);const f=(p-u)/h.curveStepCount,d=[];for(let t=u;t<=p;t+=f)d.push([r+c*Math.cos(t),i+l*Math.sin(t)]);return d.push([r+c*Math.cos(p),i+l*Math.sin(p)]),d.push([r,i]),C([d],h)}(t,e,s,n,o,a,i));return i.stroke!==tt&&c.push(l),this._d("arc",c,i)}curve(t,e){const s=this._o(e),n=[],o=L(t,s);if(s.fill&&s.fill!==tt)if("solid"===s.fillStyle){const e=L(t,Object.assign(Object.assign({},s),{disableMultiStroke:!0,roughness:s.roughness?s.roughness+s.fillShapeRoughnessGain:0}));n.push({type:"fillPath",ops:this._mergedShape(e.ops)})}else{const e=[],o=t;if(o.length){const t="number"==typeof o[0][0]?[o]:o;for(const n of t)n.length<3?e.push(...n):3===n.length?e.push(...Y(H([n[0],n[0],n[1],n[2]]),10,(1+s.roughness)/2)):e.push(...Y(H(n),10,(1+s.roughness)/2))}e.length&&n.push(C([e],s))}return s.stroke!==tt&&n.push(o),this._d("curve",n,s)}polygon(t,e){const s=this._o(e),n=[],o=S(t,!0,s);return s.fill&&("solid"===s.fillStyle?n.push(I([t],s)):n.push(C([t],s))),s.stroke!==tt&&n.push(o),this._d("polygon",n,s)}path(t,e){const s=this._o(e),n=[];if(!t)return this._d("path",n,s);t=(t||"").replace(/\n/g," ").replace(/(-\s)/g,"-").replace("/(ss)/g"," ");const o=s.fill&&"transparent"!==s.fill&&s.fill!==tt,a=s.stroke!==tt,h=!!(s.simplification&&s.simplification<1),r=function(t,e,s){const n=m(y(b(t))),o=[];let a=[],h=[0,0],r=[];const i=()=>{r.length>=4&&a.push(...Y(r,e)),r=[]},c=()=>{i(),a.length&&(o.push(a),a=[])};for(const{key:t,data:e}of n)switch(t){case"M":c(),h=[e[0],e[1]],a.push(h);break;case"L":i(),a.push([e[0],e[1]]);break;case"C":if(!r.length){const t=a.length?a[a.length-1]:h;r.push([t[0],t[1]])}r.push([e[0],e[1]]),r.push([e[2],e[3]]),r.push([e[4],e[5]]);break;case"Z":i(),a.push([h[0],h[1]])}if(c(),!s)return o;const l=[];for(const t of o){const e=U(t,s);e.length&&l.push(e)}return l}(t,1,h?4-4*(s.simplification||1):(1+s.roughness)/2),i=_(t,s);if(o)if("solid"===s.fillStyle)if(1===r.length){const e=_(t,Object.assign(Object.assign({},s),{disableMultiStroke:!0,roughness:s.roughness?s.roughness+s.fillShapeRoughnessGain:0}));n.push({type:"fillPath",ops:this._mergedShape(e.ops)})}else n.push(I(r,s));else n.push(C(r,s));return a&&(h?r.forEach((t=>{n.push(S(t,!1,s))})):n.push(i)),this._d("path",n,s)}opsToPath(t,e){let s="";for(const n of t.ops){const t="number"==typeof e&&e>=0?n.data.map((t=>+t.toFixed(e))):n.data;switch(n.op){case"move":s+=`M${t[0]} ${t[1]} `;break;case"bcurveTo":s+=`C${t[0]} ${t[1]}, ${t[2]} ${t[3]}, ${t[4]} ${t[5]} `;break;case"lineTo":s+=`L${t[0]} ${t[1]} `}}return s.trim()}toPaths(t){const e=t.sets||[],s=t.options||this.defaultOptions,n=[];for(const t of e){let e=null;switch(t.type){case"path":e={d:this.opsToPath(t),stroke:s.stroke,strokeWidth:s.strokeWidth,fill:tt};break;case"fillPath":e={d:this.opsToPath(t),stroke:tt,strokeWidth:0,fill:s.fill||tt};break;case"fillSketch":e=this.fillSketch(t,s)}e&&n.push(e)}return n}fillSketch(t,e){let s=e.fillWeight;return s<0&&(s=e.strokeWidth/2),{d:this.opsToPath(t),stroke:e.fill||tt,strokeWidth:s,fill:tt}}_mergedShape(t){return t.filter(((t,e)=>0===e||"move"!==t.op))}}class st{constructor(t,e){this.canvas=t,this.ctx=this.canvas.getContext("2d"),this.gen=new et(e)}draw(t){const e=t.sets||[],s=t.options||this.getDefaultOptions(),n=this.ctx,o=t.options.fixedDecimalPlaceDigits;for(const a of e)switch(a.type){case"path":n.save(),n.strokeStyle="none"===s.stroke?"transparent":s.stroke,n.lineWidth=s.strokeWidth,s.strokeLineDash&&n.setLineDash(s.strokeLineDash),s.strokeLineDashOffset&&(n.lineDashOffset=s.strokeLineDashOffset),this._drawToContext(n,a,o),n.restore();break;case"fillPath":{n.save(),n.fillStyle=s.fill||"";const e="curve"===t.shape||"polygon"===t.shape||"path"===t.shape?"evenodd":"nonzero";this._drawToContext(n,a,o,e),n.restore();break}case"fillSketch":this.fillSketch(n,a,s)}}fillSketch(t,e,s){let n=s.fillWeight;n<0&&(n=s.strokeWidth/2),t.save(),s.fillLineDash&&t.setLineDash(s.fillLineDash),s.fillLineDashOffset&&(t.lineDashOffset=s.fillLineDashOffset),t.strokeStyle=s.fill||"",t.lineWidth=n,this._drawToContext(t,e,s.fixedDecimalPlaceDigits),t.restore()}_drawToContext(t,e,s,n="nonzero"){t.beginPath();for(const n of e.ops){const e="number"==typeof s&&s>=0?n.data.map((t=>+t.toFixed(s))):n.data;switch(n.op){case"move":t.moveTo(e[0],e[1]);break;case"bcurveTo":t.bezierCurveTo(e[0],e[1],e[2],e[3],e[4],e[5]);break;case"lineTo":t.lineTo(e[0],e[1])}}"fillPath"===e.type?t.fill(n):t.stroke()}get generator(){return this.gen}getDefaultOptions(){return this.gen.defaultOptions}line(t,e,s,n,o){const a=this.gen.line(t,e,s,n,o);return this.draw(a),a}rectangle(t,e,s,n,o){const a=this.gen.rectangle(t,e,s,n,o);return this.draw(a),a}ellipse(t,e,s,n,o){const a=this.gen.ellipse(t,e,s,n,o);return this.draw(a),a}circle(t,e,s,n){const o=this.gen.circle(t,e,s,n);return this.draw(o),o}linearPath(t,e){const s=this.gen.linearPath(t,e);return this.draw(s),s}polygon(t,e){const s=this.gen.polygon(t,e);return this.draw(s),s}arc(t,e,s,n,o,a,h=!1,r){const i=this.gen.arc(t,e,s,n,o,a,h,r);return this.draw(i),i}curve(t,e){const s=this.gen.curve(t,e);return this.draw(s),s}path(t,e){const s=this.gen.path(t,e);return this.draw(s),s}}const nt="http://www.w3.org/2000/svg";class ot{constructor(t,e){this.svg=t,this.gen=new et(e)}draw(t){const e=t.sets||[],s=t.options||this.getDefaultOptions(),n=this.svg.ownerDocument||window.document,o=n.createElementNS(nt,"g"),a=t.options.fixedDecimalPlaceDigits;for(const h of e){let e=null;switch(h.type){case"path":e=n.createElementNS(nt,"path"),e.setAttribute("d",this.opsToPath(h,a)),e.setAttribute("stroke",s.stroke),e.setAttribute("stroke-width",s.strokeWidth+""),e.setAttribute("fill","none"),s.strokeLineDash&&e.setAttribute("stroke-dasharray",s.strokeLineDash.join(" ").trim()),s.strokeLineDashOffset&&e.setAttribute("stroke-dashoffset",`${s.strokeLineDashOffset}`);break;case"fillPath":e=n.createElementNS(nt,"path"),e.setAttribute("d",this.opsToPath(h,a)),e.setAttribute("stroke","none"),e.setAttribute("stroke-width","0"),e.setAttribute("fill",s.fill||""),"curve"!==t.shape&&"polygon"!==t.shape||e.setAttribute("fill-rule","evenodd");break;case"fillSketch":e=this.fillSketch(n,h,s)}e&&o.appendChild(e)}return o}fillSketch(t,e,s){let n=s.fillWeight;n<0&&(n=s.strokeWidth/2);const o=t.createElementNS(nt,"path");return o.setAttribute("d",this.opsToPath(e,s.fixedDecimalPlaceDigits)),o.setAttribute("stroke",s.fill||""),o.setAttribute("stroke-width",n+""),o.setAttribute("fill","none"),s.fillLineDash&&o.setAttribute("stroke-dasharray",s.fillLineDash.join(" ").trim()),s.fillLineDashOffset&&o.setAttribute("stroke-dashoffset",`${s.fillLineDashOffset}`),o}get generator(){return this.gen}getDefaultOptions(){return this.gen.defaultOptions}opsToPath(t,e){return this.gen.opsToPath(t,e)}line(t,e,s,n,o){const a=this.gen.line(t,e,s,n,o);return this.draw(a)}rectangle(t,e,s,n,o){const a=this.gen.rectangle(t,e,s,n,o);return this.draw(a)}ellipse(t,e,s,n,o){const a=this.gen.ellipse(t,e,s,n,o);return this.draw(a)}circle(t,e,s,n){const o=this.gen.circle(t,e,s,n);return this.draw(o)}linearPath(t,e){const s=this.gen.linearPath(t,e);return this.draw(s)}polygon(t,e){const s=this.gen.polygon(t,e);return this.draw(s)}arc(t,e,s,n,o,a,h=!1,r){const i=this.gen.arc(t,e,s,n,o,a,h,r);return this.draw(i)}curve(t,e){const s=this.gen.curve(t,e);return this.draw(s)}path(t,e){const s=this.gen.path(t,e);return this.draw(s)}}return{canvas:(t,e)=>new st(t,e),svg:(t,e)=>new ot(t,e),generator:t=>new et(t),newSeed:()=>et.newSeed()}}();
+</script>
 <style>
   :root{
     --page:#F4F4F0; --ink:#1A1A14; --orange:#C8491F; --orange-soft:#E8825C;
@@ -12,13 +20,14 @@
     --green:#3E7C4F; --amber:#C88A1F; --wire:#C9C3B6;
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --mono:"SF Mono",ui-monospace,"Roboto Mono",Menlo,monospace;
+    --panel:410px;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;background:#e9e8e2;color:var(--ink);
     font-family:var(--sans);-webkit-font-smoothing:antialiased;}
 
   /* ---- fixed top bar ---- */
-  .topbar{position:fixed;top:0;left:0;right:0;height:52px;z-index:50;
+  .topbar{position:fixed;top:0;left:0;right:0;height:52px;z-index:90;
     display:flex;align-items:center;gap:16px;padding:0 20px;
     background:rgba(244,244,240,.86);backdrop-filter:blur(8px);
     border-bottom:1px solid var(--border);}
@@ -30,17 +39,18 @@
     border-radius:20px;padding:4px 12px;}
 
   /* ---- scroll stage ---- */
-  .stage{position:relative;padding:52px 0 40px;overflow:auto;}
-  .canvas{position:relative;width:1560px;height:1360px;margin:20px auto;}
+  .stage{position:relative;padding:52px 0 40px;}
+  .canvas{position:relative;width:1560px;height:1450px;margin:20px auto;
+    transform-origin:0 0;transition:transform .55s cubic-bezier(.22,.7,.28,1);}
 
-  svg.wires{position:absolute;inset:0;width:1560px;height:1360px;overflow:visible;
-    pointer-events:none;z-index:1;}
+  svg.wires{position:absolute;inset:0;width:1560px;height:1450px;overflow:visible;
+    pointer-events:none;z-index:1;transition:opacity .4s;}
   svg.wires path.wire{fill:none;stroke:var(--wire);stroke-width:2;
     stroke-linecap:round;opacity:.9;}
   svg.wires path.xlink{fill:none;stroke:var(--orange-soft);stroke-width:1.4;
     stroke-dasharray:4 5;opacity:0;}
 
-  .dom{position:absolute;inset:0;width:1560px;height:1360px;z-index:2;}
+  .dom{position:absolute;inset:0;width:1560px;height:1450px;z-index:2;}
 
   /* pulse dots travelling along wires */
   .pulse{position:absolute;top:0;left:0;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;
@@ -50,34 +60,47 @@
   @keyframes flow{from{offset-distance:0%;opacity:0}
     8%{opacity:1} 92%{opacity:1} to{offset-distance:100%;opacity:0}}
 
+  /* ---- focus / magnify ---- */
+  .canvas.focusing svg.wires{opacity:.5;}
+  .dom.focusing .node,.dom.focusing .step,.dom.focusing .databox{
+    opacity:.26;filter:blur(.7px);transition:opacity .4s,filter .4s;}
+  .dom.focusing .node.focused,.dom.focusing .databox.focused{
+    opacity:1;filter:none;}
+  .node.focused{box-shadow:0 0 0 2px var(--orange),0 22px 54px rgba(26,26,20,.22)!important;
+    z-index:32!important;}
+  .databox.focused{box-shadow:0 0 0 2px var(--orange),0 22px 54px rgba(26,26,20,.14)!important;}
+
   /* ---- numbered steps + hover tip ---- */
   .step{position:absolute;z-index:7;display:flex;align-items:center;gap:9px;cursor:default;}
   .num{width:23px;height:23px;flex:none;border-radius:50%;background:var(--ink);color:#fff;
     font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;
     transition:background .18s;}
-  .step:hover .num, .govbar:hover .num, .dbhd:hover .num{background:var(--orange);}
+  .step:hover .num,.gatebar:hover .num,.dbhd:hover .num{background:var(--orange);}
   .lbl{font-size:12px;font-weight:700;letter-spacing:1.4px;color:var(--muted);
     text-transform:uppercase;}
   .tip{position:absolute;top:30px;left:0;width:236px;background:var(--ink);color:#F4F4F0;
     font-size:11.5px;font-weight:400;letter-spacing:0;text-transform:none;line-height:1.55;
     padding:10px 12px;border-radius:9px;opacity:0;transform:translateY(-4px);
     pointer-events:none;transition:.16s;box-shadow:0 10px 28px rgba(0,0,0,.28);z-index:30;}
-  .step:hover .tip, .govbar:hover .tip, .dbhd:hover .tip{opacity:1;transform:translateY(0);}
+  .step:hover .tip,.gatebar:hover .tip,.dbhd:hover .tip{opacity:1;transform:translateY(0);}
+  /* while magnified, the panel carries the detail — hover tips would just compete */
+  .dom.focusing .tip{opacity:0!important;}
 
   /* ---- data layer box (one container around all tables) ---- */
   .databox{position:absolute;left:360px;top:150px;width:1150px;height:440px;
     border:1.5px solid var(--border);border-radius:16px;
     background:rgba(252,251,248,.5);z-index:1;pointer-events:none;
+    transition:box-shadow .3s,opacity .4s,filter .4s;
     box-shadow:inset 0 0 0 1px rgba(255,255,255,.5), 0 1px 12px rgba(26,26,20,.04);}
   .dbhd{position:absolute;top:12px;left:18px;display:flex;align-items:center;gap:9px;
     font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
-    color:var(--muted);pointer-events:auto;cursor:default;}
+    color:var(--muted);pointer-events:auto;cursor:pointer;}
   .dbhd small{font-weight:500;text-transform:none;letter-spacing:0;color:var(--muted);}
 
   /* ---- generic node card ---- */
   .node{position:absolute;background:var(--card);border:1px solid var(--border);
     border-radius:10px;box-shadow:0 2px 10px rgba(26,26,20,.06);z-index:2;
-    transition:opacity .5s ease, transform .5s ease;}
+    transition:opacity .5s ease, transform .5s ease, box-shadow .3s, filter .4s;}
   .node.enter{opacity:0;transform:translateY(10px) scale(.96);}
   .node .hd{display:flex;align-items:center;gap:7px;padding:8px 11px;
     border-bottom:1px solid var(--border);font-size:12.5px;font-weight:700;}
@@ -104,8 +127,8 @@
   .conn.on .nm{color:var(--ink);}
   .conn:not(.on) .nm{color:var(--muted);}
 
-  /* ---- table card (display only, not clickable) ---- */
-  .tbl{width:220px;}
+  /* ---- table card ---- */
+  .tbl{width:220px;cursor:pointer;}
   .grid{padding:6px 8px 9px;}
   .grid .cols{display:flex;gap:5px;margin-bottom:5px;flex-wrap:wrap;}
   .chip{font-size:10.5px;font-family:var(--mono);color:var(--body);
@@ -119,20 +142,34 @@
   .grid td.st-run{color:var(--green);font-weight:600;}
   .grid td.st-idle{color:var(--amber);font-weight:600;}
 
-  /* ---- governance bar spanning + guarding the data box ---- */
-  .govbar{left:360px;top:632px;width:1150px;height:52px;display:flex;align-items:center;
+  /* ---- gate bars (governance + guard rails) ---- */
+  .gatebar{left:360px;width:1150px;height:54px;display:flex;align-items:center;
     gap:14px;padding:0 16px;cursor:pointer;z-index:4;}
-  .govbar:hover{box-shadow:0 4px 16px rgba(26,26,20,.12);}
-  .govbar .glabel{font-weight:700;font-size:13px;white-space:nowrap;display:flex;
+  .gatebar:hover{box-shadow:0 4px 16px rgba(26,26,20,.12);}
+  .govbar{top:632px;}
+  .railbar{top:716px;}
+  .gatebar .glabel{font-weight:700;font-size:13px;white-space:nowrap;display:flex;
     align-items:center;gap:7px;}
-  .govbar .glabel small{font-weight:500;color:var(--muted);}
-  .govbar .roles{display:flex;gap:6px;}
+  .gatebar .glabel small{font-weight:500;color:var(--muted);}
+  .gatebar .roles{display:flex;gap:6px;}
   .rolechip{font-size:11px;font-weight:600;border:1px solid var(--border);
-    border-radius:6px;padding:3px 9px;cursor:pointer;color:var(--body);background:#fff;}
+    border-radius:6px;padding:3px 9px;cursor:pointer;color:var(--body);background:#fff;
+    transition:background .15s,border-color .15s,color .15s;}
   .rolechip.active{background:var(--ink);color:#fff;border-color:var(--ink);}
-  .govbar .gsum{margin-left:auto;font-size:11.5px;color:var(--body);white-space:nowrap;}
-  .govbar .gsum .no{color:var(--orange);font-weight:700;}
-  .govbar .gsum .ok{color:var(--green);font-weight:700;}
+  .railchip{font-size:11px;font-weight:600;border:1px solid #EBD9CF;
+    border-radius:6px;padding:3px 9px;cursor:pointer;color:var(--orange);background:#FDF6F2;
+    transition:background .15s;}
+  .railchip:hover{background:#FBE7DE;}
+  .gatebar .gsum{margin-left:auto;font-size:11.5px;color:var(--body);white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;max-width:430px;}
+  .gatebar .gsum .no{color:var(--orange);font-weight:700;}
+  .gatebar .gsum .ok{color:var(--green);font-weight:700;}
+  .ticker{margin-left:auto;font-size:11.5px;color:var(--body);white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;max-width:470px;
+    transition:opacity .45s;}
+  .ticker.fade{opacity:0;}
+  .ticker .deny{color:var(--orange);font-weight:700;}
+  .ticker .q{font-family:var(--mono);font-size:11px;}
 
   /* ---- agent ---- */
   .agent{width:188px;cursor:pointer;}
@@ -148,9 +185,12 @@
   .agent .meta{font-size:11px;line-height:1.4;}
   .agent .meta b{font-size:12px;}
   .agent .meta span{color:var(--muted);}
+  .agent .rails{display:flex;gap:3px;padding:0 11px 9px;}
+  .agent .rails i{width:5px;height:5px;border-radius:50%;background:var(--orange-soft);
+    opacity:.8;font-style:normal;}
 
   /* ---- dashboards ---- */
-  .dash{width:250px;}
+  .dash{width:250px;cursor:pointer;}
   .dash .body{padding:10px 12px 12px;}
   .bars{display:flex;align-items:flex-end;gap:7px;height:74px;margin-top:4px;}
   .bars .bar{flex:1;background:linear-gradient(180deg,var(--orange-soft),var(--orange));
@@ -178,22 +218,61 @@
     color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;
     line-height:1;}
 
-  /* ---- popover (governance policy + agent thought) ---- */
-  .pop{position:fixed;z-index:80;background:var(--card);border:1px solid var(--border);
-    border-radius:12px;box-shadow:0 12px 40px rgba(26,26,20,.22);
-    padding:0;min-width:240px;max-width:340px;opacity:0;transform:translateY(8px);
-    transition:opacity .18s, transform .18s;pointer-events:none;}
-  .pop.show{opacity:1;transform:translateY(0);pointer-events:auto;}
-  .pop .ph{display:flex;align-items:center;gap:8px;padding:11px 14px;
-    border-bottom:1px solid var(--border);font-weight:700;font-size:13px;}
-  .pop .ph .x{margin-left:auto;cursor:pointer;color:var(--muted);font-size:16px;
-    line-height:1;padding:2px 4px;}
-  .pop .pc{padding:12px 14px 14px;font-size:12.5px;color:var(--body);line-height:1.6;}
-  .pop .k{font-family:var(--mono);color:var(--muted);}
-  .pop .ok{color:var(--green);font-weight:700;}
-  .pop .no{color:var(--orange);font-weight:700;letter-spacing:1px;}
-  .thought{font-style:italic;color:var(--body);}
-  .thought .r{color:var(--orange);font-style:normal;font-weight:700;font-family:var(--mono);}
+  /* ---- right inspector panel ---- */
+  .inspector{position:fixed;top:52px;right:0;bottom:0;width:var(--panel);z-index:80;
+    background:var(--card);border-left:1px solid var(--border);
+    box-shadow:-16px 0 48px rgba(26,26,20,.14);display:flex;flex-direction:column;
+    transform:translateX(100%);transition:transform .45s cubic-bezier(.22,.7,.28,1);}
+  .inspector.open{transform:translateX(0);}
+  .ins-hd{display:flex;align-items:center;gap:9px;padding:14px 16px;flex:none;
+    border-bottom:1px solid var(--border);}
+  .ins-hd .t{font-weight:700;font-size:14.5px;}
+  .ins-hd .badge{font-size:9.5px;font-weight:700;color:var(--muted);background:#F0EEE7;
+    border-radius:5px;padding:3px 7px;letter-spacing:.6px;text-transform:uppercase;}
+  .ins-hd .x{margin-left:auto;cursor:pointer;color:var(--muted);font-size:20px;
+    line-height:1;padding:1px 7px;border-radius:6px;}
+  .ins-hd .x:hover{background:#F0EEE7;color:var(--ink);}
+  .ins-bd{overflow-y:auto;padding:15px 16px 40px;font-size:12.5px;color:var(--body);
+    line-height:1.6;}
+  .lede{font-size:13px;color:var(--ink);line-height:1.55;}
+  .meta-line{margin-top:7px;font-size:11.5px;color:var(--muted);}
+  .meta-line b{color:var(--body);font-weight:600;}
+  .sec{margin-top:18px;}
+  .sec h4{margin:0 0 8px;font-size:10px;font-weight:700;letter-spacing:1.4px;
+    text-transform:uppercase;color:var(--muted);}
+  .colrow{padding:9px 0;border-top:1px solid #EFEDE6;}
+  .colrow:first-child{border-top:none;padding-top:2px;}
+  .colhd{display:flex;align-items:center;gap:7px;}
+  .colnm{font-family:var(--mono);font-size:11.5px;color:var(--ink);font-weight:600;}
+  .pill{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+    border-radius:4px;padding:2px 5px;}
+  .pill.key{background:#EDEAE2;color:var(--body);}
+  .pill.mask{background:#FBE7DE;color:var(--orange);}
+  .pill.new{background:#FBE7DE;color:var(--orange);}
+  .colmean{margin-top:3px;font-size:11.5px;line-height:1.55;}
+  .joins{margin-top:4px;font-size:11px;font-family:var(--mono);color:var(--orange);}
+  .joins span{color:var(--muted);font-family:var(--sans);}
+  .callout{background:#FBF3EE;border:1px solid #F0DCD1;border-left:3px solid var(--orange);
+    border-radius:8px;padding:11px 13px;font-size:11.5px;line-height:1.65;}
+  .rail{border:1px solid var(--border);border-radius:9px;padding:10px 12px;
+    margin-bottom:9px;background:#fff;transition:border-color .25s,box-shadow .25s;}
+  .rail.hl{border-color:var(--orange);box-shadow:0 0 0 2px rgba(200,73,31,.12);}
+  .rail .rn{font-weight:700;font-size:12.5px;color:var(--ink);}
+  .rail .rd{margin-top:3px;font-size:11.5px;line-height:1.55;}
+  .ex{margin-top:6px;font-size:11px;display:flex;gap:7px;align-items:flex-start;
+    line-height:1.5;}
+  .ex .y{color:var(--green);font-weight:700;flex:none;}
+  .ex .n{color:var(--orange);font-weight:700;flex:none;}
+  .kv{display:flex;gap:8px;padding:5px 0;font-size:11.5px;border-top:1px solid #EFEDE6;}
+  .kv:first-child{border-top:none;}
+  .kv .k{color:var(--muted);width:96px;flex:none;}
+  .kv .v{color:var(--body);}
+  .kv .v .mono{font-family:var(--mono);}
+  .ok{color:var(--green);font-weight:700;}
+  .no{color:var(--orange);font-weight:700;}
+  .chiplist{display:flex;flex-wrap:wrap;gap:5px;}
+  .chiplist span{font-size:10.5px;font-family:var(--mono);background:#F0EEE7;
+    border-radius:5px;padding:2px 7px;color:var(--body);}
 </style>
 </head>
 <body>
@@ -202,71 +281,170 @@
     <div class="legend">
       <span><b id="cCount">3</b> connectors</span>
       <span><b id="tCount">3</b> tables</span>
+      <span><b id="rCount">5</b> guard rails</span>
       <span><b id="aCount">2</b> agents humming</span>
       <span><b id="dCount">2</b> dashboards</span>
     </div>
-    <div class="hint">toggle connectors · drag any card · hover the steps · click 🔒 &amp; agents</div>
+    <div class="hint">flip a switch to connect · click any card to magnify into it</div>
   </div>
 
   <div class="stage" id="stage">
     <div class="canvas" id="canvas">
-      <svg class="wires" id="wires" viewBox="0 0 1560 1360"></svg>
+      <svg class="wires" id="wires" viewBox="0 0 1560 1450"></svg>
       <div class="dom" id="dom"></div>
     </div>
   </div>
 
-  <div class="pop" id="pop">
-    <div class="ph"><span id="popTitle">title</span><span class="x" id="popX">×</span></div>
-    <div class="pc" id="popBody"></div>
-  </div>
+  <aside class="inspector" id="inspector">
+    <div class="ins-hd">
+      <span class="t" id="insTitle">title</span>
+      <span class="badge" id="insBadge">type</span>
+      <span class="x" id="insX">×</span>
+    </div>
+    <div class="ins-bd" id="insBody"></div>
+  </aside>
 
 <script>
 "use strict";
 const dom = document.getElementById('dom');
 const wires = document.getElementById('wires');
+const canvas = document.getElementById('canvas');
 const rc = rough.svg(wires);
 
 /* ---------------- data model ---------------- */
 const TABLES = {
-  machines:{title:'machines', x:430, y:222, cols:['Machine','Line','Status'],
-    breath:['Temp °C','Uptime'],
+  machines:{
+    title:'machines', x:430, y:222, cols:['Machine','Line','Status'], breath:['Temp °C','Uptime'],
     rows:[['CNC-01','A',['Running','st-run']],['PRESS-02','A',['Idle','st-idle']],
-          ['WELD-03','B',['Running','st-run']]]},
-  downtime:{title:'downtime', x:830, y:378, cols:['Machine','Reason','Mins'],
-    breath:['Shift','Code'],
-    rows:[['PRESS-02','Changeover','42'],['WELD-03','No material','18']]},
-  orders:{title:'orders', x:1236, y:222, cols:['Order','Qty','Due','Value'], mask:'Value',
+          ['WELD-03','B',['Running','st-run']]],
+    desc:'Live equipment state, one row per machine on the shop floor.',
+    source:'SCADA', proto:'OPC-UA', cadence:'polled every 5 seconds',
+    colMeta:{
+      'Machine':{key:true, mean:'Asset tag. The identity every other table hangs off.',
+        joins:['downtime.Machine','quality_checks.Part']},
+      'Line':{mean:'Production line the machine sits on (A or B).', joins:['orders.Line']},
+      'Status':{mean:'Running / Idle / Down, derived from the OPC-UA run tag rather than typed by anyone.'},
+      'Temp °C':{arriving:true, mean:'Spindle temperature, arrives on the same tag group.'},
+      'Uptime':{arriving:true, mean:'Rolling 24-hour running minutes, computed as the tag streams in.'},
+    },
+    unified:'SCADA calls this machine CNC-01, the MES calls it MC_CNC_001, and the quality sheet has CNC01 typed by hand. The context layer resolves all three to one machine entity. An agent asking "why is CNC-01 down?" reads across SCADA, MES and quality without anyone writing a join.'},
+
+  downtime:{
+    title:'downtime', x:830, y:378, cols:['Machine','Reason','Mins'], breath:['Shift','Code'],
+    rows:[['PRESS-02','Changeover','42'],['WELD-03','No material','18']],
+    desc:'One row per stoppage event, opened and closed by the MES.',
+    source:'MES', proto:'REST API', cadence:'event-driven, on stop and restart',
+    colMeta:{
+      'Machine':{mean:'Which machine stopped.', joins:['machines.Machine']},
+      'Reason':{mean:'Stoppage code the operator picked on the terminal.'},
+      'Mins':{mean:'Duration, closed out automatically when the machine resumes.'},
+      'Shift':{arriving:true, mean:'Shift the stoppage fell in, derived from the timestamp.'},
+      'Code':{arriving:true, mean:'Standardised loss code the reason maps to.'},
+    },
+    unified:'Every plant types its stoppage reasons differently. The layer maps each free-text reason onto one loss taxonomy, so a Pareto built here compares cleanly across lines, plants and shifts instead of splitting "Changeover" from "change over" from "C/O".'},
+
+  orders:{
+    title:'orders', x:1236, y:222, cols:['Order','Qty','Due','Value'], mask:'Value',
     breath:['Line','Priority'],
-    rows:[['SO-4471','1200','Aug 18','₹4.2L'],['SO-4472','800','Aug 20','₹2.8L']]},
-  quality_checks:{title:'quality_checks', x:430, y:438, cols:['Part','Check','Result'],
-    breath:['Inspector'],
-    rows:[['CNC-01','Bore Ø','Pass'],['WELD-03','Weld pen.','Rework']]},
-  shift_notes:{title:'shift_notes', x:1236, y:438, cols:['Time','Author','Note'],
-    breath:['Tag'],
-    rows:[['06:40','Ravi','Coolant low L-A'],['09:15','Meena','PRESS-02 slow']]},
+    rows:[['SO-4471','1200','Aug 18','₹4.2L'],['SO-4472','800','Aug 20','₹2.8L']],
+    desc:'Open production orders with quantity, promise date and commercial value.',
+    source:'SAP', proto:'OData', cadence:'batched hourly',
+    colMeta:{
+      'Order':{key:true, mean:'SAP sales order number.'},
+      'Qty':{mean:'Units ordered against this line item.'},
+      'Due':{mean:'Promised ship date. Drives what counts as at-risk.'},
+      'Value':{mean:'Order value in rupees. Commercially sensitive, so it is masked for shop-floor roles.'},
+      'Line':{arriving:true, mean:'Line the order is planned on.', joins:['machines.Line']},
+      'Priority':{arriving:true, mean:'Expedite flag carried over from SAP.'},
+    },
+    unified:'SAP knows the order and the money. SCADA knows the machine. Nothing in either system connects them. The layer links the two through Line, which makes "which orders are at risk because PRESS-02 is down" a question you can answer in one hop instead of an integration project.'},
+
+  quality_checks:{
+    title:'quality_checks', x:430, y:438, cols:['Part','Check','Result'], breath:['Inspector'],
+    rows:[['CNC-01','Bore Ø','Pass'],['WELD-03','Weld pen.','Rework']],
+    desc:'Inspection results captured on the shop-floor quality workbook.',
+    source:'Excel', proto:'watched folder', cadence:'on file save',
+    colMeta:{
+      'Part':{mean:'Part or machine tag the check was made against, typed by the inspector.',
+        joins:['machines.Machine']},
+      'Check':{mean:'Characteristic inspected, e.g. bore diameter or weld penetration.'},
+      'Result':{mean:'Pass / Rework / Scrap.'},
+      'Inspector':{arriving:true, mean:'Who signed the check off.'},
+    },
+    unified:'This spreadsheet has no machine ID column at all, only a hand-typed part tag. The layer matches it back to the machine entity, so a scrap spike can be traced to the machine and the shift that produced it, from a file that was never designed to be joined to anything.'},
+
+  shift_notes:{
+    title:'shift_notes', x:1236, y:438, cols:['Time','Author','Note'], breath:['Tag'],
+    rows:[['06:40','Ravi','Coolant low L-A'],['09:15','Meena','PRESS-02 slow']],
+    desc:'Handover notes supervisors send in the plant WhatsApp group.',
+    source:'WhatsApp', proto:'Business API', cadence:'live',
+    colMeta:{
+      'Time':{mean:'When the note was sent.'},
+      'Author':{mean:'Supervisor who sent it.'},
+      'Note':{mean:'The raw message, exactly as typed.'},
+      'Tag':{arriving:true, mean:'Topic and entities pulled out of the message text.'},
+    },
+    unified:'This is the context that normally dies in a chat group. "Coolant low L-A" gets linked to Line A and the machines on it, so an agent explaining a quality drift can cite the supervisor who flagged the cause two hours before it showed up in the data.'},
 };
+
 const CONNECTORS = [
-  {id:'scada', nm:'SCADA', src:'OPC-UA', on:true,  table:'machines'},
-  {id:'mes',   nm:'MES',   src:'API',    on:true,  table:'downtime'},
-  {id:'sap',   nm:'SAP',   src:'ERP',    on:true,  table:'orders'},
-  {id:'excel', nm:'Excel', src:'.xlsx',  on:false, table:'quality_checks'},
-  {id:'whatsapp', nm:'WhatsApp', src:'chat', on:false, table:'shift_notes'},
+  {id:'scada', nm:'SCADA', src:'OPC-UA', on:true,  table:'machines',
+   desc:'Reads tag groups straight off the line controllers.',
+   note:'Read-only subscription. The connector never writes a tag or a setpoint back.'},
+  {id:'mes',   nm:'MES',   src:'API',    on:true,  table:'downtime',
+   desc:'Subscribes to stoppage events as the MES opens and closes them.',
+   note:'Event-driven, so a stoppage is in the layer before the operator finishes typing the reason.'},
+  {id:'sap',   nm:'SAP',   src:'ERP',    on:true,  table:'orders',
+   desc:'Pulls open order lines with quantity, due date and value.',
+   note:'Hourly batch. The heaviest system to read from, and the one nobody wants agents writing to.'},
+  {id:'excel', nm:'Excel', src:'.xlsx',  on:false, table:'quality_checks',
+   desc:'Watches the quality workbook on the shared drive.',
+   note:'The file nobody calls a system. It is where the real inspection record lives.'},
+  {id:'whatsapp', nm:'WhatsApp', src:'chat', on:false, table:'shift_notes',
+   desc:'Ingests the plant handover group as structured context.',
+   note:'Unstructured, high-signal, and invisible to every other tool in the plant.'},
 ];
+
 const AGENTS = {
-  oee:   {x:560, y:762, name:'OEE Agent',      reads:'machines · downtime', writes:'OEE dashboard'},
-  pareto:{x:1050, y:762, name:'Downtime Agent', reads:'downtime',           writes:'Pareto dashboard'},
+  oee:   {x:560, y:846, name:'OEE Agent',
+    reads:['machines','downtime','orders'], writes:'OEE and throughput dashboards',
+    job:'Computes availability, performance and quality into a live OEE figure, and explains what moved it.'},
+  pareto:{x:1050, y:846, name:'Downtime Agent',
+    reads:['downtime','quality_checks','shift_notes'], writes:'Pareto and scrap dashboards',
+    job:'Ranks loss causes, and links a scrap or downtime spike back to the shift note that predicted it.'},
 };
+
 let ROLE = 'Operator';
 const ROLES = {
   Operator:{machines:'ok', downtime:'ok', orders:'mask', quality_checks:'ok', shift_notes:'ok'},
   Manager: {machines:'ok', downtime:'ok', orders:'ok',   quality_checks:'ok', shift_notes:'ok'},
   Auditor: {machines:'ok', downtime:'ok', orders:'ok',   quality_checks:'mask', shift_notes:'mask'},
 };
-let DASH = [
-  {id:'d_oee',    x:470, y:960, kind:'oee',    title:'OEE %',           agent:'oee'},
-  {id:'d_pareto', x:850, y:960, kind:'pareto', title:'Downtime Pareto', agent:'pareto'},
+
+/* guard rails: govern what the agent may DO and SAY, on top of what it may READ */
+const RAILS = [
+  {id:'scope', nm:'Scope', desc:'Agents answer plant-operations questions and nothing else. Anything outside the domain is declined rather than improvised.',
+   allow:'why is OEE down on Line A this shift?',
+   block:'draft a sales email to the customer'},
+  {id:'actions', nm:'Actions', desc:'Every action is allowlisted. Agents write dashboards and reports; they never write back to a control system.',
+   allow:'publish a new scrap-rate dashboard',
+   block:'raise the PRESS-02 setpoint by 5%'},
+  {id:'grounding', nm:'Grounding', desc:'Every claim must cite the table and rows it came from. An answer with no source is rejected before it reaches the operator.',
+   allow:'scrap is up 4%, from quality_checks rows 812-947',
+   block:'scrap looks like it is up a bit lately'},
+  {id:'escalation', nm:'Escalation', desc:'Low confidence, or anything touching safety, routes to a named human instead of being answered.',
+   allow:'flag the anomaly and page the shift supervisor',
+   block:'yes, WELD-03 is safe to restart'},
+  {id:'egress', nm:'Egress', desc:'Nothing leaves the plant. No external model call, no upload, no copy to a vendor cloud.',
+   allow:'run the model on the on-prem GPU box',
+   block:'upload downtime.csv for external analysis'},
 ];
-const ADD_SLOTS = [{x:1230,y:960},{x:470,y:1150},{x:850,y:1150},{x:1230,y:1150}];
+
+let DASH = [
+  {id:'d_oee',    x:470, y:1010, kind:'oee',    title:'OEE %',           agent:'oee'},
+  {id:'d_pareto', x:850, y:1010, kind:'pareto', title:'Downtime Pareto', agent:'pareto'},
+];
+const ADD_SLOTS = [{x:1230,y:1010},{x:470,y:1215},{x:850,y:1215},{x:1230,y:1215}];
 const EXTRA_ANALYSES = [
   {kind:'kpi',  title:'Throughput / hr', agent:'oee'},
   {kind:'spark',title:'Scrap rate trend', agent:'pareto'},
@@ -276,17 +454,18 @@ const EXTRA_ANALYSES = [
 let addPtr = 0;
 
 const STEP_TIPS = {
-  1:'Live connectors to your plant systems (SCADA, MES, SAP, Excel, WhatsApp). Toggle one and its data streams into the layer.',
+  1:'Live connectors to your plant systems (SCADA, MES, SAP, Excel, WhatsApp). Flip one on and its data streams into the layer.',
   2:'Every source lands as clean, linked tables. Columns grow and cross-links draw themselves as new data arrives.',
-  3:'One access policy guards the whole data layer. It decides who sees what, and masks sensitive fields before anything reads them.',
-  4:'On-prem AI agents read the governed data and do the work. Nothing leaves the plant.',
-  5:'Agents turn context into live dashboards. Spin up a new analysis in one click.',
+  3:'One access policy guards the whole data layer. It decides who may see what, and masks sensitive fields before anything reads them.',
+  4:'Guard rails govern the agents themselves: what they may do, what they must cite, when they must escalate. Governance gates the data going in; guard rails gate the behaviour coming out.',
+  5:'On-prem AI agents read the governed data and do the work. Nothing leaves the plant.',
+  6:'Agents turn context into live dashboards. Spin up a new analysis in one click.',
 };
 
 /* ---------------- helpers ---------------- */
 function el(tag, cls, html){const e=document.createElement(tag); if(cls)e.className=cls;
   if(html!=null)e.innerHTML=html; return e;}
-function anchorR(n){return {x:n.offsetLeft+n.offsetWidth, y:n.offsetTop+n.offsetHeight/2};}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function anchorL(n){return {x:n.offsetLeft, y:n.offsetTop+n.offsetHeight/2};}
 function anchorT(n){return {x:n.offsetLeft+n.offsetWidth/2, y:n.offsetTop};}
 function anchorB(n){return {x:n.offsetLeft+n.offsetWidth/2, y:n.offsetTop+n.offsetHeight};}
@@ -301,6 +480,16 @@ function pathD(a,b){
     return `M${a.x},${a.y} C${a.x},${a.y+v} ${b.x},${b.y-v} ${b.x},${b.y}`;
   }
 }
+function agentsReading(tableKey){
+  return Object.keys(AGENTS).filter(k=>AGENTS[k].reads.includes(tableKey));
+}
+
+/* ---------------- canvas transform (magnify) ---------------- */
+let tx=0, ty=0, scale=1;
+const FOCUS_SCALE = 1.3;
+function applyTransform(){
+  canvas.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
+}
 
 /* ---------------- drag (canvas-style) ---------------- */
 let dragSwallow=false;
@@ -308,14 +497,16 @@ function makeDraggable(node){
   node.style.cursor='grab';
   node.addEventListener('pointerdown',e=>{
     if(e.button!==0) return;
-    if(e.target.closest('.rolechip, .conn')) return; // let interactive controls get their click
+    // Let interactive controls keep their click. Pointer capture below retargets the
+    // click to this node, so anything with its own handler must be excluded here.
+    if(e.target.closest('.rolechip, .railchip, .conn')) return;
     const sx=e.clientX, sy=e.clientY, ox=node.offsetLeft, oy=node.offsetTop;
     let moved=false, raf=0;
     node.setPointerCapture(e.pointerId);
     node.style.zIndex=25;
     const mv=ev=>{
-      const dx=ev.clientX-sx, dy=ev.clientY-sy;
-      if(!moved && Math.abs(dx)+Math.abs(dy)<4) return;
+      const dx=(ev.clientX-sx)/scale, dy=(ev.clientY-sy)/scale;
+      if(!moved && (Math.abs(dx)+Math.abs(dy))*scale<4) return;
       moved=true; node.style.cursor='grabbing';
       node.style.left=(ox+dx)+'px'; node.style.top=(oy+dy)+'px';
       if(!raf) raf=requestAnimationFrame(()=>{raf=0; drawWires(); sketch();});
@@ -342,7 +533,8 @@ function buildConnectors(){
     const row = el('div','conn'+(c.on?' on':''));
     row.dataset.id=c.id;
     row.innerHTML = `<div class="sw"></div><div class="nm">${c.nm}</div><div class="src">${c.src}</div>`;
-    row.onclick = ()=>toggleConnector(c.id);
+    row.querySelector('.sw').onclick = (e)=>{e.stopPropagation(); toggleConnector(c.id);};
+    row.onclick = ()=>focusOn('connector', c.id, p);
     p.appendChild(row);
   });
   dom.appendChild(p); nodeEls['connectors']=p; makeDraggable(p);
@@ -368,6 +560,7 @@ function tableCard(key){
     tb.appendChild(tr);
   });
   g.appendChild(tb); n.appendChild(g);
+  n.onclick=()=>focusOn('table', key, n);
   makeDraggable(n);
   return n;
 }
@@ -378,24 +571,26 @@ function buildDataBox(){
   box.innerHTML=`<div class="dbhd"><span class="num">2</span> Data Layer
     <small>· unified, linked tables</small>
     <span class="tip">${STEP_TIPS[2]}</span></div>`;
+  box.querySelector('.dbhd').onclick=()=>focusOn('datalayer',null,box);
   dom.appendChild(box); nodeEls['databox']=box;
 }
 
-/* ---------------- governance bar (spans + guards the box) ---------------- */
+/* ---------------- governance bar ---------------- */
 function buildGovernance(){
-  const n=el('div','node govbar'); n.id='n_gov';
+  const n=el('div','node gatebar govbar'); n.id='n_gov';
   n.innerHTML=`<span class="num">3</span>
-    <div class="glabel">🔒 Governance <small>access policy</small></div>
+    <div class="glabel">🔒 Governance <small>data access</small></div>
     <div class="roles"></div>
     <div class="gsum"></div>
     <span class="tip">${STEP_TIPS[3]}</span>`;
   const roles=n.querySelector('.roles');
   Object.keys(ROLES).forEach(r=>{
     const c=el('div','rolechip'+(r===ROLE?' active':''),r);
-    c.onclick=(e)=>{e.stopPropagation(); ROLE=r; refreshGovernance(); applyMasks();};
+    c.onclick=(e)=>{e.stopPropagation(); ROLE=r; refreshGovernance(); applyMasks();
+      if(focus.kind==='governance'||focus.kind==='agent') renderInspector();};
     roles.appendChild(c);
   });
-  n.onclick=()=>openPolicy(n);
+  n.onclick=()=>focusOn('governance',null,n);
   dom.appendChild(n); nodeEls['gov']=n; makeDraggable(n);
   refreshGovernance();
 }
@@ -424,13 +619,45 @@ function applyMasks(){
   });
 }
 
+/* ---------------- guard rails bar ---------------- */
+let tickIdx=0;
+function buildRails(){
+  const n=el('div','node gatebar railbar'); n.id='n_rails';
+  n.innerHTML=`<span class="num">4</span>
+    <div class="glabel">🛡 Guard Rails <small>agent behaviour</small></div>
+    <div class="roles" id="railChips"></div>
+    <div class="ticker" id="railTicker"></div>
+    <span class="tip">${STEP_TIPS[4]}</span>`;
+  const wrap=n.querySelector('#railChips');
+  RAILS.forEach(r=>{
+    const c=el('div','railchip',r.nm);
+    c.onclick=(e)=>{e.stopPropagation(); focusOn('guardrails', r.id, n);};
+    wrap.appendChild(c);
+  });
+  n.onclick=()=>focusOn('guardrails',null,n);
+  dom.appendChild(n); nodeEls['rails']=n; makeDraggable(n);
+  renderTicker();
+}
+function renderTicker(){
+  const t=document.getElementById('railTicker'); if(!t) return;
+  const r=RAILS[tickIdx%RAILS.length];
+  t.innerHTML=`<span class="deny">⊘ ${r.nm}</span> · <span class="q">“${esc(r.block)}”</span> → denied`;
+}
+function tickRails(){
+  const t=document.getElementById('railTicker'); if(!t) return;
+  t.classList.add('fade');
+  setTimeout(()=>{ tickIdx++; renderTicker(); t.classList.remove('fade'); }, 450);
+}
+
+/* ---------------- agents + dashboards ---------------- */
 function agentCard(key){
   const a=AGENTS[key];
   const n=el('div','node agent'); n.id='n_ag_'+key; n.style.left=a.x+'px'; n.style.top=a.y+'px';
   n.innerHTML=`<div class="hd"><span class="mono">◐ agent</span><span class="tag">on-prem</span></div>
     <div class="body"><div class="orb"></div>
-    <div class="meta"><b>${a.name}</b><br><span>humming…</span></div></div>`;
-  n.onclick=()=>openThought(key,n);
+    <div class="meta"><b>${a.name}</b><br><span>humming…</span></div></div>
+    <div class="rails">${'<i></i>'.repeat(RAILS.length)}</div>`;
+  n.onclick=()=>focusOn('agent',key,n);
   makeDraggable(n);
   return n;
 }
@@ -448,6 +675,7 @@ function dashCard(d){
     <div style="font-size:11px;color:var(--muted);margin-top:6px">live · updating</div>`;
   n.innerHTML=`<div class="hd"><span>📊 ${d.title}</span><span class="tag">${AGENTS[d.agent].name.split(' ')[0]}</span></div>
     <div class="body">${inner}</div>`;
+  n.onclick=()=>focusOn('dash',d.id,n);
   makeDraggable(n);
   return n;
 }
@@ -465,7 +693,7 @@ function positionAddCard(){
   addCardEl.style.display = addPtr>=ADD_SLOTS.length ? 'none':'flex';
 }
 
-/* ---------------- numbered step badges (1,4,5; 2 & 3 live on box/bar) ---------------- */
+/* ---------------- numbered step badges ---------------- */
 function stepBadge(num,label,x,y){
   const s=el('div','step');
   s.innerHTML=`<span class="num">${num}</span><span class="lbl">${label}</span>
@@ -475,8 +703,8 @@ function stepBadge(num,label,x,y){
 }
 function buildSteps(){
   stepBadge(1,'Connectors',60,224);
-  stepBadge(4,'Agents',470,720);
-  stepBadge(5,'Dashboards',470,916);
+  stepBadge(5,'Agents',470,804);
+  stepBadge(6,'Dashboards',470,966);
 }
 
 /* ---------------- table visibility (connector-driven) ---------------- */
@@ -494,6 +722,7 @@ function renderTables(){
     } else if(!want && have){
       const n=nodeEls['tbl_'+key]; n.classList.add('enter');
       setTimeout(()=>{n.remove();},480); delete nodeEls['tbl_'+key];
+      if(focus.kind==='table' && focus.key===key) clearFocus();
     }
   });
 }
@@ -530,17 +759,22 @@ function drawWires(){
     const a={x:conn.offsetLeft+conn.offsetWidth, y:conn.offsetTop+row.offsetTop+row.offsetHeight/2};
     addWire(a, anchorL(t), 'wire', 2.6, i*0.25);
   });
-  // data box (bottom) -> governance gate (all data funnels through the policy layer)
-  const box=nodeEls['databox'], gv=nodeEls['gov'];
+  const box=nodeEls['databox'], gv=nodeEls['gov'], rl=nodeEls['rails'];
+  // data box -> governance gate (all data funnels through the access policy)
   [0.34,0.66].forEach((f,i)=>{
     const x=box.offsetLeft+box.offsetWidth*f;
     addWire({x, y:box.offsetTop+box.offsetHeight}, {x, y:gv.offsetTop}, 'wire', 2.4, 0.4+i*0.2);
   });
-  // governance gate -> agents (only governed data reaches the agents)
+  // governance -> guard rails (governed data now passes the behaviour gate)
+  [0.34,0.66].forEach((f,i)=>{
+    const x=gv.offsetLeft+gv.offsetWidth*f;
+    addWire({x, y:gv.offsetTop+gv.offsetHeight}, {x, y:rl.offsetTop}, 'wire', 2.0, 0.6+i*0.2);
+  });
+  // guard rails -> agents (only governed data, and only railed behaviour, reaches the agents)
   Object.keys(AGENTS).forEach((key,i)=>{
-    const ag=nodeEls['ag_'+key];
+    const ag=nodeEls['ag_'+key]; if(!ag) return;
     const x=ag.offsetLeft+ag.offsetWidth/2;
-    addWire({x, y:gv.offsetTop+gv.offsetHeight}, anchorT(ag), 'wire', 2.8, 0.9+i*0.22);
+    addWire({x, y:rl.offsetTop+rl.offsetHeight}, anchorT(ag), 'wire', 2.8, 0.9+i*0.22);
   });
   // agents -> dashboards
   DASH.forEach((d,i)=>{
@@ -564,7 +798,8 @@ function toggleConnector(id){
   const row=[...nodeEls['connectors'].querySelectorAll('.conn')].find(r=>r.dataset.id===id);
   row.classList.toggle('on', c.on);
   renderTables();
-  setTimeout(()=>{ drawWires(); applyMasks(); refreshGovernance(); sketch(); updateCounts(); }, c.on?60:200);
+  setTimeout(()=>{ drawWires(); applyMasks(); refreshGovernance(); sketch(); updateCounts();
+    if(focus.kind) renderInspector(); }, c.on?60:200);
 }
 
 /* ---------------- add analysis ---------------- */
@@ -582,45 +817,212 @@ function addAnalysis(){
   setTimeout(()=>{ drawWires(); sketch(); updateCounts(); },120);
 }
 
-/* ---------------- popovers (governance + agent) ---------------- */
-const pop=document.getElementById('pop');
-const popTitle=document.getElementById('popTitle');
-const popBody=document.getElementById('popBody');
-document.getElementById('popX').onclick=hidePop;
-function showPop(anchorEl,title,html){
-  popTitle.textContent=title; popBody.innerHTML=html;
-  pop.className='pop show';
-  const r=anchorEl.getBoundingClientRect();
-  let left=r.right+12, top=r.top;
-  if(left+340>window.innerWidth) left=r.left-352;
-  if(left<10) left=10;
-  top=Math.max(62, Math.min(top, window.innerHeight-260));
-  pop.style.left=left+'px'; pop.style.top=top+'px';
-}
-function hidePop(){pop.className='pop';}
-document.addEventListener('click',(e)=>{
-  if(!pop.contains(e.target) && !e.target.closest('.node')) hidePop();
-});
+/* ---------------- focus + inspector ---------------- */
+const inspector=document.getElementById('inspector');
+const insTitle=document.getElementById('insTitle');
+const insBadge=document.getElementById('insBadge');
+const insBody=document.getElementById('insBody');
+let focus={kind:null,key:null,node:null};
+document.getElementById('insX').onclick=(e)=>{e.stopPropagation(); clearFocus();};
 
-function openPolicy(node){
+function focusOn(kind,key,node){
   if(dragSwallow) return;
-  const rows=Object.entries(ROLES).map(([role,map])=>{
-    const cells=Object.entries(map).filter(([k])=>isTableVisible(k)).map(([k,v])=>
-      `<span class="k">${k}</span> ${v==='ok'?'<span class="ok">✓</span>':'<span class="no">masked</span>'}`).join(' &nbsp; ');
-    return `<div style="margin-bottom:9px"><b>${role}</b><br><span style="font-size:11.5px">${cells}</span></div>`;
-  }).join('');
-  showPop(node,'🔒 Access policy',
-    `<div style="margin-bottom:9px;color:var(--muted);font-size:11.5px">Row-level policy enforced before any agent reads a byte. Pick a role on the bar to see masking live.</div>${rows}`);
+  focus={kind,key,node};
+  // highlight
+  dom.querySelectorAll('.focused').forEach(n=>n.classList.remove('focused'));
+  node.classList.add('focused');
+  dom.classList.add('focusing');
+  canvas.classList.add('focusing');
+  // magnify: pan so the focused card sits centred in the space left of the panel
+  const r=node.getBoundingClientRect();
+  const cx=node.offsetLeft+node.offsetWidth/2, cy=node.offsetTop+node.offsetHeight/2;
+  const baseX=(r.left+r.width/2)-tx-cx*scale;
+  const baseY=(r.top+r.height/2)-ty-cy*scale;
+  const panelW=inspector.offsetWidth||410;
+  const px=Math.max(60,(window.innerWidth-panelW)/2);
+  const py=52+(window.innerHeight-52)/2;
+  // Magnify small cards; only frame wide ones (the gate bars span 1150px and would
+  // otherwise overflow the space beside the panel and clip their own labels).
+  const fit=(px*2-40)/node.offsetWidth;
+  scale=Math.max(1, Math.min(FOCUS_SCALE, fit));
+  tx=px-baseX-cx*scale;
+  ty=py-baseY-cy*scale;
+  applyTransform();
+  document.body.style.overflow='hidden';
+  renderInspector();
+  inspector.classList.add('open');
 }
-function openThought(key,node){
-  if(dragSwallow) return;
+function clearFocus(){
+  if(!focus.kind) return;
+  focus={kind:null,key:null,node:null};
+  dom.querySelectorAll('.focused').forEach(n=>n.classList.remove('focused'));
+  dom.classList.remove('focusing');
+  canvas.classList.remove('focusing');
+  tx=0; ty=0; scale=1; applyTransform();
+  document.body.style.overflow='';
+  inspector.classList.remove('open');
+}
+document.addEventListener('click',(e)=>{
+  if(inspector.contains(e.target)) return;
+  if(e.target.closest('.node, .dbhd, .step')) return;
+  clearFocus();
+});
+document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') clearFocus(); });
+
+function setIns(title,badge,html){
+  insTitle.textContent=title; insBadge.textContent=badge; insBody.innerHTML=html;
+  insBody.scrollTop=0;
+}
+
+function renderInspector(){
+  const {kind,key}=focus;
+  if(kind==='table') return insTable(key);
+  if(kind==='connector') return insConnector(key);
+  if(kind==='datalayer') return insDataLayer();
+  if(kind==='governance') return insGovernance();
+  if(kind==='guardrails') return insGuardRails(key);
+  if(kind==='agent') return insAgent(key);
+  if(kind==='dash') return insDash(key);
+}
+
+function insTable(key){
+  const t=TABLES[key];
+  const conn=CONNECTORS.find(c=>c.table===key);
+  const roleState=ROLES[ROLE][key];
+  const all=[...t.cols, ...(t.breath||[])];
+  const colsHtml=all.map(c=>{
+    const m=(t.colMeta||{})[c]||{};
+    const pills=[];
+    if(m.key) pills.push('<span class="pill key">key</span>');
+    if(t.mask===c) pills.push('<span class="pill mask">maskable</span>');
+    if(m.arriving) pills.push('<span class="pill new">arriving</span>');
+    const joins=(m.joins||[]).length
+      ? `<div class="joins"><span>joins → </span>${m.joins.map(esc).join('<span> · </span>')}</div>` : '';
+    return `<div class="colrow">
+      <div class="colhd"><span class="colnm">${esc(c)}</span>${pills.join('')}</div>
+      <div class="colmean">${esc(m.mean||'')}</div>${joins}</div>`;
+  }).join('');
+  const readers=agentsReading(key).map(k=>AGENTS[k].name);
+  const roleRows=Object.keys(ROLES).map(r=>{
+    const v=ROLES[r][key];
+    const label = v==='ok' ? '<span class="ok">full</span>'
+      : (t.mask ? `<span class="no">${esc(t.mask)} masked</span>` : '<span class="no">all masked</span>');
+    return `<div class="kv"><div class="k">${r}${r===ROLE?' ●':''}</div><div class="v">${label}</div></div>`;
+  }).join('');
+  setIns('▦ '+t.title,'table',`
+    <div class="lede">${esc(t.desc)}</div>
+    <div class="meta-line">via <b>${esc(conn?conn.nm:'—')}</b> (${esc(t.proto)}) · ${esc(t.cadence)} · ${t.rows.length} rows shown</div>
+    <div class="sec"><h4>Columns</h4>${colsHtml}</div>
+    <div class="sec"><h4>Unified context</h4><div class="callout">${esc(t.unified)}</div></div>
+    <div class="sec"><h4>Read by</h4>
+      ${readers.length?`<div class="chiplist">${readers.map(n=>`<span>◐ ${esc(n)}</span>`).join('')}</div>`
+        :'<div style="color:var(--muted)">No agent reads this table yet.</div>'}</div>
+    <div class="sec"><h4>Access by role</h4>${roleRows}
+      <div class="meta-line">Current role <b>${ROLE}</b> → ${roleState==='ok'?'<span class="ok">full access</span>':'<span class="no">masked</span>'}</div></div>`);
+}
+
+function insConnector(id){
+  const c=CONNECTORS.find(x=>x.id===id);
+  const t=TABLES[c.table];
+  setIns(c.nm,'connector',`
+    <div class="lede">${esc(c.desc)}</div>
+    <div class="meta-line">${c.on?'<b style="color:var(--green)">● connected</b>':'<b style="color:var(--muted)">○ not connected</b>'} · ${esc(c.src)}</div>
+    <div class="sec"><h4>Lands as</h4>
+      <div class="kv"><div class="k">Table</div><div class="v"><span class="mono">▦ ${esc(t.title)}</span></div></div>
+      <div class="kv"><div class="k">Cadence</div><div class="v">${esc(t.cadence)}</div></div>
+      <div class="kv"><div class="k">Columns</div><div class="v">${t.cols.length} live, ${(t.breath||[]).length} arriving</div></div></div>
+    <div class="sec"><h4>Why it matters</h4><div class="callout">${esc(c.note)}</div></div>
+    <div class="sec"><h4>Direction</h4>
+      <div class="kv"><div class="k">Read</div><div class="v"><span class="ok">yes</span></div></div>
+      <div class="kv"><div class="k">Write back</div><div class="v"><span class="no">never</span></div></div>
+      <div class="meta-line">Enforced by the <b>Actions</b> guard rail, not by convention.</div></div>`);
+}
+
+function insDataLayer(){
+  const vis=Object.keys(TABLES).filter(isTableVisible);
+  const colCount=vis.reduce((a,k)=>a+TABLES[k].cols.length+(TABLES[k].breath||[]).length,0);
+  const rows=vis.map(k=>`<div class="kv"><div class="k mono">${esc(TABLES[k].title)}</div>
+    <div class="v">${esc(TABLES[k].desc)}</div></div>`).join('');
+  setIns('Data Layer','layer',`
+    <div class="lede">Every connected source lands here as clean, linked tables, with one resolved identity per real-world thing.</div>
+    <div class="meta-line"><b>${vis.length}</b> tables · <b>${colCount}</b> columns · sources stay untouched</div>
+    <div class="sec"><h4>What unification actually means</h4>
+      <div class="callout">The layer does not copy five systems into one schema and hope. It resolves entities. One machine, one order, one shift exists once, no matter how many systems spell it differently. That is what makes a question like "why did this order slip?" answerable in a single hop across SCADA, MES, SAP, a spreadsheet and a chat group.</div></div>
+    <div class="sec"><h4>Tables in the layer</h4>${rows}</div>
+    <div class="sec"><h4>Cross-links</h4>
+      <div class="joins">machines.Machine <span>↔</span> downtime.Machine</div>
+      <div class="joins">machines.Machine <span>↔</span> quality_checks.Part</div>
+      <div class="joins">machines.Line <span>↔</span> orders.Line</div>
+      <div class="meta-line">Drawn continuously as new data arrives, not defined up front in a data model.</div></div>`);
+}
+
+function insGovernance(){
+  const vis=Object.keys(TABLES).filter(isTableVisible);
+  const rows=Object.keys(ROLES).map(r=>{
+    const cells=vis.map(k=>{
+      const v=ROLES[r][k];
+      return `<span style="font-family:var(--mono);font-size:10.5px">${esc(k)}</span> ${v==='ok'?'<span class="ok">✓</span>':'<span class="no">masked</span>'}`;
+    }).join(' &nbsp; ');
+    return `<div style="margin-bottom:10px"><b>${r}${r===ROLE?' ●':''}</b><br>
+      <span style="font-size:11.5px">${cells}</span></div>`;
+  }).join('');
+  setIns('🔒 Governance','data access',`
+    <div class="lede">One access policy guards the whole data layer. It decides who may see what, and masks the fields they may not, before anything downstream reads a byte.</div>
+    <div class="meta-line">Active role <b>${ROLE}</b> · switch roles on the bar to watch masking apply live</div>
+    <div class="sec"><h4>Role × table policy</h4>${rows}</div>
+    <div class="sec"><h4>Where it applies</h4>
+      <div class="callout">Masking happens between the data layer and the agents, not in the dashboard. An agent that is not entitled to a column never receives it, so it cannot leak it, summarise it, or infer around it.</div></div>
+    <div class="sec"><h4>This is only half the gate</h4>
+      <div class="meta-line">Governance controls <b>what goes in</b>. The <b>Guard Rails</b> layer below controls <b>what comes out</b>: what the agent may do, must cite, and when it must escalate.</div></div>`);
+}
+
+function insGuardRails(highlight){
+  const rows=RAILS.map(r=>`
+    <div class="rail${highlight===r.id?' hl':''}">
+      <div class="rn">${esc(r.nm)}</div>
+      <div class="rd">${esc(r.desc)}</div>
+      <div class="ex"><span class="y">✓</span><span>“${esc(r.allow)}”</span></div>
+      <div class="ex"><span class="n">⊘</span><span>“${esc(r.block)}”</span></div>
+    </div>`).join('');
+  setIns('🛡 Guard Rails','agent behaviour',`
+    <div class="lede">Governance gates the data going in. Guard rails gate the behaviour coming out: what an agent may do, what it must cite, and when it must hand back to a human.</div>
+    <div class="meta-line"><b>${RAILS.length}</b> rails · applied to every agent · evaluated on every response</div>
+    <div class="sec"><h4>The rails</h4>${rows}</div>
+    <div class="sec"><h4>Why this is separate from access control</h4>
+      <div class="callout">An agent can be perfectly entitled to the data and still do the wrong thing with it: write to a setpoint, answer a safety question it should escalate, or state a number it cannot source. Access control cannot catch any of those, because nothing was read that should not have been. Rails are the layer that can.</div></div>`);
+}
+
+function insAgent(key){
   const a=AGENTS[key];
-  showPop(node,'◐ '+a.name,
-    `<div class="thought">reads <span class="r">${a.reads}</span><br>
-     writes <span class="r">${a.writes}</span><br>
-     honors <span class="r">governance policy</span> for role <b>${ROLE}</b></div>
-     <div style="margin-top:10px;font-size:11.5px;color:var(--muted)">
-     status: <span style="color:var(--green);font-weight:700">● humming</span> · runs on-prem · no data leaves the plant</div>`);
+  const reads=a.reads.filter(isTableVisible);
+  const blocked=a.reads.filter(k=>isTableVisible(k) && ROLES[ROLE][k]==='mask');
+  setIns('◐ '+a.name,'agent',`
+    <div class="lede">${esc(a.job)}</div>
+    <div class="meta-line"><span style="color:var(--green);font-weight:700">● humming</span> · runs on-prem · no data leaves the plant</div>
+    <div class="sec"><h4>Reads</h4>
+      <div class="chiplist">${reads.map(k=>`<span>▦ ${esc(k)}</span>`).join('')}</div>
+      ${blocked.length?`<div class="meta-line">Masked for <b>${ROLE}</b>: ${blocked.map(esc).join(', ')} — the agent receives these columns already redacted.</div>`:''}</div>
+    <div class="sec"><h4>Writes</h4>
+      <div class="kv"><div class="k">Output</div><div class="v">${esc(a.writes)}</div></div>
+      <div class="kv"><div class="k">Control systems</div><div class="v"><span class="no">never</span></div></div></div>
+    <div class="sec"><h4>Bound by</h4>
+      ${RAILS.map(r=>`<div class="kv"><div class="k">${esc(r.nm)}</div><div class="v">${esc(r.desc.split('.')[0])}.</div></div>`).join('')}</div>
+    <div class="sec"><h4>Under the current role</h4>
+      <div class="callout">Acting for <b>${ROLE}</b>. It sees exactly what that role may see, and it answers only within the ${RAILS.length} rails above. Change the role on the governance bar and this agent's view narrows or widens with it.</div></div>`);
+}
+
+function insDash(id){
+  const d=DASH.find(x=>x.id===id); if(!d) return;
+  const a=AGENTS[d.agent];
+  const feeds=a.reads.filter(isTableVisible);
+  setIns('📊 '+d.title,'dashboard',`
+    <div class="lede">Produced and kept current by the ${esc(a.name)}, not built by hand.</div>
+    <div class="meta-line">Refreshes as the underlying tables change</div>
+    <div class="sec"><h4>Built by</h4>
+      <div class="kv"><div class="k">Agent</div><div class="v">◐ ${esc(a.name)}</div></div>
+      <div class="kv"><div class="k">Fed by</div><div class="v">${feeds.map(k=>`<span class="mono">${esc(k)}</span>`).join(', ')}</div></div></div>
+    <div class="sec"><h4>How it got here</h4>
+      <div class="callout">Nobody specified this chart against a warehouse schema. The agent already had the governed context, so the analysis was one request. That is the whole point of the layer underneath it.</div></div>`);
 }
 
 /* ---------------- sketch accents (rough.js) ---------------- */
@@ -629,7 +1031,6 @@ function sketch(){
   if(sketchG) sketchG.remove();
   sketchG=document.createElementNS('http://www.w3.org/2000/svg','g');
   sketchG.setAttribute('class','sketch'); wires.appendChild(sketchG);
-  // marker rings around each humming agent
   Object.keys(AGENTS).forEach(key=>{
     const n=nodeEls['ag_'+key]; if(!n) return;
     const c=rc.ellipse(n.offsetLeft+n.offsetWidth/2, n.offsetTop+n.offsetHeight/2,
@@ -655,6 +1056,7 @@ function breatheLoop(){
 function updateCounts(){
   document.getElementById('cCount').textContent=CONNECTORS.filter(c=>c.on).length;
   document.getElementById('tCount').textContent=Object.keys(TABLES).filter(isTableVisible).length;
+  document.getElementById('rCount').textContent=RAILS.length;
   document.getElementById('aCount').textContent=Object.keys(AGENTS).length;
   document.getElementById('dCount').textContent=DASH.length;
 }
@@ -665,6 +1067,7 @@ function init(){
   buildConnectors();
   renderTables();
   buildGovernance();
+  buildRails();
   Object.keys(AGENTS).forEach(key=>{const n=agentCard(key); dom.appendChild(n); nodeEls['ag_'+key]=n;});
   DASH.forEach(d=>{const n=dashCard(d); dom.appendChild(n); nodeEls[d.id]=n;});
   buildAddCard();
@@ -672,10 +1075,11 @@ function init(){
   requestAnimationFrame(()=>{ drawWires(); sketch(); applyMasks(); updateCounts();
     setInterval(breatheLoop, 4300); breatheLoop();
     setInterval(drawXlinks, 6000);
+    setInterval(tickRails, 4800);
   });
 }
 window.addEventListener('load', init);
-window.addEventListener('resize', ()=>{ if(pop.className.indexOf('show')>-1) hidePop(); });
+window.addEventListener('resize', clearFocus);
 </script>
 </body>
 </html>

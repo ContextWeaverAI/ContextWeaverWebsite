@@ -16,7 +16,8 @@ import {
   DialogClose,
 } from "@/components/ui/dialog"
 
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/meajznwa"
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit"
+const WEB3FORMS_ACCESS_KEY = "7773a04d-4665-46bf-9ffa-4b154cb50086"
 
 type Status = "idle" | "submitting" | "success" | "error"
 
@@ -35,10 +36,13 @@ export function WorkshopRegisterForm() {
     e.preventDefault()
     setStatus("submitting")
     try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
+      const res = await fetch(WEB3FORMS_ENDPOINT, {
         method: "POST",
         headers: { Accept: "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: "New workshop registration",
+          from_name: name,
           name,
           email,
           phone,
@@ -49,7 +53,8 @@ export function WorkshopRegisterForm() {
           workshop: "From Ideas to Reliable Apps using AI",
         }),
       })
-      if (!res.ok) throw new Error("Formspree request failed")
+      const result = await res.json()
+      if (!res.ok || !result.success) throw new Error("Web3Forms request failed")
       setSubmittedName(name)
       setSubmittedEmail(email)
       setName("")

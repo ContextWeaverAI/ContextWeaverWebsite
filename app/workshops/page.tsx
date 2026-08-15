@@ -72,10 +72,6 @@ export default function WorkshopsPage() {
               <h2 className="text-xl sm:text-2xl font-bold tracking-tight mb-1.5">
                 Register your interest
               </h2>
-              <p className="text-sm text-background/70 leading-relaxed max-w-md">
-                Tell us who you are and the tool you'd want to build — registration opens to this
-                list first.
-              </p>
             </motion.div>
 
             <motion.div
@@ -89,10 +85,10 @@ export default function WorkshopsPage() {
               </div>
               <div>
                 <h3 className="text-sm font-bold text-amber-300 mb-1">
-                  The 100% Fee Waiver — Golden Ticket
+                  The Golden Seat - 100% Scholarship
                 </h3>
                 <p className="text-xs sm:text-sm text-background/80 leading-relaxed">
-                  The 20 best entries get a full fee waiver. We're judging clarity of thinking — can
+                  The 20 best entries get a full scholarship. We're judging clarity of thinking — can
                   you spot a real problem around you and picture a working piece of software to
                   solve it? Not the technical details, just what the software should do and who
                   does what in it. Show us that in your app description below. Articulate it well,
@@ -135,10 +131,11 @@ export default function WorkshopsPage() {
                   who want to build their own tools without learning to code.
                 </p>
 
-                <div className="flex items-end gap-6 mt-4 pt-4 border-t border-background/15">
+                <div className="flex items-start gap-6 mt-4 pt-4 border-t border-background/15">
                   <div>
-                    <div className="text-2xl font-bold leading-none">$5</div>
-                    <div className="text-[11px] text-background/60 mt-1">first 50 registrants</div>
+                    <div className="text-2xl font-bold leading-none">$20</div>
+                    <div className="text-[11px] text-background/60 mt-1">Early bird</div>
+                    <div className="text-[11px] text-background/60">till 28th Aug</div>
                   </div>
                   <div>
                     <div className="text-2xl font-bold leading-none">$50</div>

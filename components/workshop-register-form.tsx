@@ -137,7 +137,7 @@ export function WorkshopRegisterForm() {
         />
         <p className="text-xs text-muted-foreground pt-0.5">
           Describe your idea with clarity — the 20 best entries get a{" "}
-          <span className="font-semibold text-amber-700">100% fee waiver</span>.
+          <span className="font-semibold text-amber-700">100% scholarship</span>.
         </p>
       </div>
 
@@ -186,8 +186,8 @@ export function WorkshopRegisterForm() {
             Thanks{submittedName ? `, ${submittedName.split(" ")[0]}` : ""} — your registration
             request has been sent and is being taken care of. We'll get back to you at{" "}
             <span className="text-foreground font-medium">{submittedEmail}</span> with seat
-            confirmation, the schedule, and whether your idea made the top 20 for the 100% fee
-            waiver.
+            confirmation, the schedule, and whether your idea made the top 20 for the 100%
+            scholarship.
           </DialogDescription>
         </DialogHeader>
         <div className="rounded-xl border border-border p-3.5 text-xs text-muted-foreground space-y-1">
@@ -195,8 +195,8 @@ export function WorkshopRegisterForm() {
             <span className="font-semibold text-foreground">When:</span> September 2026
           </div>
           <div>
-            <span className="font-semibold text-foreground">Fee:</span> $50 standard, $5 for the
-            first 50 registrants
+            <span className="font-semibold text-foreground">Fee:</span> $50 standard, $20 early
+            bird till 28th Aug
           </div>
           <div>
             <span className="font-semibold text-foreground">Includes:</span> certificate of
